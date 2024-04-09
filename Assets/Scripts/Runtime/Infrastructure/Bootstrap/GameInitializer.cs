@@ -1,22 +1,14 @@
-﻿using Runtime.Infrastructure.Factories;
-using Runtime.Infrastructure.Game;
-using Runtime.UI.Screens;
-using UnityEngine;
-using Zenject;
+﻿using Runtime.UI.Screens;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
-    public sealed class GameInitializer : MonoBehaviour
+    public sealed class GameInitializer : AbstractIntializer
     {
-        [Inject] private IGameStateMachine _gameStateMachine;
-        [Inject] private RootUI _rootUI;
-        [Inject] private IUIFactory _uiFactory;
-
-        private async void Awake()
+        private void Awake()
         {
-            _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _rootUI.CanvasTransform);
+            UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
             
-            _gameStateMachine.HideLoadingScreen();
+            GameStateMachine.HideLoadingScreen();
         }
     }
 }

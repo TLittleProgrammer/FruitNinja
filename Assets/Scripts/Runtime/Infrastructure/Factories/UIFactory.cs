@@ -13,14 +13,12 @@ namespace Runtime.Infrastructure.Factories
         private readonly DiContainer _diContainer;
         private readonly ScreenContainer _screenContainer;
         private readonly IAssetProvider _assetProvider;
-        private readonly List<Object> _disposablesUI;
 
         public UIFactory(DiContainer diContainer, ScreenContainer screenContainer, IAssetProvider assetProvider)
         {
             _diContainer = diContainer;
             _screenContainer = screenContainer;
             _assetProvider = assetProvider;
-            _disposablesUI = new();
         }
         
         public TResult LoadScreen<TResult>(ScreenType screenType, Transform parent) where TResult : Object
@@ -36,8 +34,6 @@ namespace Runtime.Infrastructure.Factories
             RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
             screenRectTransform.offsetMin = Vector2.zero;
             screenRectTransform.offsetMax = Vector2.zero;
-
-            AddScreenToDisposableIfRequired(screen, screenType);
             
             return screen;
         }
@@ -49,24 +45,6 @@ namespace Runtime.Infrastructure.Factories
             return _diContainer
                 .InstantiatePrefab(prefab, Vector3.zero, Quaternion.identity, parent)
                 .GetComponentInChildren<TResult>();
-        }
-
-        private void AddScreenToDisposableIfRequired<TResult>(TResult screen, ScreenType screenType) where TResult : Object
-        {
-            if (screenType is not ScreenType.Loading)
-            {
-                _disposablesUI.Add(screen);
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (Object obj in _disposablesUI)
-            {
-                Object.Destroy(obj);
-            }
-            
-            _disposablesUI.Clear();
         }
     }
 }

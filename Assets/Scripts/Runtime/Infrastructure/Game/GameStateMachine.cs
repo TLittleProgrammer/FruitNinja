@@ -34,9 +34,7 @@ namespace Runtime.Infrastructure.Game
         public async void AsyncLoadScene(string sceneName)
         {
             await _loadingScreen.Show();
-            
-            _uiFactory.Dispose();
-            
+
             _sceneLoader.LoadScene(sceneName);
         }
 

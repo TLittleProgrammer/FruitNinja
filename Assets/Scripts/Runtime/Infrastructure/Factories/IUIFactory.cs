@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.Factories
 {
-    public interface IUIFactory : IDisposable
+    public interface IUIFactory
     {
         TResult LoadScreen<TResult>(ScreenType screenType, Transform parent) where TResult : Object;
         UniTask<TResult> LoadUIObjectByPath<TResult>(string path, Transform parent) where TResult : Object;
