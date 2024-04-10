@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f10e6c7833fe42d08bf039a7922a2c19, type: 3}
+  m_Name: ButtonAnimationSettings
+  m_EditorClassIdentifier: 
+  Duration: 0.15
+  TargetScale: {x: 1.15, y: 1.15, z: 1}
+  Ease: 2
