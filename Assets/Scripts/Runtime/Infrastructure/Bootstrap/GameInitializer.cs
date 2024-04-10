@@ -1,11 +1,17 @@
-﻿using Runtime.UI.Screens;
+﻿using Runtime.SlicableObjects;
+using Runtime.UI.Screens;
+using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
     public sealed class GameInitializer : AbstractIntializer
     {
-        private void Awake()
+        [Inject] private SlicableSpriteContainer _slicableSpriteContainer;
+        
+        private async void Awake()
         {
+            await _slicableSpriteContainer.AsyncInitialize();
+            
             UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
             
             GameStateMachine.HideLoadingScreen();
