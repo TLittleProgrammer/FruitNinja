@@ -40,6 +40,7 @@ namespace Runtime.Infrastructure.Factories
             RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
             screenRectTransform.offsetMin = Vector2.zero;
             screenRectTransform.offsetMax = Vector2.zero;
+            screenRectTransform.localScale = Vector3.one;
 
             SubscribeButtonsClickOnAnimation(screen);
             

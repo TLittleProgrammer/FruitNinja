@@ -1,27 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
 
 namespace Runtime.SlicableObjects.Spawner
 {
+    [Serializable]
     public struct SlicableObjectSpawnerData
     {
-        private Vector2 _firstSpawnPoint;
-        private Vector2 _secondSpawnPoint;
-
-        private float _timeOffset;
-        private int _packSize;
-
-        public SlicableObjectSpawnerData(Vector2 firstSpawnPoint, Vector2 secondSpawnPoint, float timeOffset, int packSize)
-        {
-            _firstSpawnPoint = firstSpawnPoint;
-            _secondSpawnPoint = secondSpawnPoint;
-            _timeOffset = timeOffset;
-            _packSize = packSize;
-        }
-
-        public Vector2 FirstSpawnPoint  => _firstSpawnPoint;
-        public Vector2 SecondSpawnPoint => _secondSpawnPoint;
+        public SideType SideType;
         
-        public float TimeOffset => _timeOffset;
-        public int PackSize     => _packSize;
+        public float FirstSpawnPoint;
+        public float SecondSpawnPoint;
+
+        public float TimeOffset;
+        public int PackSize;
+
+        public SlicableObjectSpawnerData(float firstSpawnPoint, float secondSpawnPoint, float timeOffset, int packSize, SideType sideType)
+        {
+            FirstSpawnPoint = firstSpawnPoint;
+            SecondSpawnPoint = secondSpawnPoint;
+            TimeOffset = timeOffset;
+            PackSize = packSize;
+            SideType = sideType;
+
+            if (FirstSpawnPoint > SecondSpawnPoint)
+            {
+                (FirstSpawnPoint, SecondSpawnPoint) = (SecondSpawnPoint, FirstSpawnPoint);
+            }
+        }
     }
 }
