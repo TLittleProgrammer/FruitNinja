@@ -6,4 +6,9 @@ namespace Runtime.Infrastructure
     {
         UniTask AsyncInitialize();
     }
+    
+    public interface IAsyncInitializable<TPayload>
+    {
+        UniTask AsyncInitialize(TPayload payload);
+    }
 }

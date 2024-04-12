@@ -1,19 +1,30 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Runtime.SlicableObjects.Spawner
 {
     public class SlicableObjectSpawnerMarker : MonoBehaviour
     {
         public SideType SideType = SideType.None;
+
+        [Space(5)]
+        [Header("Вес")]
+        [Min(1)]
+        public int Weight = 1;
         
+        [Header("Смещение ")]
         [Range(0f, 1f)]
         public float FirstSpawnPointPercent;
         [Range(0f, 1f)]
         public float SecondSpawnPointPercent;
-
-        public float TimeOffset;
-        public float OffsetAngle;
+        
+        [Space(5)]
+        [Header("Смещение")]
+        public float MainDirectionOffset;
+        public float FirstOffset;
+        public float SecondOffset;
+        
+        [Space(5)]
+        [Header("Размер пака")]
         public int PackSize;
 
 
@@ -22,16 +33,6 @@ namespace Runtime.SlicableObjects.Spawner
             if (PackSize <= 0)
             {
                 PackSize = 1;
-            }
-
-            if (TimeOffset <= 0)
-            {
-                TimeOffset = 3f;
-            }
-
-            if (OffsetAngle <= 0)
-            {
-                OffsetAngle = 30f;
             }
         }
     }

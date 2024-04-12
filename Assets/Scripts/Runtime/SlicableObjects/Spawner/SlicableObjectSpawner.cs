@@ -6,20 +6,26 @@ namespace Runtime.SlicableObjects.Spawner
     public struct SlicableObjectSpawnerData
     {
         public SideType SideType;
-        
+
+        public int Weight;
         public float FirstSpawnPoint;
         public float SecondSpawnPoint;
+        public float MainDirectionOffset;
+        public float FirstOffset;
+        public float SecondOffset;
 
-        public float TimeOffset;
         public int PackSize;
 
-        public SlicableObjectSpawnerData(float firstSpawnPoint, float secondSpawnPoint, float timeOffset, int packSize, SideType sideType)
+        public SlicableObjectSpawnerData(SideType sideType, float firstSpawnPoint, float secondSpawnPoint, float mainDirectionOffset, float firstOffset, float secondOffset, int packSize, int weight)
         {
-            FirstSpawnPoint = firstSpawnPoint;
-            SecondSpawnPoint = secondSpawnPoint;
-            TimeOffset = timeOffset;
-            PackSize = packSize;
-            SideType = sideType;
+            SideType            = sideType;
+            FirstSpawnPoint     = firstSpawnPoint;
+            SecondSpawnPoint    = secondSpawnPoint;
+            MainDirectionOffset = mainDirectionOffset;
+            FirstOffset         = firstOffset;
+            SecondOffset        = secondOffset;
+            PackSize            = packSize;
+            Weight = weight;
 
             if (FirstSpawnPoint > SecondSpawnPoint)
             {

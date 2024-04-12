@@ -1,22 +1,18 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Runtime.SlicableObjects.Spawner;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Runtime.Infrastructure
 {
-    public class GameScreenPositionResolver : IAsyncInitializable
+    public class GameScreenPositionResolver : IAsyncInitializable<Camera>
     {
         private float _resolution;
         private float _orthographicSize;
         private float _horizontalSize;
         private float _horizontalPlusOneStepSize;
         
-        public async UniTask AsyncInitialize()
+        public async UniTask AsyncInitialize(Camera camera)
         {
-            Camera camera = Camera.main;
-
             _orthographicSize            = camera.orthographicSize;
             _resolution                  = (float)Screen.width / Screen.height;
             _horizontalSize              = _resolution * _orthographicSize;
@@ -25,34 +21,44 @@ namespace Runtime.Infrastructure
             await UniTask.CompletedTask;
         }
 
-        public Vector2 GetRandomPositionBetweenTwoPercents(float firstPercent, float secondPercent, SideType sideType)
+        public Vector2 GetRandomPositionBetweenTwoPercents(SlicableObjectSpawnerData spawnerData)
         {
-            float value = sideType switch
-            {
-                SideType.Left or SideType.Right => GetLerpBetweenToValues(-_orthographicSize, _orthographicSize, Random.Range(firstPercent, secondPercent)),
-                SideType.Bottom => GetLerpBetweenToValues(-_horizontalSize, _horizontalSize, Random.Range(firstPercent, secondPercent)),
-                
-                _ => 0f
-            };
-
-            if (sideType is SideType.Bottom)
-            {
-                return new Vector2(value, -(_orthographicSize - 1));
-            }
-
-            Vector2 result = new Vector2(_horizontalPlusOneStepSize, value);
-
-            if (sideType is SideType.Left)
-            {
-                result.x *= -1;
-            }
+            float constantPositionValue = GetPositionBySide(spawnerData.SideType);
             
-            return result;
+            return GetPositionInWorld(constantPositionValue, spawnerData.SideType, Random.Range(spawnerData.FirstSpawnPoint, spawnerData.SecondSpawnPoint));
         }
 
-        private float GetLerpBetweenToValues(float a, float b, float t)
+
+        private float GetPositionBySide(SideType sideType)
         {
-            return Mathf.Lerp(a, b, t);
+            return sideType switch
+            {
+                SideType.Bottom => -_orthographicSize - 1,
+                SideType.Left   => -_horizontalPlusOneStepSize,
+                SideType.Right  => _horizontalPlusOneStepSize,
+                _               => 0f
+            };
+        }
+
+        private Vector2 GetPositionInWorld(float constantPositionValue, SideType sideType, float lerpValue)
+        {
+            return sideType switch
+            {
+                SideType.Bottom => new Vector2(GetLerp(sideType, lerpValue), constantPositionValue),
+                SideType.Left   => new Vector2(constantPositionValue, GetLerp(sideType, lerpValue)),
+                SideType.Right  => new Vector2(constantPositionValue, GetLerp(sideType, lerpValue)),
+                _               => Vector2.zero
+            };
+        }
+
+        private float GetLerp(SideType sideType, float lerpValue)
+        {
+            return sideType switch
+            {
+                SideType.Bottom => Mathf.Lerp(-_horizontalSize, _horizontalSize, lerpValue),
+                
+                _ => Mathf.Lerp(-_orthographicSize, _orthographicSize, lerpValue) 
+            };
         }
     }
 }

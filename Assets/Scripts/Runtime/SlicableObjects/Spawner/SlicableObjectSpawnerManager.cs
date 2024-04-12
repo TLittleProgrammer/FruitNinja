@@ -1,42 +1,62 @@
 ﻿using System.Collections.Generic;
-using ObjectPool.Runtime.ObjectPool;
-using Runtime.Infrastructure;
 using Runtime.StaticData.Level;
+using UnityEngine;
 using ITickable = Zenject.ITickable;
 
 namespace Runtime.SlicableObjects.Spawner
 {
     public class SlicableObjectSpawnerManager : ITickable
     {
-        private readonly QueueObjectPool<SlicableObjectView> _objectPool;
-        private readonly List<SlicableObjectSpawnerService> _slicableObjectSpawners;
+        private readonly List<SlicableObjectSpawnerData> _levelStaticData;
 
-        //TODO подумать над тем, чтобы создавать сервисы через DiContanier, чтобы не прокидывать в конструктор ссылки
-        public SlicableObjectSpawnerManager(
-            LevelStaticData levelStaticData,
-            QueueObjectPool<SlicableObjectView> objectPool,
-            GameScreenPositionResolver gameScreenPositionResolver,
-            SlicableSpriteContainer spriteContainer)
+        private const float SpawnTime = 2f;
+        private float _currentTime = 0f;
+        private int _allWeightLine = 0;
+        
+        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData)
         {
-            _objectPool = objectPool;
-            _slicableObjectSpawners = new();
+            _levelStaticData = levelStaticData.SlicableObjectSpawnerDataList;
             
-            FillList(levelStaticData, gameScreenPositionResolver, spriteContainer);
+            FillList(levelStaticData);
         }
 
         public void Tick()
         {
-            foreach (SlicableObjectSpawnerService service in _slicableObjectSpawners)
+            _currentTime += Time.deltaTime;
+
+            if (_currentTime >= SpawnTime)
             {
-                service.Tick();
+                int spawnerDataIndex = ChooseSpawnerData();
+
+                
+                
+                _currentTime = 0f;
             }
         }
 
-        private void FillList(LevelStaticData levelStaticData, GameScreenPositionResolver gameScreenPositionResolver, SlicableSpriteContainer spriteContainer)
+        private int ChooseSpawnerData()
+        {
+            int randomedWeight = Random.Range(0, _allWeightLine);
+            int currentValue = 0;
+
+            for (int i = 0; i < _levelStaticData.Count; i++)
+            {
+                if (currentValue >= randomedWeight)
+                {
+                    return i;
+                }
+
+                currentValue += _levelStaticData[i].Weight;
+            }
+
+            return 0;
+        }
+
+        private void FillList(LevelStaticData levelStaticData)
         {
             foreach (SlicableObjectSpawnerData spawnerData in levelStaticData.SlicableObjectSpawnerDataList)
             {
-                _slicableObjectSpawners.Add(new(spawnerData, _objectPool, gameScreenPositionResolver, spriteContainer));
+                _allWeightLine += spawnerData.Weight;
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using ObjectPool.Runtime.ObjectPool;
 using Runtime.Infrastructure.Bootstrap.ScriptableObjects;
 using Runtime.Infrastructure.Factories;
@@ -13,6 +12,7 @@ namespace Runtime.Infrastructure.Bootstrap
     public sealed class GameInitializer : AbstractIntializer
     {
         [SerializeField] private Transform _slicableViewsParent;
+        [SerializeField] private Canvas _gameCanvas;
         
         [Inject] private SlicableSpriteContainer _slicableSpriteContainer;
         [Inject] private QueueObjectPool<SlicableObjectView> _queueObjectPool;
@@ -23,10 +23,13 @@ namespace Runtime.Infrastructure.Bootstrap
         private async void Awake()
         {
             await _slicableSpriteContainer.AsyncInitialize();
-            await _gameScreenPositionResolver.AsyncInitialize();
             await InitializePool();
 
+            Camera camera = await UiFactory.LoadUIObjectByPath<Camera>("Prefabs/GameCamera", null, Vector3.back * 10);
+            _gameCanvas.worldCamera = camera;
+            
             UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
+            await _gameScreenPositionResolver.AsyncInitialize(camera);
             
             GameStateMachine.HideLoadingScreen();
         }

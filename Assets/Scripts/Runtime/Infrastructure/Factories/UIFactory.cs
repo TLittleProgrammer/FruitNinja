@@ -35,7 +35,9 @@ namespace Runtime.Infrastructure.Factories
                 .InstantiatePrefab(screenPrefab, Vector3.zero, Quaternion.identity, parent)
                 .GetComponentInChildren<TResult>();
 
-            screen.GetComponent<Transform>().SetAsFirstSibling();
+            Transform screenTransform = screen.GetComponent<Transform>();
+            screenTransform.SetAsFirstSibling();
+            screenTransform.position = Vector3.zero;
             
             RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
             screenRectTransform.offsetMin = Vector2.zero;
@@ -47,12 +49,12 @@ namespace Runtime.Infrastructure.Factories
             return screen;
         }
 
-        public async UniTask<TResult> LoadUIObjectByPath<TResult>(string path, Transform parent) where TResult : Object
+        public async UniTask<TResult> LoadUIObjectByPath<TResult>(string path, Transform parent, Vector3 position = default) where TResult : Object
         {
             TResult prefab = await _assetProvider.LoadObject<TResult>(path);
 
             TResult instance = _diContainer
-                .InstantiatePrefab(prefab, Vector3.zero, Quaternion.identity, parent)
+                .InstantiatePrefab(prefab, position, Quaternion.identity, parent)
                 .GetComponentInChildren<TResult>();
             
             SubscribeButtonsClickOnAnimation(instance);

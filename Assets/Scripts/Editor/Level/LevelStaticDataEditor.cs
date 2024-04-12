@@ -22,9 +22,9 @@ namespace Editor.Level
 
                 foreach (SlicableObjectSpawnerMarker marker in markers)
                 {
-                    levelStaticData
+                        levelStaticData
                         .SlicableObjectSpawnerDataList
-                        .Add(new(marker.FirstSpawnPointPercent, marker.SecondSpawnPointPercent, marker.OffsetAngle, marker.PackSize, marker.SideType));
+                        .Add(new(marker.SideType, marker.FirstSpawnPointPercent, marker.SecondSpawnPointPercent, marker.MainDirectionOffset, marker.FirstOffset, marker.SecondOffset, marker.PackSize, marker.Weight));
                 }
             }
 
