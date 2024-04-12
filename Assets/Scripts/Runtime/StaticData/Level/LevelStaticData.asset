@@ -20,7 +20,11 @@ MonoBehaviour:
     MainDirectionOffset: 18.95
     FirstOffset: 5.63
     SecondOffset: 0.61
-    PackSize: 1
+    SpeedXMin: 3
+    SpeedXMax: 4
+    SpeedYMin: 1
+    SpeedYMax: 3
+    PackSize: 3
   - SideType: 1
     Weight: 0
     FirstSpawnPoint: 0.112
@@ -28,7 +32,11 @@ MonoBehaviour:
     MainDirectionOffset: 3.31
     FirstOffset: 0.51
     SecondOffset: -0.79
-    PackSize: 1
+    SpeedXMin: 2
+    SpeedXMax: 3
+    SpeedYMin: 3
+    SpeedYMax: 4
+    PackSize: 5
   - SideType: 3
     Weight: 0
     FirstSpawnPoint: 0.036
@@ -36,4 +44,8 @@ MonoBehaviour:
     MainDirectionOffset: -1.5
     FirstOffset: -0.9
     SecondOffset: 1.14
-    PackSize: 1
+    SpeedXMin: 1
+    SpeedXMax: 2
+    SpeedYMin: 4
+    SpeedYMax: 6
+    PackSize: 2

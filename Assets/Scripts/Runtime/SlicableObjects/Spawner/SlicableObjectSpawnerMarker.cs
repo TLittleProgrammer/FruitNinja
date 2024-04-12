@@ -11,14 +11,25 @@ namespace Runtime.SlicableObjects.Spawner
         [Min(1)]
         public int Weight = 1;
         
-        [Header("Смещение ")]
+        [Header("Смещение точек спавна")]
         [Range(0f, 1f)]
         public float FirstSpawnPointPercent;
         [Range(0f, 1f)]
         public float SecondSpawnPointPercent;
+
+        [Space(5)]
+        [Header("Скорости")]
+        [Min(1f)]
+        public float SpeedXMin;
+        [Min(1f)]
+        public float SpeedXMax;
+        [Min(1f)]
+        public float SpeedYMin;
+        [Min(1f)]
+        public float SpeedYMax;
         
         [Space(5)]
-        [Header("Смещение")]
+        [Header("Смещение угла")]
         public float MainDirectionOffset;
         public float FirstOffset;
         public float SecondOffset;

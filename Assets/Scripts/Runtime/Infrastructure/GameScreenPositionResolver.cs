@@ -10,7 +10,7 @@ namespace Runtime.Infrastructure
         private float _orthographicSize;
         private float _horizontalSize;
         private float _horizontalPlusOneStepSize;
-        
+
         public async UniTask AsyncInitialize(Camera camera)
         {
             _orthographicSize            = camera.orthographicSize;
@@ -26,6 +26,26 @@ namespace Runtime.Infrastructure
             float constantPositionValue = GetPositionBySide(spawnerData.SideType);
             
             return GetPositionInWorld(constantPositionValue, spawnerData.SideType, Random.Range(spawnerData.FirstSpawnPoint, spawnerData.SecondSpawnPoint));
+        }
+
+        public Vector2 GetMiddlePoint(SlicableObjectSpawnerData spawnerData)
+        {
+            float positionBySide = GetPositionBySide(spawnerData.SideType);
+            
+            Vector2 positionInWorldFirstPoint  = GetPositionInWorld(positionBySide, spawnerData.SideType, spawnerData.FirstSpawnPoint);
+            Vector2 positionInWorldSecondPoint = GetPositionInWorld(positionBySide, spawnerData.SideType, spawnerData.SecondSpawnPoint);
+
+            return (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
+        }
+
+        public Vector2 GetRotatableVectorPoint(Vector2 firstPoint, Vector2 secondPoint, float angle)
+        {
+            float distance = Vector2.Distance(firstPoint, secondPoint);
+            
+            float deltaY = Mathf.Sin(angle) * distance;
+            float deltaX = Mathf.Cos(angle) * distance;
+            
+            return new Vector2(secondPoint.x - deltaX, secondPoint.y - deltaY);
         }
 
 
