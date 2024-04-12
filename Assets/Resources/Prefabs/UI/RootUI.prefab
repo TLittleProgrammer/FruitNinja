@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanvasTransform: {fileID: 1084481156472435404}
+  Camera: {fileID: 1681465479493322065}
 --- !u!1 &8854643672476277195
 GameObject:
   m_ObjectHideFlags: 0
