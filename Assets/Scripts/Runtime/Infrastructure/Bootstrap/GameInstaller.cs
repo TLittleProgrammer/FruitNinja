@@ -1,4 +1,5 @@
 ﻿using Runtime.Infrastructure.Factories;
+using Runtime.Infrastructure.Mouse;
 using Runtime.SlicableObjects;
 using Runtime.SlicableObjects.Movement;
 using Runtime.SlicableObjects.Spawner;
@@ -21,6 +22,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<GameScreenPositionResolver>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             
+            Container.BindInterfacesAndSelfTo<MouseMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();

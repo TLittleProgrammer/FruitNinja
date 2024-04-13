@@ -18,7 +18,10 @@ namespace Runtime.SlicableObjects.Movement
             foreach ((SlicableModel model, Transform view) in _slicableModels)
             {
                 model.SimulateMoving();
+                model.SimulateRotating();
+                
                 view.transform.position = model.Position;
+                view.transform.rotation = model.Rotation;
             }
         }
 

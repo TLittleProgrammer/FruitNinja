@@ -29,5 +29,12 @@ namespace Runtime.Infrastructure.Factories
             
             return slicableObjectView;
         }
+
+        public async UniTask<TResult> CreateObject<TResult>(string path, Transform parent) where TResult : Object
+        {
+            TResult prefab = await _assetProvider.LoadObject<TResult>(path);
+
+            return Object.Instantiate(prefab, Vector3.zero, Quaternion.identity, parent);
+        }
     }
 }

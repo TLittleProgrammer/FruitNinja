@@ -11,4 +11,9 @@ namespace Runtime.Infrastructure
     {
         UniTask AsyncInitialize(TPayload payload);
     }
+    
+    public interface IAsyncInitializable<TPayloadFirst, TPayloadSecond>
+    {
+        UniTask AsyncInitialize(TPayloadFirst payloadFirst, TPayloadSecond payloadSecond);
+    }
 }
