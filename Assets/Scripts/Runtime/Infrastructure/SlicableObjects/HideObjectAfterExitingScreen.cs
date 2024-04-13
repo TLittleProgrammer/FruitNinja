@@ -25,8 +25,8 @@ namespace Runtime.Infrastructure.SlicableObjects
             {
                 _metOnScreen = true;
             }
-            
-            if (objectAtScreen is false && _metOnScreen)
+
+            if ((objectAtScreen is false && _metOnScreen) || _gameScreenManager.GetOrthographicSize() * -1 - 1 >= transform.position.y)
             {
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
