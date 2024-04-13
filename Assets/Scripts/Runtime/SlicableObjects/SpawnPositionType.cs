@@ -1,4 +1,4 @@
-﻿namespace Runtime.StaticData.Level
+﻿namespace Runtime.SlicableObjects
 {
     public enum SpawnPositionType
     {

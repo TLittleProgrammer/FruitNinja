@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Runtime.SlicableObjects;
 using UnityEngine;
 
-namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
+namespace Runtime.StaticData.UI
 {
     [CreateAssetMenu(menuName = "Game/Settings/Slicable Sprite Provider", fileName = "SlicableSpriteProvider")]
     public sealed class SlicableSpriteProvider : ScriptableObject

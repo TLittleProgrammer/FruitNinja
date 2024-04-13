@@ -1,8 +1,9 @@
+using Runtime.StaticData.Animations;
 using Runtime.StaticData.UI;
 using UnityEngine;
 using Zenject;
 
-namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
+namespace Runtime.StaticData.Installers
 {
     [CreateAssetMenu(fileName = "ProjectSettingsInstaller", menuName = "Installers/ProjectSettingsInstaller")]
     public sealed class ProjectSettingsInstaller : ScriptableObjectInstaller<ProjectSettingsInstaller>

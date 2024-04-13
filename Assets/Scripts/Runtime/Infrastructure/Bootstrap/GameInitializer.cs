@@ -1,8 +1,8 @@
 ﻿using Cysharp.Threading.Tasks;
 using ObjectPool.Runtime.ObjectPool;
-using Runtime.Infrastructure.Bootstrap.ScriptableObjects;
 using Runtime.Infrastructure.Factories;
 using Runtime.SlicableObjects;
+using Runtime.StaticData.Installers;
 using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;

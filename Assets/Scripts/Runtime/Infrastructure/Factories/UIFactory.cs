@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Runtime.Infrastructure.AssetProvider;
-using Runtime.Infrastructure.Bootstrap.ScriptableObjects;
+using Runtime.StaticData.Animations;
 using Runtime.UI.Screens;
 using Unity.VisualScripting;
 using UnityEngine;

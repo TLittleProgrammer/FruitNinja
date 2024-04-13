@@ -2,7 +2,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
-using Runtime.Infrastructure.Bootstrap.ScriptableObjects;
+using Runtime.StaticData.UI;
 using UnityEngine;
 
 namespace Runtime.SlicableObjects

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
+namespace Runtime.StaticData.Installers
 {
     [Serializable]
     public sealed class PoolSettings
