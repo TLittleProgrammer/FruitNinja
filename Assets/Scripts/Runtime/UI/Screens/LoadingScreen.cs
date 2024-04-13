@@ -1,7 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Runtime.StaticData.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace Runtime.UI.Screens
 {
@@ -9,16 +11,20 @@ namespace Runtime.UI.Screens
     {
         [SerializeField] private Image _image;
 
-        private readonly Color _transparent = new(0f, 0f, 0f, 0f);
-        private float _showAndHideDuration = 1.5f;
+        private readonly Color _transparent = Color.black;
+        private float _showAndHideDuration;
+
+        [Inject]
+        public void Construct(LoadingScreenFadeDuration loadingScreenFadeDuration)
+        {
+            _showAndHideDuration = loadingScreenFadeDuration.Duration;
+        }
 
         public async UniTask Show()
         {
             gameObject.SetActive(true);
 
-            _image.DOColor(Color.white, _showAndHideDuration);
-
-            await UniTask.Delay((int)_showAndHideDuration * 1000);
+            await _image.DOColor(Color.white, _showAndHideDuration).ToUniTask();
         }
 
         public void Hide()
