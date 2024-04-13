@@ -26,7 +26,7 @@ namespace Runtime.Infrastructure.Bootstrap
         public override void InstallBindings()
         {
             Container.Bind<SlicableSpriteContainer>().AsSingle();
-            Container.Bind<GameScreenPositionResolver>().AsSingle();
+            Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             Container.Bind<CanSliceResolver>().AsSingle();
             

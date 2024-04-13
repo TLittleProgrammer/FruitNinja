@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 2280792934056951685}
   - component: {fileID: 6274477010574624227}
   - component: {fileID: 5931905157059040033}
+  - component: {fileID: 2127660497030346247}
   m_Layer: 0
   m_Name: SlicableObjectDummy
   m_TagString: Untagged
@@ -185,6 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainSprite: {fileID: 2280792934056951685}
   _shadowSprite: {fileID: 2280792932704804672}
+  _circleCollider2D: {fileID: 0}
 --- !u!114 &5931905157059040033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,3 +200,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlicableObjectView: {fileID: 6274477010574624227}
+--- !u!114 &2127660497030346247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2280792934056951686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a01f67fb404861b687016e687d3ea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -15,7 +15,7 @@ namespace Runtime.Infrastructure.Bootstrap
         [SerializeField] private Canvas _gameCanvas;
         
         [Inject] private SlicableSpriteContainer _slicableSpriteContainer;
-        [Inject] private GameScreenPositionResolver _gameScreenPositionResolver;
+        [Inject] private GameScreenManager _gameScreenManager;
         [Inject] private MouseMoveService _mouseMoveService;
         [Inject] private IWorldFactory _worldFactory;
         [Inject] private MouseManager _mouseManager;
@@ -34,7 +34,7 @@ namespace Runtime.Infrastructure.Bootstrap
             await _mouseMoveService.AsyncInitialize(trail);
 
             UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
-            await _gameScreenPositionResolver.AsyncInitialize(camera);
+            await _gameScreenManager.AsyncInitialize(camera);
             
             GameStateMachine.HideLoadingScreen();
         }

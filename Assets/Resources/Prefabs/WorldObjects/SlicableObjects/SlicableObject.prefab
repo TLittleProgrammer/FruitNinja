@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 8944360389312906573}
   - component: {fileID: 1644806174645407128}
   - component: {fileID: 6378441419837626492}
+  - component: {fileID: 6844168674147425611}
   m_Layer: 0
   m_Name: SlicableObject
   m_TagString: Untagged
@@ -186,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainSprite: {fileID: 2280792934056951685}
   _shadowSprite: {fileID: 2280792932704804672}
+  _circleCollider2D: {fileID: 0}
 --- !u!58 &1644806174645407128
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -212,5 +214,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 23db1e04832245d08a2ea15db5f87043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6844168674147425611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2280792934056951686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a01f67fb404861b687016e687d3ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

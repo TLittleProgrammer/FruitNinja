@@ -7,6 +7,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     {
         public SideType SideType;
 
+        //TODO поправить названия переменных
         public int Weight;
         public float FirstSpawnPoint;
         public float SecondSpawnPoint;

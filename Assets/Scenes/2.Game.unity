@@ -168,17 +168,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SideType: 2
-  Weight: 25
+  Weight: 5
   FirstSpawnPointPercent: 0
-  SecondSpawnPointPercent: 0.284
-  SpeedXMin: 0.5
-  SpeedXMax: 1
-  SpeedYMin: 3
-  SpeedYMax: 5
-  MainDirectionOffset: 59.8
-  FirstOffsetAngle: 33.1
+  SecondSpawnPointPercent: 0.613
+  SpeedXMin: 5
+  SpeedXMax: 9
+  SpeedYMin: 100
+  SpeedYMax: 150
+  MainDirectionOffset: 70.1
+  FirstOffsetAngle: 41.7
   SecondOffsetAngle: -38.43
-  PackSize: 3
+  PackSize: 10
 --- !u!1 &103499047
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,17 +332,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SideType: 1
-  Weight: 2
-  FirstSpawnPointPercent: 0.112
-  SecondSpawnPointPercent: 0.699
-  SpeedXMin: 2
-  SpeedXMax: 3
-  SpeedYMin: 1
-  SpeedYMax: 3
+  Weight: 5
+  FirstSpawnPointPercent: 0.236
+  SecondSpawnPointPercent: 0.887
+  SpeedXMin: 4
+  SpeedXMax: 7
+  SpeedYMin: 50
+  SpeedYMax: 100
   MainDirectionOffset: -67.43
   FirstOffsetAngle: 35.6
   SecondOffsetAngle: -32.77
-  PackSize: 5
+  PackSize: 10
 --- !u!1 &572143239
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,17 +388,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SideType: 3
-  Weight: 14
-  FirstSpawnPointPercent: 0.036
-  SecondSpawnPointPercent: 1
-  SpeedXMin: 1
-  SpeedXMax: 2
-  SpeedYMin: 2
-  SpeedYMax: 3
-  MainDirectionOffset: -1.5
-  FirstOffsetAngle: 48.7
-  SecondOffsetAngle: -48.12
-  PackSize: 2
+  Weight: 5
+  FirstSpawnPointPercent: 0.241
+  SecondSpawnPointPercent: 0.77
+  SpeedXMin: 2
+  SpeedXMax: 4
+  SpeedYMin: 50
+  SpeedYMax: 100
+  MainDirectionOffset: 0
+  FirstOffsetAngle: 67.52
+  SecondOffsetAngle: -64.5
+  PackSize: 10
 --- !u!1 &1150447442
 GameObject:
   m_ObjectHideFlags: 0

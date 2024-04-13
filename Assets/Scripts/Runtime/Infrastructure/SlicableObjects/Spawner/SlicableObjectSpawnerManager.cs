@@ -12,7 +12,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
 
-        private const float SpawnTime = 4f;
+        private const float SpawnTime = 2.5f;
         
         private bool _canCalculateTime = true;
         private float _currentTime;

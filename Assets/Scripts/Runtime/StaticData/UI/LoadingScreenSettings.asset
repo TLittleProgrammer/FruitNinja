@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed28bebf56840e0bab36c9fc5496446, type: 3}
   m_Name: LoadingScreenSettings
   m_EditorClassIdentifier: 
-  Duration: 1.5
+  Duration: 0.15
