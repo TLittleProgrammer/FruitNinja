@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using Cysharp.Threading.Tasks;
-using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.AssetProvider;
-using Runtime.StaticData.Animations;
 using Runtime.UI.Screens;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Runtime.Infrastructure.Factories
@@ -16,14 +12,12 @@ namespace Runtime.Infrastructure.Factories
         private readonly DiContainer _diContainer;
         private readonly ScreenContainer _screenContainer;
         private readonly IAssetProvider _assetProvider;
-        private readonly ButtonAnimationSettings _buttonAnimationSettings;
 
-        public UIFactory(DiContainer diContainer, ScreenContainer screenContainer, IAssetProvider assetProvider, ButtonAnimationSettings buttonAnimationSettings)
+        public UIFactory(DiContainer diContainer, ScreenContainer screenContainer, IAssetProvider assetProvider)
         {
             _diContainer = diContainer;
             _screenContainer = screenContainer;
             _assetProvider = assetProvider;
-            _buttonAnimationSettings = buttonAnimationSettings;
         }
         
         public TResult LoadScreen<TResult>(ScreenType screenType, Transform parent) where TResult : Object
@@ -42,8 +36,6 @@ namespace Runtime.Infrastructure.Factories
             screenRectTransform.offsetMin = Vector2.zero;
             screenRectTransform.offsetMax = Vector2.zero;
             screenRectTransform.localScale = Vector3.one;
-
-            SubscribeButtonsClickOnAnimation(screen);
             
             return screen;
         }
@@ -56,29 +48,7 @@ namespace Runtime.Infrastructure.Factories
                 .InstantiatePrefab(prefab, position, Quaternion.identity, parent)
                 .GetComponentInChildren<TResult>();
             
-            SubscribeButtonsClickOnAnimation(instance);
-            
             return instance;
-        }
-
-        //TODO Удалить эту штучку и указывать кнопкам настройки через SO
-        private void SubscribeButtonsClickOnAnimation(Object screen)
-        {
-            Button[] buttons = screen.GetComponentsInChildren<Button>().ToArray();
-
-            foreach (Button button in buttons)
-            {
-                Button needButton = button;
-                
-                needButton.onClick.AddListener(() =>
-                {
-                    needButton
-                        .transform
-                        .DOScale(_buttonAnimationSettings.TargetScale, _buttonAnimationSettings.Duration)
-                        .SetEase(_buttonAnimationSettings.Ease)
-                        .SetLoops(2, LoopType.Yoyo);
-                });
-            }
         }
     }
 }

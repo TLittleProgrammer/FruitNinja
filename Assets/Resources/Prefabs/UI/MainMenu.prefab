@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4690771750987483382}
   - component: {fileID: 4690771750987483377}
   - component: {fileID: 4690771750987483376}
+  - component: {fileID: 7806334079331740447}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -122,6 +123,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7806334079331740447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690771750987483378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6971732181e149aa8ff4d245632428eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
 --- !u!1 &4690771751056981866
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1182,7 @@ GameObject:
   - component: {fileID: 4690771752574355984}
   - component: {fileID: 4690771752574355987}
   - component: {fileID: 4690771752574355986}
+  - component: {fileID: 7582418466160381473}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -1278,6 +1293,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7582418466160381473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690771752574355980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6971732181e149aa8ff4d245632428eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
 --- !u!1 &8482798009146175223
 GameObject:
   m_ObjectHideFlags: 0
