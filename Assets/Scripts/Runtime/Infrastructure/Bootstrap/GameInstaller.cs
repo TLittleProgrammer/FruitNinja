@@ -1,8 +1,9 @@
-﻿using Runtime.Infrastructure.Factories;
+﻿using Runtime.Infrastructure.Effects;
+using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
-using Runtime.SlicableObjects;
-using Runtime.SlicableObjects.Movement;
-using Runtime.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.StaticData.Installers;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,9 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private SliceableObjectDummy _dummyPrefab;
         [SerializeField] private GameObject _dummyPoolParent;
+        
+        [SerializeField] private BlotEffect _blotEffectPrefab;
+        [SerializeField] private GameObject _blotPoolParent;
 
         [Inject] private PoolSettings _poolSettings;
         
@@ -43,6 +47,12 @@ namespace Runtime.Infrastructure.Bootstrap
                 .WithInitialSize(_poolSettings.PoolInitialSize * 2)
                 .FromComponentInNewPrefab(_dummyPrefab)
                 .UnderTransformGroup(_dummyPoolParent.name);
+
+            Container
+                .BindMemoryPool<BlotEffect, BlotEffect.Pool>()
+                .WithInitialSize(_poolSettings.PoolInitialSize)
+                .FromComponentInNewPrefab(_blotEffectPrefab)
+                .UnderTransformGroup(_blotPoolParent.name);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Runtime.SlicableObjects.Spawner;
+﻿using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.StaticData.Level;
 using UnityEditor;
 using UnityEngine;

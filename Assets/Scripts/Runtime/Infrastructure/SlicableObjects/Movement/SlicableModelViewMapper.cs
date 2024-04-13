@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using Runtime.Infrastructure;
-using Runtime.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Runtime.SlicableObjects.Movement
+namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableModelViewMapper
     {

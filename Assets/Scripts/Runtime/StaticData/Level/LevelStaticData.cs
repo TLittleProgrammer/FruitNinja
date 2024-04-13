@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Runtime.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 
 namespace Runtime.StaticData.Level

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-namespace Runtime.SlicableObjects.Movement
+namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableMovementService : ITickable
     {

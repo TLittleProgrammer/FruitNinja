@@ -16,3 +16,4 @@ MonoBehaviour:
   LevelStaticData: {fileID: 11400000, guid: b33f7e73dd1ae2c4d83c9a1ee5fb518d, type: 2}
   PoolSettings:
     PoolInitialSize: 50
+  BlotEffectSettings: {fileID: 11400000, guid: 257af1da498354d458478fb16b40c3b2, type: 2}

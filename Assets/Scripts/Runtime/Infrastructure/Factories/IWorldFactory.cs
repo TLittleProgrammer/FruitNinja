@@ -1,5 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using Runtime.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.Factories

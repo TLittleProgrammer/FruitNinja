@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Runtime.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects;
 using UnityEngine;
 
 namespace Runtime.StaticData.UI
@@ -21,6 +21,13 @@ namespace Runtime.StaticData.UI
     [Serializable]
     public struct SlicableItem
     {
-        public List<Sprite> Sprites;
+        public List<SlicableItemParams> Params;
+    }
+
+    [Serializable]
+    public struct SlicableItemParams
+    {
+        public Sprite Sprite;
+        public List<Sprite> Blots;
     }
 }

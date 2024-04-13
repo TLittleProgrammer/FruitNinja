@@ -1,4 +1,4 @@
-﻿using Runtime.SlicableObjects.Movement;
+﻿using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
 
 namespace Runtime.Extensions

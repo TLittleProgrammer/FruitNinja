@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Runtime.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
 using UnityEngine;
 using ITickable = Zenject.ITickable;
 
-namespace Runtime.SlicableObjects.Spawner
+namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     public class SlicableObjectSpawnerManager : ITickable
     {

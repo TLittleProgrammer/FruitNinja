@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Runtime.SlicableObjects.Spawner
+namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     [Serializable]
     public struct SlicableObjectSpawnerData

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Runtime.SlicableObjects.Spawner
+namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     public class SlicableObjectSpawnerMarker : MonoBehaviour
     {

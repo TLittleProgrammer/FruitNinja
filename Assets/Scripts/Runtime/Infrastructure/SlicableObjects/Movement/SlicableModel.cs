@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Runtime.SlicableObjects.Movement
+namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableModel
     {

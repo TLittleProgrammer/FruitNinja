@@ -1,4 +1,4 @@
-﻿namespace Runtime.SlicableObjects
+﻿namespace Runtime.Infrastructure.SlicableObjects
 {
     public enum SpawnPositionType
     {

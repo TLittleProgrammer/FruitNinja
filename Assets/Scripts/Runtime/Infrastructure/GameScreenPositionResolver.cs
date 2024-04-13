@@ -1,5 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using Runtime.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 
 namespace Runtime.Infrastructure

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using Zenject;
+using Vector3 = UnityEngine.Vector3;
 
-namespace Runtime.SlicableObjects
+namespace Runtime.Infrastructure.SlicableObjects
 {
     public class SlicableObjectView : MonoBehaviour
     {

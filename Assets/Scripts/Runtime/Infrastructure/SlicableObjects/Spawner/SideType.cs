@@ -1,4 +1,4 @@
-﻿namespace Runtime.SlicableObjects.Spawner
+﻿namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     public enum SideType
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Runtime.SlicableObjects
+namespace Runtime.Infrastructure.SlicableObjects
 {
     [RequireComponent(typeof(SlicableObjectView))]
     public class SlicableObjectViewMouseOverChecker : MonoBehaviour

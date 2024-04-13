@@ -1,6 +1,6 @@
 ﻿using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
-using Runtime.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects;
 using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
