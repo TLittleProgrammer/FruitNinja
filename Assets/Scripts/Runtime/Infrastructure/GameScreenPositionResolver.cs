@@ -38,11 +38,6 @@ namespace Runtime.Infrastructure
             return (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
         }
 
-        public Vector2 GetRotatableVectorPoint(float angle)
-        {
-            return Quaternion.Euler(0f, 0f, angle) * Vector2.up;
-        }
-        
         private float GetPositionBySide(SideType sideType)
         {
             return sideType switch
@@ -73,6 +68,11 @@ namespace Runtime.Infrastructure
                 
                 _ => Mathf.Lerp(-_orthographicSize, _orthographicSize, lerpValue) 
             };
+        }
+
+        public Vector2 GetRotatableVectorPoint(float angle)
+        {
+            return Quaternion.Euler(0f, 0f, angle) * Vector2.up;
         }
     }
 }

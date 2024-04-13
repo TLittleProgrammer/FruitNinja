@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Runtime.Infrastructure.AssetProvider;
@@ -62,6 +61,7 @@ namespace Runtime.Infrastructure.Factories
             return instance;
         }
 
+        //TODO Удалить эту штучку и указывать кнопкам настройки через SO
         private void SubscribeButtonsClickOnAnimation(Object screen)
         {
             Button[] buttons = screen.GetComponentsInChildren<Button>().ToArray();

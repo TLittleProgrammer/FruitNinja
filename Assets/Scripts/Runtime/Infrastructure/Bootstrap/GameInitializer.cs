@@ -11,6 +11,8 @@ namespace Runtime.Infrastructure.Bootstrap
 {
     public sealed class GameInitializer : AbstractIntializer
     {
+        private const string PathToGameCameraPrefab = "Prefabs/GameCamera";
+        
         [SerializeField] private Transform _slicableViewsParent;
         [SerializeField] private Canvas _gameCanvas;
         
@@ -25,7 +27,7 @@ namespace Runtime.Infrastructure.Bootstrap
             await _slicableSpriteContainer.AsyncInitialize();
             await InitializePool();
 
-            Camera camera = await UiFactory.LoadUIObjectByPath<Camera>("Prefabs/GameCamera", null, Vector3.back * 10);
+            Camera camera = await UiFactory.LoadUIObjectByPath<Camera>(PathToGameCameraPrefab, null, Vector3.back * 10);
             _gameCanvas.worldCamera = camera;
             
             UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);

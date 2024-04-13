@@ -11,11 +11,8 @@ namespace Runtime.Infrastructure.Game
         {
             AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
 
-            while (!asyncOperation.isDone)
-            {
-                await UniTask.DelayFrame(1);
-            }
-            
+            await UniTask.WaitWhile(() => !asyncOperation.isDone);
+
             sceneLoaded?.Invoke();
         }
     }
