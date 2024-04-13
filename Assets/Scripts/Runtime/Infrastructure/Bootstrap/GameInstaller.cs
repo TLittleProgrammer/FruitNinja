@@ -13,6 +13,7 @@ namespace Runtime.Infrastructure.Bootstrap
         {
             Container.Bind<SlicableSpriteContainer>().AsSingle();
             Container.Bind<GameScreenPositionResolver>().AsSingle();
+            Container.Bind<SlicableModelViewMapper>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<QueueObjectPool<SlicableObjectView>>().AsSingle();

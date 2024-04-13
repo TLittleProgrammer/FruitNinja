@@ -11,7 +11,7 @@ namespace Runtime.SlicableObjects
     {
         private readonly SlicableSpriteProvider _slicableSpriteProvider;
         
-        private Dictionary<SlicableObjectType,List<Sprite>> _spritesDictionary;
+        private Dictionary<SlicableObjectType, List<Sprite>> _spritesDictionary;
 
         public SlicableSpriteContainer(SlicableSpriteProvider slicableSpriteProvider)
         {

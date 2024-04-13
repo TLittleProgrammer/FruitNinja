@@ -11,7 +11,7 @@ namespace Runtime.UI.Screens
     {
         [SerializeField] private Image _image;
 
-        private readonly Color _transparent = Color.black;
+        private readonly Color _transparent = Color.clear;
         private float _showAndHideDuration;
 
         [Inject]
