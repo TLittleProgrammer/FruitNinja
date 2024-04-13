@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
+namespace Runtime.StaticData.Animations
 {
     [CreateAssetMenu(menuName = "Game/Settings/Button Animation", fileName = "ButtonAnimationSettings")]
     public sealed class ButtonAnimationSettings : ScriptableObject
@@ -12,5 +12,7 @@ namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
         public Vector3 TargetScale;
 
         public Ease Ease;
+
+        public Sequence Tween;
     }
 }

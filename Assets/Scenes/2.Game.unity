@@ -220,7 +220,6 @@ GameObject:
   m_Component:
   - component: {fileID: 384244654}
   - component: {fileID: 384244653}
-  - component: {fileID: 384244655}
   m_Layer: 0
   m_Name: GameInitializer
   m_TagString: Untagged
@@ -241,7 +240,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneCanvasTransform: {fileID: 1695126803}
-  _slicableViewsParent: {fileID: 103499048}
   _gameCanvas: {fileID: 1695126802}
 --- !u!4 &384244654
 Transform:
@@ -258,18 +256,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &384244655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384244652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e5d039efdae4f15b91476065d543b99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &525459006
 GameObject:
   m_ObjectHideFlags: 0
@@ -460,6 +446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0203feeebb2c4f978b54b3e1e97e4d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slicableObjectViewPrefab: {fileID: 8944360389312906573, guid: 95395e058e849b34c81eec50795eed38, type: 3}
+  _poolParent: {fileID: 103499047}
 --- !u!1 &1695126799
 GameObject:
   m_ObjectHideFlags: 0

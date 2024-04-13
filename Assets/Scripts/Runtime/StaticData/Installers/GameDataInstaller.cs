@@ -1,8 +1,9 @@
 ﻿using Runtime.StaticData.Level;
+using Runtime.StaticData.UI;
 using UnityEngine;
 using Zenject;
 
-namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
+namespace Runtime.StaticData.Installers
 {
     [CreateAssetMenu(fileName = "GameSpritesInstaller", menuName = "Installers/GameSpritesInstaller")]
     public sealed class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
