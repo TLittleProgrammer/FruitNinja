@@ -26,6 +26,19 @@ namespace Runtime.SlicableObjects.Movement
             _rotateSpeed  = Random.Range(20f, 50f) * GetRotateDirection();
         }
 
+        public SlicableModel(float speedX, float speedY, Vector2 direction, Vector3 position, float angle)
+        {
+            _speedX = speedX;
+            _speedY = speedY;
+            _direction = direction;
+            Position = position;
+            
+            _gravity = Physics.gravity.y / 2f;
+
+            _currentAngle = angle;
+            _rotateSpeed  = Random.Range(20f, 50f) * GetRotateDirection();
+        }
+        
         public Vector2 Position { get; private set; }
 
         public Quaternion Rotation => Quaternion.Euler(0f, 0f, _currentAngle);
@@ -57,6 +70,28 @@ namespace Runtime.SlicableObjects.Movement
         private float Abs(float value)
         {
             return value < 0 ? -value : value;
+        }
+
+        public SlicableModelParams GetParams()
+        {
+            return new(_direction, _speedX, _speedY, _currentAngle);
+        }
+    }
+
+    public record SlicableModelParams
+    {
+        public Vector2 Direction;
+
+        public float SpeedX;
+        public float SpeedY;
+        public float CurrentAngle;
+
+        public SlicableModelParams(Vector2 direction, float speedX, float speedY, float currentAngle)
+        {
+            Direction = direction;
+            SpeedX = speedX;
+            SpeedY = speedY;
+            CurrentAngle = currentAngle;
         }
     }
 }

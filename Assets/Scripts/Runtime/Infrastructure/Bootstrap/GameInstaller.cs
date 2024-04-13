@@ -13,6 +13,9 @@ namespace Runtime.Infrastructure.Bootstrap
     {
         [SerializeField] private SlicableObjectView _slicableObjectViewPrefab;
         [SerializeField] private GameObject _poolParent;
+        
+        [SerializeField] private SliceableObjectDummy _dummyPrefab;
+        [SerializeField] private GameObject _dummyPoolParent;
 
         [Inject] private PoolSettings _poolSettings;
         
@@ -21,17 +24,25 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<SlicableSpriteContainer>().AsSingle();
             Container.Bind<GameScreenPositionResolver>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
+            Container.Bind<CanSliceResolver>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<MouseMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
 
             Container
                 .BindMemoryPool<SlicableObjectView, SlicableObjectView.Pool>()
                 .WithInitialSize(_poolSettings.PoolInitialSize)
                 .FromComponentInNewPrefab(_slicableObjectViewPrefab)
                 .UnderTransformGroup(_poolParent.name);
+            
+            Container
+                .BindMemoryPool<SliceableObjectDummy, SliceableObjectDummy.Pool>()
+                .WithInitialSize(_poolSettings.PoolInitialSize * 2)
+                .FromComponentInNewPrefab(_dummyPrefab)
+                .UnderTransformGroup(_dummyPoolParent.name);
         }
     }
 }

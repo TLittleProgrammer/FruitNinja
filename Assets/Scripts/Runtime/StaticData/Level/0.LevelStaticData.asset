@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlicableObjectSpawnerDataList:
   - SideType: 2
-    Weight: 3
+    Weight: 25
     FirstSpawnPoint: 0
     SecondSpawnPoint: 0.284
     MainDirectionOffset: 59.8
@@ -22,8 +22,8 @@ MonoBehaviour:
     SecondOffset: -38.43
     SpeedXMin: 0.5
     SpeedXMax: 1
-    SpeedYMin: 2
-    SpeedYMax: 4
+    SpeedYMin: 3
+    SpeedYMax: 5
     PackSize: 3
   - SideType: 1
     Weight: 2
@@ -46,6 +46,6 @@ MonoBehaviour:
     SecondOffset: -48.12
     SpeedXMin: 1
     SpeedXMax: 2
-    SpeedYMin: 4
-    SpeedYMax: 5
+    SpeedYMin: 2
+    SpeedYMax: 3
     PackSize: 2

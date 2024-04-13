@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -28,6 +29,23 @@ namespace Runtime.SlicableObjects.Movement
         public void AddMapping(SlicableModel model, Transform view)
         {
             _slicableModels.Add((model, view));
+        }
+
+        public void RemoveFromMapping(Transform view)
+        {
+            (SlicableModel, Transform) mapping = _slicableModels.First(_ => EqualsTransforms(_.Item2, view));
+            
+            _slicableModels.Remove(mapping);
+        }
+
+        public SlicableModel GetSliceableModel(Transform view)
+        {
+            return _slicableModels.First(_ => EqualsTransforms(_.Item2, view)).Item1;
+        }
+
+        private bool EqualsTransforms(Transform transform, Transform view)
+        {
+            return transform.Equals(view);
         }
     }
 }

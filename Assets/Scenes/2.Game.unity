@@ -168,13 +168,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SideType: 2
-  Weight: 3
+  Weight: 25
   FirstSpawnPointPercent: 0
   SecondSpawnPointPercent: 0.284
   SpeedXMin: 0.5
   SpeedXMax: 1
-  SpeedYMin: 2
-  SpeedYMax: 4
+  SpeedYMin: 3
+  SpeedYMax: 5
   MainDirectionOffset: 59.8
   FirstOffsetAngle: 33.1
   SecondOffsetAngle: -38.43
@@ -362,8 +362,8 @@ MonoBehaviour:
   SecondSpawnPointPercent: 1
   SpeedXMin: 1
   SpeedXMax: 2
-  SpeedYMin: 4
-  SpeedYMax: 5
+  SpeedYMin: 2
+  SpeedYMax: 3
   MainDirectionOffset: -1.5
   FirstOffsetAngle: 48.7
   SecondOffsetAngle: -48.12
@@ -448,6 +448,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slicableObjectViewPrefab: {fileID: 8944360389312906573, guid: 95395e058e849b34c81eec50795eed38, type: 3}
   _poolParent: {fileID: 103499047}
+  _dummyPrefab: {fileID: 5931905157059040033, guid: a552db54c5c6244418f63347ede1079e, type: 3}
+  _dummyPoolParent: {fileID: 1225721055}
+--- !u!1 &1225721055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1225721056}
+  m_Layer: 0
+  m_Name: Dummies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1225721056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225721055}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1695126799
 GameObject:
   m_ObjectHideFlags: 0
