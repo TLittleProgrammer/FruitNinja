@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Runtime.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Runtime.SlicableObjects.Spawner
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
 
         private const float SpawnTime = 4f;
+        private bool _canCalculateTime = true;
         private float _currentTime = 0f;
         private int _allWeightLine = 0;
         
@@ -23,18 +25,31 @@ namespace Runtime.SlicableObjects.Spawner
             CalculateWeightLine(levelStaticData);
         }
 
-        public void Tick()
+        public async void Tick()
         {
-            _currentTime += Time.deltaTime;
+            if(_canCalculateTime)
+                _currentTime += Time.deltaTime;
 
             if (_currentTime >= SpawnTime)
             {
                 int spawnerDataIndex = ChooseSpawnerData();
-
-                _slicableMovementService.AddSlicable(_spawnersData[spawnerDataIndex]);
                 
                 _currentTime = 0f;
+                _canCalculateTime = false;
+                
+                for (int i = 0; i < _spawnersData[spawnerDataIndex].PackSize; i++)
+                {
+                    _slicableMovementService.AddSlicable(_spawnersData[spawnerDataIndex]);
+                    await UniTask.Delay(Random.Range(200, 550));
+                }
+
+                _canCalculateTime = true;
             }
+        }
+
+        private async UniTask SpawnSlicableViews(int spawnerDataIndex)
+        {
+            
         }
 
         private int ChooseSpawnerData()

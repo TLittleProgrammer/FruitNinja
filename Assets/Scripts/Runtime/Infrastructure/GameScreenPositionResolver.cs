@@ -38,17 +38,11 @@ namespace Runtime.Infrastructure
             return (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
         }
 
-        public Vector2 GetRotatableVectorPoint(Vector2 firstPoint, Vector2 secondPoint, float angle)
+        public Vector2 GetRotatableVectorPoint(float angle)
         {
-            float distance = Vector2.Distance(firstPoint, secondPoint);
-            
-            float deltaY = Mathf.Sin(angle) * distance;
-            float deltaX = Mathf.Cos(angle) * distance;
-            
-            return new Vector2(secondPoint.x - deltaX, secondPoint.y - deltaY);
+            return Quaternion.Euler(0f, 0f, angle) * Vector2.up;
         }
-
-
+        
         private float GetPositionBySide(SideType sideType)
         {
             return sideType switch

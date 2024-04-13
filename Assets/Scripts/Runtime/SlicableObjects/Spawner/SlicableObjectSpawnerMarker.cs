@@ -19,20 +19,20 @@ namespace Runtime.SlicableObjects.Spawner
 
         [Space(5)]
         [Header("Скорости")]
-        [Min(1f)]
+        [Min(0f)]
         public float SpeedXMin;
-        [Min(1f)]
+        [Min(0f)]
         public float SpeedXMax;
-        [Min(1f)]
+        [Min(0f)]
         public float SpeedYMin;
-        [Min(1f)]
+        [Min(0f)]
         public float SpeedYMax;
         
         [Space(5)]
         [Header("Смещение угла")]
         public float MainDirectionOffset;
-        public float FirstOffset;
-        public float SecondOffset;
+        public float FirstOffsetAngle;
+        public float SecondOffsetAngle;
         
         [Space(5)]
         [Header("Размер пака")]

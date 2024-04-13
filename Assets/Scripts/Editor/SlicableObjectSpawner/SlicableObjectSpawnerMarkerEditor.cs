@@ -64,18 +64,16 @@ namespace Editor.SlicableObjectSpawner
             Vector2 positionInWorldFirstPoint  = GetPositionInWorld(positionBySide, slicableObjectSpawnerMarker.SideType, slicableObjectSpawnerMarker.FirstSpawnPointPercent);
             Vector2 positionInWorldSecondPoint = GetPositionInWorld(positionBySide, slicableObjectSpawnerMarker.SideType, slicableObjectSpawnerMarker.SecondSpawnPointPercent);
             
+            Vector2 middlePoint = (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
+
+            Vector2 mainEndPoint   = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset);
+            Vector2 firstEndPoint  = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.FirstOffsetAngle);
+            Vector2 secondEndPoint = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.SecondOffsetAngle);
+            
             Gizmos.DrawSphere(positionInWorldFirstPoint, 0.25f);
             Gizmos.DrawSphere(positionInWorldSecondPoint, 0.25f);
             Gizmos.DrawLine(positionInWorldFirstPoint, positionInWorldSecondPoint);
 
-            Vector2 middlePoint = (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
-
-            Vector2 directionToMiddleCameraPoint = (Vector2.zero - middlePoint).normalized;
-
-            Vector2 mainEndPoint   = GetRotatableVector(middlePoint, directionToMiddleCameraPoint, slicableObjectSpawnerMarker.MainDirectionOffset).normalized;
-            Vector2 firstEndPoint  = GetRotatableVector(middlePoint, directionToMiddleCameraPoint, slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.FirstOffset).normalized;
-            Vector2 secondEndPoint = GetRotatableVector(middlePoint, directionToMiddleCameraPoint, slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.SecondOffset).normalized;
-            
             Gizmos.DrawLine(middlePoint, middlePoint + mainEndPoint);
             Gizmos.DrawLine(middlePoint, middlePoint + firstEndPoint);
             Gizmos.DrawLine(middlePoint, middlePoint + secondEndPoint);
@@ -123,14 +121,9 @@ namespace Editor.SlicableObjectSpawner
             };
         }
 
-        private static Vector2 GetRotatableVector(Vector2 firstPoint, Vector2 secondPoint, float angle)
+        private static Vector2 GetRotatableVector(float angle)
         {
-            float distance = Vector2.Distance(firstPoint, secondPoint);
-            
-            float deltaY = Mathf.Sin(angle) * distance;
-            float deltaX = Mathf.Cos(angle) * distance;
-            
-            return new Vector2(secondPoint.x - deltaX, secondPoint.y - deltaY);
+            return Quaternion.Euler(0f, 0f, angle) * Vector2.up;
         }
     }
 }
