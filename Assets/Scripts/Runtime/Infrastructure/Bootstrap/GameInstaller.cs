@@ -50,7 +50,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
             Container
                 .BindMemoryPool<BlotEffect, BlotEffect.Pool>()
-                .WithInitialSize(_poolSettings.PoolInitialSize)
+                .WithInitialSize(_poolSettings.PoolInitialSize * 2)
                 .FromComponentInNewPrefab(_blotEffectPrefab)
                 .UnderTransformGroup(_blotPoolParent.name);
         }

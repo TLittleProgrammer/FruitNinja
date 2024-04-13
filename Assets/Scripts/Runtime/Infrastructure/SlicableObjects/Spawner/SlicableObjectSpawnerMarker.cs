@@ -28,6 +28,13 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         [Min(0f)]
         public float SpeedYMax;
         
+        [Header("Задержка между спавнами объектов пака")]
+        [Min(0f)]
+        public float SpawnPackOffsetMin;
+        [Min(0f)]
+        public float SpawnPackOffsetMax;
+
+        
         [Space(5)]
         [Header("Смещение угла")]
         public float MainDirectionOffset;

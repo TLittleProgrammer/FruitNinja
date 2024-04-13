@@ -11,19 +11,33 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
+        private readonly List<int> _spawnerPackResize;
+        private readonly float _targetSpawnTime;
 
-        private const float SpawnTime = 2.5f;
-        
+        private float _spawnTime;
+
         private bool _canCalculateTime = true;
         private float _currentTime;
         private int _allWeightLine;
-        
+
         public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper)
         {
             _slicableModelViewMapper = slicableModelViewMapper;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
-            
+            _spawnTime = levelStaticData.BeginPackOffset;
+            _targetSpawnTime = levelStaticData.EndPackOffset;
+            _spawnerPackResize = new();
+
+            InitializeRepackSize();
             CalculateWeightLine(levelStaticData);
+        }
+
+        private void InitializeRepackSize()
+        {
+            for (int i = 0; i < _spawnersData.Count; i++)
+            {
+                _spawnerPackResize.Add(0);
+            }
         }
 
         public async void Tick()
@@ -38,22 +52,36 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         {
             _currentTime += Time.deltaTime;
 
-            if (_currentTime >= SpawnTime)
+            if (_currentTime >= _spawnTime)
             {
                 int spawnerDataIndex = ChooseSpawnerDataIndex();
-
+                SlicableObjectSpawnerData spawnerData = _spawnersData[spawnerDataIndex];
+                
                 _currentTime = 0f;
                 _canCalculateTime = false;
 
-                //TODO попахивает code smells. На будущее: убрать магические числа, PackSize указывать между двумя числами
-                for (int i = 0; i < _spawnersData[spawnerDataIndex].PackSize; i++)
+                int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
+
+                for (int i = 0; i < packSize; i++)
                 {
                     _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
+
+                    int delay = (int)(Random.Range(spawnerData.PackSpawnOffsetMin, spawnerData.PackSpawnOffsetMax) * 1000);
                     
-                    await UniTask.Delay(Random.Range(200, 550));
+                    await UniTask.Delay(delay);
                 }
 
+                if (_spawnerPackResize[spawnerDataIndex] < 5)
+                {
+                    _spawnerPackResize[spawnerDataIndex]++;
+                }
+                
                 _canCalculateTime = true;
+                
+                if (_spawnTime - 0.1f >= _targetSpawnTime)
+                {
+                    _spawnTime -= 0.1f;
+                }
             }
         }
 

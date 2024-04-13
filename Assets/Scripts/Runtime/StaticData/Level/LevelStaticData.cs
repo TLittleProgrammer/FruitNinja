@@ -8,5 +8,7 @@ namespace Runtime.StaticData.Level
     public sealed class LevelStaticData : ScriptableObject
     {
         public List<SlicableObjectSpawnerData> SlicableObjectSpawnerDataList;
+        public float BeginPackOffset;
+        public float EndPackOffset;
     }
 }

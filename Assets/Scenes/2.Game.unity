@@ -175,10 +175,12 @@ MonoBehaviour:
   SpeedXMax: 9
   SpeedYMin: 100
   SpeedYMax: 150
+  SpawnPackOffsetMin: 0.5
+  SpawnPackOffsetMax: 0.6
   MainDirectionOffset: 70.1
   FirstOffsetAngle: 41.7
   SecondOffsetAngle: -38.43
-  PackSize: 10
+  PackSize: 2
 --- !u!1 &103499047
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,10 +341,12 @@ MonoBehaviour:
   SpeedXMax: 7
   SpeedYMin: 50
   SpeedYMax: 100
+  SpawnPackOffsetMin: 0.25
+  SpawnPackOffsetMax: 0.75
   MainDirectionOffset: -67.43
   FirstOffsetAngle: 35.6
   SecondOffsetAngle: -32.77
-  PackSize: 10
+  PackSize: 1
 --- !u!1 &572143239
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,10 +399,12 @@ MonoBehaviour:
   SpeedXMax: 4
   SpeedYMin: 50
   SpeedYMax: 100
+  SpawnPackOffsetMin: 0.15
+  SpawnPackOffsetMax: 0.3
   MainDirectionOffset: 0
   FirstOffsetAngle: 67.52
   SecondOffsetAngle: -64.5
-  PackSize: 10
+  PackSize: 3
 --- !u!1 &1150447442
 GameObject:
   m_ObjectHideFlags: 0

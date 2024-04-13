@@ -3,7 +3,7 @@
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     [Serializable]
-    public struct SlicableObjectSpawnerData
+    public class SlicableObjectSpawnerData
     {
         public SideType SideType;
 
@@ -18,6 +18,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public float SpeedXMax;
         public float SpeedYMin;
         public float SpeedYMax;
+        public float PackSpawnOffsetMin;
+        public float PackSpawnOffsetMax;
 
         public int PackSize;
 
@@ -33,7 +35,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             float speedXMin,
             float speedXMax,
             float speedYMin,
-            float speedYMax
+            float speedYMax,
+            float packSpawnOffsetMin,
+            float packSpawnOffsetMax
             )
         {
             SideType            = sideType;
@@ -48,6 +52,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             SpeedXMax = speedXMax;
             SpeedYMin = speedYMin;
             SpeedYMax = speedYMax;
+            PackSpawnOffsetMin = packSpawnOffsetMin;
+            PackSpawnOffsetMax = packSpawnOffsetMax;
 
             if (FirstSpawnPoint > SecondSpawnPoint)
             {

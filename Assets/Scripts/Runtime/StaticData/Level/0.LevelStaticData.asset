@@ -24,7 +24,9 @@ MonoBehaviour:
     SpeedXMax: 9
     SpeedYMin: 100
     SpeedYMax: 150
-    PackSize: 10
+    PackSpawnOffsetMin: 0.5
+    PackSpawnOffsetMax: 0.6
+    PackSize: 2
   - SideType: 1
     Weight: 5
     FirstSpawnPoint: 0.236
@@ -36,7 +38,9 @@ MonoBehaviour:
     SpeedXMax: 7
     SpeedYMin: 50
     SpeedYMax: 100
-    PackSize: 10
+    PackSpawnOffsetMin: 0.25
+    PackSpawnOffsetMax: 0.75
+    PackSize: 1
   - SideType: 3
     Weight: 5
     FirstSpawnPoint: 0.241
@@ -48,4 +52,8 @@ MonoBehaviour:
     SpeedXMax: 4
     SpeedYMin: 50
     SpeedYMax: 100
-    PackSize: 10
+    PackSpawnOffsetMin: 0.15
+    PackSpawnOffsetMax: 0.3
+    PackSize: 3
+  BeginPackOffset: 3
+  EndPackOffset: 2

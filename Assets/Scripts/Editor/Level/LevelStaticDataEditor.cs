@@ -36,7 +36,9 @@ namespace Editor.Level
                             marker.SpeedXMin,
                             marker.SpeedXMax,
                             marker.SpeedYMin,
-                            marker.SpeedYMax
+                            marker.SpeedYMax,
+                            marker.SpawnPackOffsetMin,
+                            marker.SpawnPackOffsetMax
                             ));
                 }
             }
