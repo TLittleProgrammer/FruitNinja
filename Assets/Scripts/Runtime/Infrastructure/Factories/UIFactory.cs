@@ -30,12 +30,12 @@ namespace Runtime.Infrastructure.Factories
 
             Transform screenTransform = screen.GetComponent<Transform>();
             screenTransform.SetAsFirstSibling();
-            screenTransform.position = Vector3.zero;
             
             RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
             screenRectTransform.offsetMin = Vector2.zero;
             screenRectTransform.offsetMax = Vector2.zero;
             screenRectTransform.localScale = Vector3.one;
+            screenRectTransform.anchoredPosition3D = Vector3.zero;
             
             return screen;
         }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace Runtime.SlicableObjects
 {
@@ -9,5 +10,18 @@ namespace Runtime.SlicableObjects
 
         public SpriteRenderer MainSprite   => _mainSprite;
         public SpriteRenderer ShadowSprite => _shadowSprite;
+        
+        private void Reset(Vector3 startPosition)
+        {
+            transform.position = startPosition;
+        }
+
+        public class Pool : MonoMemoryPool<Vector3, SlicableObjectView>
+        {
+            protected override void Reinitialize(Vector3 velocity, SlicableObjectView slicableObjectView)
+            {
+                slicableObjectView.Reset(velocity);
+            }
+        }
     }
 }

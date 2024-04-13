@@ -16,6 +16,6 @@ MonoBehaviour:
   - ScreenType: 1
     GameObject: {fileID: 5209373525073346994, guid: 3e6c92e43aae12142b2e96f3a6fc56ee, type: 3}
   - ScreenType: 2
-    GameObject: {fileID: 8482798009146175223, guid: 2a3b49a318dc07f4883b78d533d3a8ef, type: 3}
+    GameObject: {fileID: 3705515724609689220, guid: 2a3b49a318dc07f4883b78d533d3a8ef, type: 3}
   - ScreenType: 3
     GameObject: {fileID: 5932840685387778115, guid: 807d420fc36ddd043b076e55450325a2, type: 3}

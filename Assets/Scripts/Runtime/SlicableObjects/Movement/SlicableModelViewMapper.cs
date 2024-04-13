@@ -1,19 +1,20 @@
-﻿using ObjectPool.Runtime.ObjectPool;
+﻿using System.Linq;
 using Runtime.Infrastructure;
 using Runtime.SlicableObjects.Spawner;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Runtime.SlicableObjects.Movement
 {
     public class SlicableModelViewMapper
     {
-        private readonly QueueObjectPool<SlicableObjectView> _objectPool;
+        private readonly SlicableObjectView.Pool _objectPool;
         private readonly SlicableSpriteContainer _slicableSpriteContainer;
         private readonly GameScreenPositionResolver _gameScreenPositionResolver;
         private readonly SlicableMovementService _slicableMovementService;
 
         public SlicableModelViewMapper(
-            QueueObjectPool<SlicableObjectView> objectPool,
+            SlicableObjectView.Pool objectPool,
             SlicableSpriteContainer slicableSpriteContainer,
             GameScreenPositionResolver gameScreenPositionResolver,
             SlicableMovementService slicableMovementService)
@@ -26,7 +27,7 @@ namespace Runtime.SlicableObjects.Movement
         
         public void AddMapping(SlicableObjectSpawnerData spawnerData)
         {
-            SlicableObjectView slicableObjectView = _objectPool.Get();
+            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.First(x => !x.gameObject.activeInHierarchy);
             Transform slicableViewTransform       = slicableObjectView.transform;
 
             UpdateViewSprites(slicableObjectView);
