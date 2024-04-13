@@ -8,12 +8,4 @@
         Right  = 2,
         Bottom = 3,
     }
-
-    public static class SideTypeExtension
-    {
-        public static float GetSidePosition(this SideType sideType, float ortographicSize)
-        {
-            return 1;
-        }
-    }
 }

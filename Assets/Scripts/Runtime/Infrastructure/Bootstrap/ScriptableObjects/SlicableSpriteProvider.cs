@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
 {
     [CreateAssetMenu(menuName = "Game/Settings/Slicable Sprite Provider", fileName = "SlicableSpriteProvider")]
-    public class SlicableSpriteProvider : ScriptableObject
+    public sealed class SlicableSpriteProvider : ScriptableObject
     {
         public List<SlicableDictionary> SlicableDictionary;
     }

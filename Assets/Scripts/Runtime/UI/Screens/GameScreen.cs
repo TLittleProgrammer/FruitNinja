@@ -2,7 +2,7 @@
 
 namespace Runtime.UI.Screens
 {
-    public class GameScreen : MonoBehaviour
+    public sealed class GameScreen : MonoBehaviour
     {
         
     }

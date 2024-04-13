@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
 using Runtime.Infrastructure.AssetProvider;
@@ -13,7 +12,6 @@ namespace Runtime.UI.Screens
         private const string PathToScreenProvider = "ScriptableObjects/ScreenProvider";
         
         private readonly IAssetProvider _assetProvider;
-        
         private Dictionary<ScreenType,GameObject> _screens = new();
 
         public ScreenContainer(IAssetProvider assetProvider)

@@ -1,8 +1,6 @@
-﻿using System;
-using Runtime.SlicableObjects.Spawner;
+﻿using Runtime.SlicableObjects.Spawner;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Editor.SlicableObjectSpawner
 {
@@ -13,8 +11,6 @@ namespace Editor.SlicableObjectSpawner
         private static float Resolution;
         private static float HorizontalSize;
         private static float HorizontalPlusOneStepSize;
-        private static float CameraHeight;
-        private static float CameraWidth;
         private Camera _camera;
         
         private void OnEnable()
@@ -31,9 +27,6 @@ namespace Editor.SlicableObjectSpawner
             Resolution                  = (float)Screen.width / Screen.height;
             HorizontalSize              = Resolution * OrthographicSize;
             HorizontalPlusOneStepSize   = Resolution * (OrthographicSize + 1);
-
-            CameraHeight = OrthographicSize * 2;
-            CameraWidth  = HorizontalSize * 2;
         }
 
         private void OnDisable()
@@ -50,7 +43,6 @@ namespace Editor.SlicableObjectSpawner
             
             DrawGUI(slicableObjectSpawnerMarker);
 
-            
             EditorUtility.SetDirty(target);
         }
 
@@ -60,12 +52,11 @@ namespace Editor.SlicableObjectSpawner
             Gizmos.color = SlicableEditorHelper.GetColor(slicableObjectSpawnerMarker);
             SlicableEditorHelper.SetColor(slicableObjectSpawnerMarker, Gizmos.color);
 
-            float positionBySide = GetPositionBySide(slicableObjectSpawnerMarker.SideType);
+            float positionBySide               = GetPositionBySide(slicableObjectSpawnerMarker.SideType);
             Vector2 positionInWorldFirstPoint  = GetPositionInWorld(positionBySide, slicableObjectSpawnerMarker.SideType, slicableObjectSpawnerMarker.FirstSpawnPointPercent);
             Vector2 positionInWorldSecondPoint = GetPositionInWorld(positionBySide, slicableObjectSpawnerMarker.SideType, slicableObjectSpawnerMarker.SecondSpawnPointPercent);
             
-            Vector2 middlePoint = (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
-
+            Vector2 middlePoint    = (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
             Vector2 mainEndPoint   = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset);
             Vector2 firstEndPoint  = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.FirstOffsetAngle);
             Vector2 secondEndPoint = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.SecondOffsetAngle);

@@ -9,17 +9,18 @@ namespace Runtime.SlicableObjects.Spawner
 {
     public class SlicableObjectSpawnerManager : ITickable
     {
-        private readonly SlicableMovementService _slicableMovementService;
+        private readonly SlicableModelViewMapper _slicableModelViewMapper;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
 
         private const float SpawnTime = 4f;
-        private bool _canCalculateTime = true;
-        private float _currentTime = 0f;
-        private int _allWeightLine = 0;
         
-        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableMovementService slicableMovementService)
+        private bool _canCalculateTime = true;
+        private float _currentTime;
+        private int _allWeightLine;
+        
+        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper)
         {
-            _slicableMovementService = slicableMovementService;
+            _slicableModelViewMapper = slicableModelViewMapper;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
             
             CalculateWeightLine(levelStaticData);
@@ -27,19 +28,28 @@ namespace Runtime.SlicableObjects.Spawner
 
         public async void Tick()
         {
-            if(_canCalculateTime)
-                _currentTime += Time.deltaTime;
+            if (_canCalculateTime is false)
+                return;
+
+            await CalculateTime();
+        }
+
+        private async UniTask CalculateTime()
+        {
+            _currentTime += Time.deltaTime;
 
             if (_currentTime >= SpawnTime)
             {
-                int spawnerDataIndex = ChooseSpawnerData();
-                
+                int spawnerDataIndex = ChooseSpawnerDataIndex();
+
                 _currentTime = 0f;
                 _canCalculateTime = false;
-                
+
+                //TODO попахивает code smells. На будущее: убрать магические числа, PackSize указывать между двумя числами
                 for (int i = 0; i < _spawnersData[spawnerDataIndex].PackSize; i++)
                 {
-                    _slicableMovementService.AddSlicable(_spawnersData[spawnerDataIndex]);
+                    _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
+                    
                     await UniTask.Delay(Random.Range(200, 550));
                 }
 
@@ -47,24 +57,19 @@ namespace Runtime.SlicableObjects.Spawner
             }
         }
 
-        private async UniTask SpawnSlicableViews(int spawnerDataIndex)
-        {
-            
-        }
-
-        private int ChooseSpawnerData()
+        private int ChooseSpawnerDataIndex()
         {
             int randomedWeight = Random.Range(0, _allWeightLine);
             int currentValue = 0;
 
             for (int i = 0; i < _spawnersData.Count; i++)
             {
+                currentValue += _spawnersData[i].Weight;
+                
                 if (currentValue >= randomedWeight)
                 {
                     return i;
                 }
-
-                currentValue += _spawnersData[i].Weight;
             }
 
             return 0;

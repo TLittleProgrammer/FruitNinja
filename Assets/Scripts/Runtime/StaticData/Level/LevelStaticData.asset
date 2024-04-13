@@ -43,7 +43,7 @@ MonoBehaviour:
     SecondSpawnPoint: 1
     MainDirectionOffset: -1.5
     FirstOffset: 48.7
-    SecondOffset: -22.58
+    SecondOffset: -48.12
     SpeedXMin: 1
     SpeedXMax: 2
     SpeedYMin: 4

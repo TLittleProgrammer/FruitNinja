@@ -1,12 +1,11 @@
-﻿using System;
-using Runtime.StaticData.Level;
+﻿using Runtime.StaticData.Level;
 using UnityEngine;
 using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "GameSpritesInstaller", menuName = "Installers/GameSpritesInstaller")]
-    public class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
+    public sealed class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
     {
         public SlicableSpriteProvider SlicableSpriteProvider;
         public LevelStaticData LevelStaticData;
@@ -17,13 +16,6 @@ namespace Runtime.Infrastructure.Bootstrap.ScriptableObjects
             Container.Bind<SlicableSpriteProvider>().FromInstance(SlicableSpriteProvider).AsSingle();
             Container.Bind<LevelStaticData>().FromInstance(LevelStaticData).AsSingle();
             Container.Bind<PoolSettings>().FromInstance(PoolSettings).AsSingle();
-            
         }
-    }
-
-    [Serializable]
-    public class PoolSettings
-    {
-        public int PoolInitialSize;
     }
 }
