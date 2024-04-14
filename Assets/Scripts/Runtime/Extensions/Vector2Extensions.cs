@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Runtime.Constants
+namespace Runtime.Extensions
 {
     public static class Vector2Extensions
     {

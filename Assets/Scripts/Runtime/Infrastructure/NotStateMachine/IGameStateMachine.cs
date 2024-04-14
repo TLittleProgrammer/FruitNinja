@@ -1,4 +1,4 @@
-﻿namespace Runtime.Infrastructure.Game
+﻿namespace Runtime.Infrastructure.NotStateMachine
 {
     public interface IGameStateMachine : IAsyncInitializable
     {

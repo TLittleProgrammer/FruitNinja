@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Runtime.Infrastructure.Game
+namespace Runtime.Infrastructure.NotStateMachine
 {
     public interface ISceneLoader
     {

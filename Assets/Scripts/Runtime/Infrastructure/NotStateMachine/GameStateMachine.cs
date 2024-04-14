@@ -4,7 +4,7 @@ using Runtime.UI.Screens;
 using Zenject;
 using Object = UnityEngine.Object;
 
-namespace Runtime.Infrastructure.Game
+namespace Runtime.Infrastructure.NotStateMachine
 {
     public sealed class GameStateMachine : IGameStateMachine
     {

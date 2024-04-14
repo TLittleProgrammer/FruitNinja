@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Runtime.Constants
+namespace Runtime.Extensions
 {
     public static class FloatExtensions
     {
         public static float ConvertToRadians(this float angleValue)
         {
-            return Mathf.PI / 180 * angleValue;
+            return angleValue * Mathf.Deg2Rad;
         }
     }
 }
