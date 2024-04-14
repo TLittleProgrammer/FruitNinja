@@ -25,6 +25,8 @@ namespace Runtime.Infrastructure
             _cameraRect.width += 400f;
             _cameraRect.height += 400f;
             
+            _cameraRect.center = Vector2.zero;
+
             await UniTask.CompletedTask;
         }
 
@@ -57,9 +59,9 @@ namespace Runtime.Infrastructure
             };
         }
 
-        public Vector2 GetRotatableVectorPoint(float angle)
+        public Camera GetCamera()
         {
-            return Quaternion.Euler(0f, 0f, angle) * Vector2.up;
+            return _camera;
         }
 
         public float GetOrthographicSize()
@@ -67,9 +69,9 @@ namespace Runtime.Infrastructure
             return _orthographicSize;
         }
 
-        public bool WorldPositionAtScreenRect(Vector2 point)
+        public bool WorldPositionAtScreenRect(Vector2 worldPosition)
         {
-            Vector2 screenPoint = _camera.WorldToViewportPoint(point);
+            Vector2 screenPoint = _camera.WorldToViewportPoint(worldPosition);
             return _cameraRect.Contains(screenPoint);
         }
 

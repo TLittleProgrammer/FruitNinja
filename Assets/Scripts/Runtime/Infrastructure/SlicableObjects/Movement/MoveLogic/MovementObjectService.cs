@@ -28,7 +28,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         public float PositionX => _velocityX * _allTime * Mathf.Cos(_angle);
         public float PositionY => _velocityY * _allTime * Mathf.Sin(_angle) - 0.5f * (-World.Gravity * Mathf.Pow(_allTime, 2));
         
-        public Vector2 Position => _position;
+        public Vector2 Position => _position + _startPosition;
 
         public void SimulateMovement()
         {

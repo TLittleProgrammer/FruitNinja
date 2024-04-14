@@ -23,7 +23,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         }
 
         public Quaternion Rotation => Quaternion.Euler(0f, 0f, _modelAnimation.Rotation);
-        public Vector2 Position =>_movementObject.Position;
+        public Vector2 Position => _movementObject.Position;
 
         public void Tick()
         {

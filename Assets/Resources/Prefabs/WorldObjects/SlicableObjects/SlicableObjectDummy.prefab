@@ -212,3 +212,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isSlicableObject: 0
+  _spriteRenderer: {fileID: 2280792934056951685}

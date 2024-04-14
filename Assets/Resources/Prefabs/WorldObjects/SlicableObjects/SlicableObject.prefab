@@ -187,7 +187,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainSprite: {fileID: 2280792934056951685}
   _shadowSprite: {fileID: 2280792932704804672}
-  _circleCollider2D: {fileID: 0}
 --- !u!58 &1644806174645407128
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -228,3 +227,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a01f67fb404861b687016e687d3ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isSlicableObject: 1
+  _spriteRenderer: {fileID: 2280792934056951685}

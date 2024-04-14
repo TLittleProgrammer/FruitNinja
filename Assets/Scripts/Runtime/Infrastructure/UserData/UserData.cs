@@ -1,5 +1,4 @@
 ﻿using System;
-using Runtime.Infrastructure.Game;
 
 namespace Runtime.Infrastructure.UserData
 {
@@ -9,12 +8,9 @@ namespace Runtime.Infrastructure.UserData
 
         public event Action<int> BestScoreChanged;
         
-        public UserData(GameParameters gameParameters)
+        public UserData()
         {
             BestScore = 0;
-            
-            //TODO подойдет ли такое именоавние?
-            gameParameters.ScoreChanged += SetNewBestScore;
         }
 
         public void SetNewBestScore(int newBestScore)

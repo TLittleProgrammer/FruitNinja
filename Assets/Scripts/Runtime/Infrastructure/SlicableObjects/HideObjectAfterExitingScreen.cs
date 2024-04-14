@@ -1,4 +1,5 @@
 ﻿using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.SlicableObjects.HideCondition;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
 using Zenject;
@@ -8,11 +9,11 @@ namespace Runtime.Infrastructure.SlicableObjects
     public class HideObjectAfterExitingScreen : MonoBehaviour
     {
         [SerializeField] private bool _isSlicableObject = true;
-        
+
         private SlicableMovementService _slicableMovementService;
-        private GameScreenManager _gameScreenManager;
-        private bool _metOnScreen = false;
         private GameParameters _gameParameters;
+        private IConditionObjectHideService _conditionObjectHideService;
+        private GameScreenManager _gameScreenManager;
 
         [Inject]
         private void Construct(
@@ -20,28 +21,26 @@ namespace Runtime.Infrastructure.SlicableObjects
             GameScreenManager gameScreenManager,
             GameParameters gameParameters)
         {
-            _gameParameters = gameParameters;
             _gameScreenManager = gameScreenManager;
+            _gameParameters = gameParameters;
             _slicableMovementService = slicableMovementService;
         }
 
         private void LateUpdate()
         {
-            bool objectAtScreen = _gameScreenManager.WorldPositionAtScreenRect(transform.position);
-
-            if (objectAtScreen && _metOnScreen is false)
+            //TODO Подумать над тем, чтобы перенести
+            if (_conditionObjectHideService is null)
             {
-                _metOnScreen = true;
+                _conditionObjectHideService = new SimpleConditionHideObjectService(transform, _gameScreenManager.GetHorizontalSizeWithStep(), -_gameScreenManager.GetOrthographicSize());
             }
-
-            if ((objectAtScreen is false && _metOnScreen)
-                || _gameScreenManager.GetOrthographicSize() * -1 - 2 >= transform.position.y
-                || _gameScreenManager.GetHorizontalSizeWithStep() + 0.15 < Mathf.Abs(transform.position.x))
+            
+            if (_conditionObjectHideService.IsNeedHideObject())
             {
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
-                _metOnScreen = false;
 
+                _conditionObjectHideService.Reset();
+                
                 if (_isSlicableObject)
                 {
                     _gameParameters.ChangeHealth(-1);
