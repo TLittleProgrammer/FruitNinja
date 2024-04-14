@@ -171,8 +171,10 @@ MonoBehaviour:
   Weight: 5
   FirstSpawnPointPercent: 0.207
   SecondSpawnPointPercent: 0.613
-  VelocityMin: 5
-  VelocityMax: 10
+  VelocityXMin: 5
+  VelocityXMax: 12
+  VelocityYMin: 4
+  VelocityYMax: 13
   SpawnPackOffsetMin: 0.5
   SpawnPackOffsetMax: 0.6
   MainDirectionOffset: 70
@@ -366,8 +368,10 @@ MonoBehaviour:
   Weight: 5
   FirstSpawnPointPercent: 0.236
   SecondSpawnPointPercent: 0.887
-  VelocityMin: 5
-  VelocityMax: 10
+  VelocityXMin: 2
+  VelocityXMax: 8
+  VelocityYMin: 5
+  VelocityYMax: 10
   SpawnPackOffsetMin: 0.25
   SpawnPackOffsetMax: 0.75
   MainDirectionOffset: -67.43
@@ -419,11 +423,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SideType: 3
-  Weight: 5
+  Weight: 25
   FirstSpawnPointPercent: 0.241
   SecondSpawnPointPercent: 0.77
-  VelocityMin: 5
-  VelocityMax: 10
+  VelocityXMin: 2
+  VelocityXMax: 7
+  VelocityYMin: 10
+  VelocityYMax: 25
   SpawnPackOffsetMin: 0.15
   SpawnPackOffsetMax: 0.3
   MainDirectionOffset: 16.2
