@@ -20,12 +20,15 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private BlotEffect _blotEffectPrefab;
         [SerializeField] private GameObject _blotPoolParent;
+        
+        [SerializeField] private SplashEffect _splashEffectPrefab;
+        [SerializeField] private GameObject _splashPoolParent;
 
         [Inject] private PoolSettings _poolSettings;
         
         public override void InstallBindings()
         {
-            Container.Bind<SlicableSpriteContainer>().AsSingle();
+            Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             Container.Bind<CanSliceResolver>().AsSingle();
@@ -53,6 +56,12 @@ namespace Runtime.Infrastructure.Bootstrap
                 .WithInitialSize(_poolSettings.PoolInitialSize * 2)
                 .FromComponentInNewPrefab(_blotEffectPrefab)
                 .UnderTransformGroup(_blotPoolParent.name);
+            
+            Container
+                .BindMemoryPool<SplashEffect, SplashEffect.Pool>()
+                .WithInitialSize(_poolSettings.PoolInitialSize)
+                .FromComponentInNewPrefab(_splashEffectPrefab)
+                .UnderTransformGroup(_splashPoolParent.name);
         }
     }
 }

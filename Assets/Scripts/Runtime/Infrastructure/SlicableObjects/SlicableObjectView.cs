@@ -9,12 +9,10 @@ namespace Runtime.Infrastructure.SlicableObjects
     {
         [SerializeField] private SpriteRenderer _mainSprite;
         [SerializeField] private SpriteRenderer _shadowSprite;
-        [SerializeField] private CircleCollider2D _circleCollider2D;
 
         public SpriteRenderer MainSprite   => _mainSprite;
         public SpriteRenderer ShadowSprite => _shadowSprite;
-        public CircleCollider2D CircleCollider => _circleCollider2D;
-        
+
         private void Reset(Vector3 startPosition)
         {
             transform.position = startPosition;

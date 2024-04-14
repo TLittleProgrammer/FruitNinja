@@ -28,6 +28,7 @@ namespace Runtime.StaticData.UI
     public struct SlicableItemParams
     {
         public Sprite Sprite;
+        public Color SplashColor;
         public List<Sprite> Blots;
     }
 }

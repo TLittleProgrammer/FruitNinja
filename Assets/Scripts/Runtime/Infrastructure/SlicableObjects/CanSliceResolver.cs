@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Mouse;
@@ -11,24 +10,27 @@ namespace Runtime.Infrastructure.SlicableObjects
     public class CanSliceResolver
     {
         private readonly MouseManager _mouseManager;
-        private readonly SlicableSpriteContainer _slicableSpriteContainer;
+        private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly SlicableMovementService _slicableMovementService;
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
+        private readonly SplashEffect.Pool _splashEffectPool;
 
         public CanSliceResolver(
             MouseManager mouseManager,
-            SlicableSpriteContainer slicableSpriteContainer,
+            SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
             SliceableObjectDummy.Pool dummyPool,
-            BlotEffect.Pool blotEffectPool
+            BlotEffect.Pool blotEffectPool,
+            SplashEffect.Pool splashEffectPool
         )
         {
             _mouseManager = mouseManager;
-            _slicableSpriteContainer = slicableSpriteContainer;
+            _slicableVisualContainer = slicableVisualContainer;
             _slicableMovementService = slicableMovementService;
             _dummyPool = dummyPool;
             _blotEffectPool = blotEffectPool;
+            _splashEffectPool = splashEffectPool;
         }
 
         public void TrySlice(SlicableObjectView slicableObjectView)
@@ -52,12 +54,21 @@ namespace Runtime.Infrastructure.SlicableObjects
                 slicableObjectView.gameObject.SetActive(false);
 
                 AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
+                AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
             }
+        }
+
+        private void AddSplashEffect(Vector3 transformPosition, string spriteName)
+        {
+            SplashEffect splashEffect = _splashEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
+
+            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
+            splashEffect.PlayEffect(transformPosition, color);
         }
 
         private void AddBlotEffect(Vector2 targetPosition, Sprite sprite)
         {
-            Sprite blotSprite = _slicableSpriteContainer.GetRandomBlot(sprite.name);
+            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(sprite.name);
 
             if (blotSprite is not null)
             {

@@ -1,5 +1,4 @@
-﻿using Runtime.Extensions;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 {

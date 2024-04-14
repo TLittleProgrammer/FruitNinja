@@ -12,18 +12,18 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
     public class SlicableModelViewMapper
     {
         private readonly SlicableObjectView.Pool _objectPool;
-        private readonly SlicableSpriteContainer _slicableSpriteContainer;
+        private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
         private readonly SlicableMovementService _slicableMovementService;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
-            SlicableSpriteContainer slicableSpriteContainer,
+            SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
             SlicableMovementService slicableMovementService)
         {
             _objectPool = objectPool;
-            _slicableSpriteContainer = slicableSpriteContainer;
+            _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _slicableMovementService = slicableMovementService;
         }
@@ -91,7 +91,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
             while (maxHeight >= Mathf.Abs(_gameScreenManager.GetOrthographicSize() - position.y) - 0.5f)
             {
-                speedY -= 0.25f;
+                speedY -= 0.15f;
                 maxHeight = speedY * speedY * constantValue;
             }
 
@@ -121,7 +121,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         private void UpdateViewSprites(SlicableObjectView slicableObjectView)
         {
-            Sprite sprite = _slicableSpriteContainer.GetRandomSprite(SlicableObjectType.Simple);
+            Sprite sprite = _slicableVisualContainer.GetRandomSprite(SlicableObjectType.Simple);
 
             slicableObjectView.MainSprite.sprite = sprite;
             slicableObjectView.ShadowSprite.sprite = sprite;

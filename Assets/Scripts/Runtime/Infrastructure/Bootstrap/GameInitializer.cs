@@ -14,7 +14,7 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private Canvas _gameCanvas;
         
-        [Inject] private SlicableSpriteContainer _slicableSpriteContainer;
+        [Inject] private SlicableVisualContainer _slicableVisualContainer;
         [Inject] private GameScreenManager _gameScreenManager;
         [Inject] private MouseMoveService _mouseMoveService;
         [Inject] private IWorldFactory _worldFactory;
@@ -23,7 +23,7 @@ namespace Runtime.Infrastructure.Bootstrap
         //TODO Когда будет свободное время - попробовать перенести в друое место инициализацию
         private async void Awake()
         {
-            await _slicableSpriteContainer.AsyncInitialize();
+            await _slicableVisualContainer.AsyncInitialize();
             
             Trail trail = await _worldFactory.CreateObject<Trail>(PathToTrail, null);
 

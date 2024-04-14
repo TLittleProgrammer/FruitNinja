@@ -5,14 +5,15 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects
 {
-    public class SlicableSpriteContainer : IAsyncInitializable
+    public class SlicableVisualContainer : IAsyncInitializable
     {
         private readonly SlicableSpriteProvider _slicableSpriteProvider;
         
         private Dictionary<SlicableObjectType, List<Sprite>> _spritesDictionary;
         private Dictionary<string, List<Sprite>> _blotsDictionary;
+        private Dictionary<string, Color> _splashColorDictionary;
 
-        public SlicableSpriteContainer(SlicableSpriteProvider slicableSpriteProvider)
+        public SlicableVisualContainer(SlicableSpriteProvider slicableSpriteProvider)
         {
             _slicableSpriteProvider = slicableSpriteProvider;
         }
@@ -28,6 +29,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         {
             _spritesDictionary = new();
             _blotsDictionary = new();
+            _splashColorDictionary = new();
 
             foreach (SlicableDictionary slicableDictionary in _slicableSpriteProvider.SlicableDictionary)
             {
@@ -35,7 +37,18 @@ namespace Runtime.Infrastructure.SlicableObjects
                 {
                     AddItemToSpritesDictionary(slicableDictionary, slicableParams);
                     AddSpritesToBlotsList(slicableParams);
+                    AddColorToDictionary(slicableParams);
                 }
+            }
+        }
+
+        private void AddColorToDictionary(SlicableItemParams slicableParams)
+        {
+            string spriteName = slicableParams.Sprite.name;
+            
+            if (!_splashColorDictionary.ContainsKey(spriteName))
+            {
+                _splashColorDictionary.Add(spriteName, slicableParams.SplashColor);
             }
         }
 
@@ -81,5 +94,8 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             return null;
         }
+
+        public Color GetSplashColorBySpriteName(string spriteName) =>
+            _splashColorDictionary.TryGetValue(spriteName, out Color color) ? color : Color.black;
     }
 }

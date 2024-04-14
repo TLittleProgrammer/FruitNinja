@@ -17,30 +17,38 @@ MonoBehaviour:
     SlicableItem:
       Params:
       - Sprite: {fileID: 21300000, guid: fc8ce843f877f8b4da69b4f8bc908c90, type: 3}
+        SplashColor: {r: 0.9528302, g: 0.653885, b: 0, a: 1}
         Blots:
         - {fileID: 518901353, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
         - {fileID: 188533943, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: d92850abf12d7c24584c82f904736df2, type: 3}
+        SplashColor: {r: 0.5377358, g: 0.43788284, b: 0.31148094, a: 1}
         Blots: []
       - Sprite: {fileID: 21300000, guid: c63d31eddbdb5f841b26ce294206f8c0, type: 3}
+        SplashColor: {r: 1, g: 0.8903059, b: 0, a: 1}
         Blots:
         - {fileID: -950632144, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: efa605a6a022bd64b8800680296ab863, type: 3}
+        SplashColor: {r: 0.5849056, g: 0, b: 0.29589337, a: 1}
         Blots:
         - {fileID: -146451530, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
         - {fileID: 188533943, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: 4152dd6b3514fb746b57525ce2abbd96, type: 3}
+        SplashColor: {r: 0.72524196, g: 0.8679245, b: 0, a: 1}
         Blots:
         - {fileID: 188533943, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
         - {fileID: -950632144, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: bdba215628cc48a4399da0804c0c4b0c, type: 3}
+        SplashColor: {r: 0.61138284, g: 1, b: 0, a: 1}
         Blots:
         - {fileID: 188533943, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
         - {fileID: -950632144, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: 5866d9184b643f5428c49c7955112885, type: 3}
+        SplashColor: {r: 1, g: 0.04605126, b: 0, a: 1}
         Blots:
         - {fileID: 518901353, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
       - Sprite: {fileID: 21300000, guid: 09c365255507520438665ecaeb725e17, type: 3}
+        SplashColor: {r: 1, g: 0, b: 0.2958212, a: 1}
         Blots:
         - {fileID: 188533943, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
         - {fileID: 518901353, guid: 04a9164be9f0f624786eff6cb319e4ab, type: 3}
@@ -48,5 +56,6 @@ MonoBehaviour:
     SlicableItem:
       Params:
       - Sprite: {fileID: 21300000, guid: ba25f7283d2b61f4ca85d72d2106d480, type: 3}
+        SplashColor: {r: 0, g: 0, b: 0, a: 0}
         Blots:
         - {fileID: 21300000, guid: b847e0f908a40b54385e82664db84c24, type: 3}
