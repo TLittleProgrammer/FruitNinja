@@ -72,8 +72,8 @@ namespace Runtime.Infrastructure.SlicableObjects
 
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
         {
-            SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform.position);
-            SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform.position);
+            SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
+            SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
 
             _slicableMovementService.AddMapping(modelFirstDummy, dummyArray[0].transform);
             _slicableMovementService.AddMapping(modelSecondDummy, dummyArray[1].transform);

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Runtime.Constants;
 using Runtime.Extensions;
+using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -40,10 +42,25 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             float speedY = Random.Range(spawnerData.SpeedYMin, spawnerData.SpeedYMax);
 
             RecalculateSpeeds(spawnerData, direction, slicableViewTransform, ref speedX, ref speedY);
-
-            SlicableModel slicableModel = new(speedX, speedY, direction, slicableViewTransform.position, spawnerData.SideType);
+            
+            IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
+            
+            
+            SlicableModel slicableModel = new(slicableViewTransform, speedX, speedY, direction, modelAnimation, spawnerData.SideType);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
+        }
+
+        private IModelAnimation GetModelAnimation(Transform slicableViewTransform, Transform shadowSpriteTransform, float angle)
+        {
+            return Random.Range(0, 3) switch
+            {
+                0 => new SimpleRotateAnimation(slicableViewTransform, angle),
+                1 => new ScaleAnimation(slicableViewTransform, shadowSpriteTransform),
+                2 => new MixedAnimation(slicableViewTransform, shadowSpriteTransform, angle),
+                
+                _ => throw new ArgumentException()
+            };
         }
 
         private void RecalculateSpeeds(SlicableObjectSpawnerData spawnerData, Vector2 direction, Transform slicableViewTransform, ref float speedX, ref float speedY)
@@ -59,6 +76,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             }
         }
 
+        //TODO Убрать цикл. Сделать 1ой формулой
         private float CalculateSpeedY(float speedY, Vector2 direction, Vector3 position, SideType sideType)
         { 
             float angle = direction.GetAngleBetweenVectorAndHorizontalAxis();

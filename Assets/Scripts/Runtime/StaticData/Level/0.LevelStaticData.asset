@@ -42,7 +42,7 @@ MonoBehaviour:
     PackSpawnOffsetMax: 0.75
     PackSize: 1
   - SideType: 3
-    Weight: 5
+    Weight: 25
     FirstSpawnPoint: 0.241
     SecondSpawnPoint: 0.77
     MainDirectionOffset: 0
