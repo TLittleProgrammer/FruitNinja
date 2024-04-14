@@ -4,7 +4,6 @@ using Runtime.Constants;
 using Runtime.Extensions;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
-using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -37,17 +36,14 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             UpdateViewSprites(slicableObjectView);
             ChangePositionAndActivate(spawnerData, slicableObjectView);
 
-            Vector2 direction = GetDirection(spawnerData, slicableObjectView.transform.position).normalized;
-
-            float speedX = Random.Range(spawnerData.SpeedXMin, spawnerData.SpeedXMax);
-            float speedY = Random.Range(spawnerData.SpeedYMin, spawnerData.SpeedYMax);
-
-            RecalculateSpeeds(spawnerData, direction, slicableViewTransform, ref speedX, ref speedY);
+            float angleInRadians = GetDirectionAngleInRadians(spawnerData);
+            float velocityX = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
+            float velocityY = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
             
+            velocityY = CalculateSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
+
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            
-            
-            SlicableModel slicableModel = new(slicableViewTransform, speedX, speedY, direction, modelAnimation, spawnerData.SideType);
+            SlicableModel slicableModel = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
@@ -63,51 +59,32 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
                 _ => throw new ArgumentException()
             };
         }
-
-        private void RecalculateSpeeds(SlicableObjectSpawnerData spawnerData, Vector2 direction, Transform slicableViewTransform, ref float speedX, ref float speedY)
-        {
-            speedY = CalculateSpeedY(speedY, direction, slicableViewTransform.position, spawnerData.SideType);
-
-            if (spawnerData.SideType is SideType.Left or SideType.Right)
-            {
-                if (speedX < 2f)
-                {
-                    speedX = 2f;
-                }
-            }
-        }
-
+        
         //TODO Убрать цикл. Сделать 1ой формулой
-        private float CalculateSpeedY(float speedY, Vector2 direction, Vector3 position, SideType sideType)
-        { 
-            float angle = direction.GetAngleBetweenVectorAndHorizontalAxis();
+        private float CalculateSpeedY(float velocity, float radians, float spawnPositionY)
+        {
+            float maxHeight = _gameScreenManager.GetOrthographicSize() + Mathf.Abs(spawnPositionY);
 
-            angle += sideType.GetAngle();
-            
-            float radians = angle.ConvertToRadians();
-            
-            float constantValue = Mathf.Sin(radians) * Mathf.Sin(radians) / 2f / World.Gravity * -1;
-            
-            float maxHeight = speedY * speedY * constantValue;
+            float maxVelocity = Mathf.Sqrt(maxHeight * -2f * World.Gravity * Mathf.Sin(radians) * Mathf.Sin(radians));
 
-            while (maxHeight >= Mathf.Abs(_gameScreenManager.GetOrthographicSize() - position.y) - 0.5f)
+            if (velocity > maxVelocity)
             {
-                speedY -= 0.05f;
-                maxHeight = speedY * speedY * constantValue;
+                return maxVelocity - 1f;
             }
-
-            return speedY;
+            
+            return velocity;
         }
 
-        private Vector2 GetDirection(SlicableObjectSpawnerData spawnerData, Vector2 firstPosition)
+        private float GetDirectionAngleInRadians(SlicableObjectSpawnerData spawnerData)
         {
-            float quaternionAngle = Quaternion.Angle(Quaternion.Euler(0f, 0f, spawnerData.FirstOffset), Quaternion.Euler(0f, 0f, spawnerData.SecondOffset));
+            if (spawnerData.FirstOffset > spawnerData.SecondOffset)
+            {
+                (spawnerData.FirstOffset, spawnerData.SecondOffset) = (spawnerData.SecondOffset, spawnerData.FirstOffset);
+            }
+            
+            float randomAngle = Random.Range(spawnerData.FirstOffset, spawnerData.SecondOffset);
 
-            float randomAngle = Random.Range(-quaternionAngle, quaternionAngle);
-
-            Vector2 directionPoint = _gameScreenManager.GetRotatableVectorPoint(spawnerData.MainDirectionOffset + randomAngle);
-
-            return directionPoint - firstPosition;
+            return (spawnerData.MainDirectionOffset + 90f + randomAngle).ConvertToRadians();
         }
 
         private void ChangePositionAndActivate(SlicableObjectSpawnerData spawnerData, SlicableObjectView slicableObjectView)

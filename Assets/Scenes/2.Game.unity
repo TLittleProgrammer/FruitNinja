@@ -171,13 +171,11 @@ MonoBehaviour:
   Weight: 5
   FirstSpawnPointPercent: 0.207
   SecondSpawnPointPercent: 0.613
-  SpeedXMin: 5
-  SpeedXMax: 9
-  SpeedYMin: 100
-  SpeedYMax: 150
+  VelocityMin: 5
+  VelocityMax: 10
   SpawnPackOffsetMin: 0.5
   SpawnPackOffsetMax: 0.6
-  MainDirectionOffset: 70.1
+  MainDirectionOffset: 70
   FirstOffsetAngle: 41.7
   SecondOffsetAngle: -38.43
   PackSize: 2
@@ -368,10 +366,8 @@ MonoBehaviour:
   Weight: 5
   FirstSpawnPointPercent: 0.236
   SecondSpawnPointPercent: 0.887
-  SpeedXMin: 4
-  SpeedXMax: 7
-  SpeedYMin: 50
-  SpeedYMax: 100
+  VelocityMin: 5
+  VelocityMax: 10
   SpawnPackOffsetMin: 0.25
   SpawnPackOffsetMax: 0.75
   MainDirectionOffset: -67.43
@@ -426,13 +422,11 @@ MonoBehaviour:
   Weight: 5
   FirstSpawnPointPercent: 0.241
   SecondSpawnPointPercent: 0.77
-  SpeedXMin: 2
-  SpeedXMax: 4
-  SpeedYMin: 10
-  SpeedYMax: 15
+  VelocityMin: 5
+  VelocityMax: 10
   SpawnPackOffsetMin: 0.15
   SpawnPackOffsetMax: 0.3
-  MainDirectionOffset: 0
+  MainDirectionOffset: 16.2
   FirstOffsetAngle: 34.8
   SecondOffsetAngle: -47.6
   PackSize: 3

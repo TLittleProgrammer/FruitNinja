@@ -14,10 +14,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public float MainDirectionOffset;
         public float FirstOffset;
         public float SecondOffset;
-        public float SpeedXMin;
-        public float SpeedXMax;
-        public float SpeedYMin;
-        public float SpeedYMax;
+        public float VelocityXMin;
+        public float VelocityXMax;
+        public float VelocityYMin;
+        public float VelocityYMax;
         public float PackSpawnOffsetMin;
         public float PackSpawnOffsetMax;
 
@@ -32,10 +32,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             float secondOffset,
             int packSize,
             int weight,
-            float speedXMin,
-            float speedXMax,
-            float speedYMin,
-            float speedYMax,
+            float velocityXMin,
+            float velocityXMax,
+            float velocityYMin,
+            float velocityYMax,
             float packSpawnOffsetMin,
             float packSpawnOffsetMax
             )
@@ -47,13 +47,13 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             FirstOffset         = firstOffset;
             SecondOffset        = secondOffset;
             PackSize            = packSize;
-            Weight = weight;
-            SpeedXMin = speedXMin;
-            SpeedXMax = speedXMax;
-            SpeedYMin = speedYMin;
-            SpeedYMax = speedYMax;
-            PackSpawnOffsetMin = packSpawnOffsetMin;
-            PackSpawnOffsetMax = packSpawnOffsetMax;
+            Weight              = weight;
+            VelocityXMin        = velocityXMin;
+            VelocityXMax        = velocityXMax;
+            VelocityYMin        = velocityYMin;
+            VelocityYMax        = velocityYMax;
+            PackSpawnOffsetMin  = packSpawnOffsetMin;
+            PackSpawnOffsetMax  = packSpawnOffsetMax;
 
             if (FirstSpawnPoint > SecondSpawnPoint)
             {

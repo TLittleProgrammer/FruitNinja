@@ -33,10 +33,10 @@ namespace Editor.Level
                             marker.SecondOffsetAngle,
                             marker.PackSize,
                             marker.Weight,
-                            marker.SpeedXMin,
-                            marker.SpeedXMax,
-                            marker.SpeedYMin,
-                            marker.SpeedYMax,
+                            marker.VelocityXMin,
+                            marker.VelocityXMax,
+                            marker.VelocityYMin,
+                            marker.VelocityYMax,
                             marker.SpawnPackOffsetMin,
                             marker.SpawnPackOffsetMax
                             ));

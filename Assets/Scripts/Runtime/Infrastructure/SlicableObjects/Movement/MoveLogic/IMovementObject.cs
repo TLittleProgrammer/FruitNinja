@@ -4,9 +4,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
     public interface IMovementObject
     {
-        public Vector2 Direction { get; set; }
-        public float SpeedX { get; }
-        public float SpeedY { get; }
+        public float PositionX { get; }
+        public float PositionY { get; }
         Vector2 Position { get; }
 
         void SimulateMovement();

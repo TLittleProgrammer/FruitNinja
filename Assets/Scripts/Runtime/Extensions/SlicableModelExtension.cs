@@ -12,7 +12,7 @@ namespace Runtime.Extensions
 
             IModelAnimation modelAnimation = GetModelAnimation(modelParams.ModelAnimation, targetTransform, shadowTransform, 0f);
             
-            return new(targetTransform, modelParams.SpeedX, modelParams.SpeedY, modelParams.Direction, modelAnimation);
+            return new(targetTransform, modelParams.VelocityX, modelParams.VelocityY, modelParams.Angle, modelAnimation);
         }
 
         private static IModelAnimation GetModelAnimation(IModelAnimation modelAnimation, Transform targetTransform, Transform shadowTransform, float angle)

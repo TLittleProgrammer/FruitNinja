@@ -1,18 +1,24 @@
 ﻿using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic;
-using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableModel
     {
+        private readonly float _velocityX;
+        private readonly float _velocityY;
+        private readonly float _angle;
+
         private IMovementObject _movementObject;
         private IModelAnimation _modelAnimation;
 
-        public SlicableModel(Transform movementTransform, float speedX, float speedY, Vector2 direction, IModelAnimation modelAnimation, SideType sideType = SideType.None)
+        public SlicableModel(Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
         {
-            _movementObject = new MovementObjectService(movementTransform, speedX, speedY, direction, sideType);
+            _movementObject = new MovementObjectService(movementTransform, velocityX, velocityY, angle);
+            _velocityX = velocityX;
+            _velocityY = velocityY;
+            _angle = angle;
             _modelAnimation = modelAnimation;
         }
 
@@ -25,30 +31,24 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _modelAnimation.SimulateAnimation();
         }
 
-        public void AddDirection(Vector2 direction)
-        {
-            _movementObject.Direction = direction;
-        }
-
         public SlicableModelParams GetParams()
         {
-            return new(_movementObject.Direction, _movementObject.SpeedX, _movementObject.SpeedY, _modelAnimation);
+            return new(_velocityX, _velocityY, _angle, _modelAnimation);
         }
     }
 
     public record SlicableModelParams
     {
-        public Vector2 Direction;
-        
-        public float SpeedX;
-        public float SpeedY;
+        public float VelocityX;
+        public float VelocityY;
+        public float Angle;
         public IModelAnimation ModelAnimation;
 
-        public SlicableModelParams(Vector2 direction, float speedX, float speedY, IModelAnimation modelAnimation)
+        public SlicableModelParams(float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
         {
-            Direction = direction;
-            SpeedX = speedX;
-            SpeedY = speedY;
+            VelocityX = velocityX;
+            Angle = angle;
+            ModelAnimation = modelAnimation;
         }
     }
 }

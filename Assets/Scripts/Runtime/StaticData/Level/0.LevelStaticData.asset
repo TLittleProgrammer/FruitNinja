@@ -18,12 +18,12 @@ MonoBehaviour:
     FirstSpawnPoint: 0.207
     SecondSpawnPoint: 0.613
     MainDirectionOffset: 70.1
-    FirstOffset: 41.7
-    SecondOffset: -38.43
-    SpeedXMin: 5
-    SpeedXMax: 9
-    SpeedYMin: 100
-    SpeedYMax: 150
+    FirstOffset: -38.43
+    SecondOffset: 41.7
+    VelocityXMin: 4
+    VelocityXMax: 7
+    VelocityYMin: 50
+    VelocityYMax: 100
     PackSpawnOffsetMin: 0.5
     PackSpawnOffsetMax: 0.6
     PackSize: 2
@@ -32,26 +32,26 @@ MonoBehaviour:
     FirstSpawnPoint: 0.236
     SecondSpawnPoint: 0.887
     MainDirectionOffset: -67.43
-    FirstOffset: 35.6
-    SecondOffset: -32.77
-    SpeedXMin: 4
-    SpeedXMax: 7
-    SpeedYMin: 50
-    SpeedYMax: 100
+    FirstOffset: -32.77
+    SecondOffset: 35.6
+    VelocityXMin: 5
+    VelocityXMax: 15
+    VelocityYMin: 321
+    VelocityYMax: 4342
     PackSpawnOffsetMin: 0.25
     PackSpawnOffsetMax: 0.75
     PackSize: 1
   - SideType: 3
-    Weight: 35
+    Weight: 5
     FirstSpawnPoint: 0.241
     SecondSpawnPoint: 0.77
-    MainDirectionOffset: 0
-    FirstOffset: 34.8
-    SecondOffset: -47.6
-    SpeedXMin: 2
-    SpeedXMax: 4
-    SpeedYMin: 100
-    SpeedYMax: 200
+    MainDirectionOffset: 16.2
+    FirstOffset: -47.6
+    SecondOffset: 34.8
+    VelocityXMin: 5
+    VelocityXMax: 7
+    VelocityYMin: 10
+    VelocityYMax: 20
     PackSpawnOffsetMin: 0.15
     PackSpawnOffsetMax: 0.3
     PackSize: 3

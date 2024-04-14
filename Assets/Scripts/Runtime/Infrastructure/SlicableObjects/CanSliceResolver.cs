@@ -96,9 +96,6 @@ namespace Runtime.Infrastructure.SlicableObjects
             SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
             SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
 
-            modelFirstDummy.AddDirection(_mouseManager.GetMouseNormalizedDirection());
-            modelSecondDummy.AddDirection(_mouseManager.GetMouseNormalizedDirection());
-            
             _slicableMovementService.AddMapping(modelFirstDummy, dummyArray[0].transform);
             _slicableMovementService.AddMapping(modelSecondDummy, dummyArray[1].transform);
         }

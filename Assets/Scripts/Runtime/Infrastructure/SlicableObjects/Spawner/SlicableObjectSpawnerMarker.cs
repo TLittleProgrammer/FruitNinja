@@ -18,16 +18,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public float SecondSpawnPointPercent;
 
         [Space(5)]
-        [Header("Скорости")]
+        [Header("Скорость")]
         [Min(0f)]
-        public float SpeedXMin;
+        public float VelocityXMin;
         [Min(0f)]
-        public float SpeedXMax;
+        public float VelocityXMax;
         [Min(0f)]
-        public float SpeedYMin;
+        public float VelocityYMin;
         [Min(0f)]
-        public float SpeedYMax;
-        
+        public float VelocityYMax;
+
         [Header("Задержка между спавнами объектов пака")]
         [Min(0f)]
         public float SpawnPackOffsetMin;
