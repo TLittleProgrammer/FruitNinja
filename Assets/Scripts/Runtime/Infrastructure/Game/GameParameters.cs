@@ -1,21 +1,34 @@
 ﻿using System;
+using Runtime.StaticData.Level;
 
 namespace Runtime.Infrastructure.Game
 {
     public class GameParameters
     {
-        private int _health = Constants.Game.InitialHealthCount;
+        private readonly UserData.UserData _userData;
+        private int _health;
         private int _currentScore = 0;
         
         public event Action<int> HealthChanged;
         public event Action<int> ScoreChanged;
         public int Health => _health;
 
+        public GameParameters(LevelStaticData levelStaticData, UserData.UserData userData)
+        {
+            _userData = userData;
+            _health = levelStaticData.HealthCount * 2;
+        }
+
         public void ChangeScore(int addScore)
         {
             _currentScore += addScore;
-            
+
             ScoreChanged?.Invoke(_currentScore);
+
+            if (_userData.bestScore < _currentScore)
+            {
+                _userData.SetNewBestScore(_currentScore);
+            }
         }
 
         public void ChangeHealth(int count)

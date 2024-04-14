@@ -1,6 +1,5 @@
 using Runtime.Infrastructure.AssetProvider;
 using Runtime.Infrastructure.Factories;
-using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.UI.Screens;
 using Zenject;
@@ -11,8 +10,8 @@ namespace Runtime.Infrastructure.Bootstrap
     {
         public override void InstallBindings()
         {
-            Container.Bind<GameParameters>().AsSingle();
             Container.Bind<UserData.UserData>().AsSingle();
+            Container.Bind<UserData.UserDataSaveLoadService>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<ResourcesAssetProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<AsyncSceneLoader>().AsSingle();

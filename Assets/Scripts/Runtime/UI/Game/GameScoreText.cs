@@ -27,7 +27,7 @@ namespace Runtime.UI.Game
             userData.BestScoreChanged += OnBestScoreChanged;
 
             _currentScoreValue = 0;
-            _currentBestScoreValue = userData.BestScore;
+            _currentBestScoreValue = userData.bestScore;
 
             _currentScoreText.text = _currentScoreValue.ToString();
             _bestScoreText.text = BestScorePrefix + _currentBestScoreValue.ToString();

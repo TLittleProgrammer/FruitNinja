@@ -10,5 +10,6 @@ namespace Runtime.StaticData.Level
         public List<SlicableObjectSpawnerData> SlicableObjectSpawnerDataList;
         public float BeginPackOffset;
         public float EndPackOffset;
+        public int HealthCount;
     }
 }

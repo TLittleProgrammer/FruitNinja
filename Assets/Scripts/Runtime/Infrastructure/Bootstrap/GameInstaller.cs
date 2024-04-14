@@ -29,6 +29,7 @@ namespace Runtime.Infrastructure.Bootstrap
         
         public override void InstallBindings()
         {
+            Container.Bind<GameParameters>().AsSingle();
             Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();

@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bestScoreText: {fileID: 562010133489069197}
+  _duration: 1
 --- !u!1 &562010133724525183
 GameObject:
   m_ObjectHideFlags: 0

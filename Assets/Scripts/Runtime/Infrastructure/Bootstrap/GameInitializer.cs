@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks.Triggers;
-using Runtime.Infrastructure.Factories;
+﻿using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.UI.Screens;
@@ -21,6 +20,9 @@ namespace Runtime.Infrastructure.Bootstrap
         [Inject] private IWorldFactory _worldFactory;
         [Inject] private MouseManager _mouseManager;
         
+        //TODO крайне плохое решение, стоит подумать и действительно посмотреть на Zenject фабрики 
+        [Inject] private DiContainer _diContainer;
+        
         //TODO Когда будет свободное время - попробовать перенести в друое место инициализацию
         private async void Awake()
         {
@@ -34,7 +36,7 @@ namespace Runtime.Infrastructure.Bootstrap
             await _mouseManager.AsyncInitialize(camera);
             await _mouseMoveService.AsyncInitialize(trail);
 
-            GameScreen gameScreen = UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
+            GameScreen gameScreen = UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform, _diContainer);
             await gameScreen.AsyncInitialize();
             
             await _gameScreenManager.AsyncInitialize(camera);

@@ -2,6 +2,6 @@
 {
     public static class Game
     {
-        public const int InitialHealthCount = 6;
+        public const int InitialHealthCount = 3;
     }
 }

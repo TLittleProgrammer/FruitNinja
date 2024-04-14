@@ -22,9 +22,14 @@ namespace Runtime.Infrastructure.Factories
         
         public TResult LoadScreen<TResult>(ScreenType screenType, Transform parent) where TResult : Object
         {
+            return LoadScreen<TResult>(screenType, parent, _diContainer);
+        }
+
+        public TResult LoadScreen<TResult>(ScreenType screenType, Transform parent, DiContainer diContainer) where TResult : Object
+        {
             GameObject screenPrefab = _screenContainer.GetScreen(screenType);
             
-            TResult screen = _diContainer
+            TResult screen = diContainer
                 .InstantiatePrefab(screenPrefab, Vector3.zero, Quaternion.identity, parent)
                 .GetComponentInChildren<TResult>();
 

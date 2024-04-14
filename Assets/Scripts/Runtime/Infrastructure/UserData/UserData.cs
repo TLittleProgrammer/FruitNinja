@@ -2,25 +2,36 @@
 
 namespace Runtime.Infrastructure.UserData
 {
+    [Serializable]
     public class UserData
     {
-        public int BestScore { get; private set; }
+        public int bestScore;
 
         public event Action<int> BestScoreChanged;
+        public event Action UserDataWasUpdated;
         
         public UserData()
         {
-            BestScore = 0;
+            bestScore = 0;
         }
 
         public void SetNewBestScore(int newBestScore)
         {
-            if (newBestScore > BestScore)
+            if (newBestScore > bestScore)
             {
-                BestScore = newBestScore;
-                
-                BestScoreChanged?.Invoke(BestScore);
+                bestScore = newBestScore;
+
+                UserDataWasUpdated?.Invoke();
+                BestScoreChanged?.Invoke(bestScore);
             }
+        }
+
+        public void UpdateParams(UserData deserializedUserData)
+        {
+            bestScore = deserializedUserData.bestScore;
+            
+            UserDataWasUpdated?.Invoke();
+            BestScoreChanged?.Invoke(bestScore);
         }
     }
 }
