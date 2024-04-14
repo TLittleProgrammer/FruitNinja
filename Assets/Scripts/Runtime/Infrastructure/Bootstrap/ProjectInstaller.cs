@@ -10,6 +10,9 @@ namespace Runtime.Infrastructure.Bootstrap
     {
         public override void InstallBindings()
         {
+            Container.Bind<GameParameters>().AsSingle();
+            Container.Bind<UserData.UserData>().AsSingle();
+            
             Container.BindInterfacesAndSelfTo<ResourcesAssetProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<AsyncSceneLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();

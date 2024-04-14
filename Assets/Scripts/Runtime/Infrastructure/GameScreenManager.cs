@@ -82,5 +82,10 @@ namespace Runtime.Infrastructure
                 _ => Mathf.Lerp(-_orthographicSize, _orthographicSize, lerpValue) 
             };
         }
+
+        public float GetHorizontalSizeWithStep()
+        {
+            return _horizontalPlusOneStepSize;
+        }
     }
 }

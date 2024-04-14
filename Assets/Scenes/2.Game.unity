@@ -169,7 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SideType: 2
   Weight: 5
-  FirstSpawnPointPercent: 0
+  FirstSpawnPointPercent: 0.207
   SecondSpawnPointPercent: 0.613
   SpeedXMin: 5
   SpeedXMax: 9
@@ -428,13 +428,13 @@ MonoBehaviour:
   SecondSpawnPointPercent: 0.77
   SpeedXMin: 2
   SpeedXMax: 4
-  SpeedYMin: 50
-  SpeedYMax: 100
+  SpeedYMin: 10
+  SpeedYMax: 15
   SpawnPackOffsetMin: 0.15
   SpawnPackOffsetMax: 0.3
   MainDirectionOffset: 0
-  FirstOffsetAngle: 67.52
-  SecondOffsetAngle: -64.5
+  FirstOffsetAngle: 34.8
+  SecondOffsetAngle: -47.6
   PackSize: 3
 --- !u!1 &1150447442
 GameObject:

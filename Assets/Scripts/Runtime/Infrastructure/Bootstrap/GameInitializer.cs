@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Factories;
+﻿using Cysharp.Threading.Tasks.Triggers;
+using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.UI.Screens;
@@ -33,7 +34,9 @@ namespace Runtime.Infrastructure.Bootstrap
             await _mouseManager.AsyncInitialize(camera);
             await _mouseMoveService.AsyncInitialize(trail);
 
-            UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
+            GameScreen gameScreen = UiFactory.LoadScreen<GameScreen>(ScreenType.Game, SceneCanvasTransform);
+            await gameScreen.AsyncInitialize();
+            
             await _gameScreenManager.AsyncInitialize(camera);
             
             GameStateMachine.HideLoadingScreen();

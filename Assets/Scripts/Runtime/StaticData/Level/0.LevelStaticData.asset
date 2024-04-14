@@ -15,7 +15,7 @@ MonoBehaviour:
   SlicableObjectSpawnerDataList:
   - SideType: 2
     Weight: 5
-    FirstSpawnPoint: 0
+    FirstSpawnPoint: 0.207
     SecondSpawnPoint: 0.613
     MainDirectionOffset: 70.1
     FirstOffset: 41.7
@@ -42,16 +42,16 @@ MonoBehaviour:
     PackSpawnOffsetMax: 0.75
     PackSize: 1
   - SideType: 3
-    Weight: 25
+    Weight: 35
     FirstSpawnPoint: 0.241
     SecondSpawnPoint: 0.77
     MainDirectionOffset: 0
-    FirstOffset: 67.52
-    SecondOffset: -64.5
+    FirstOffset: 34.8
+    SecondOffset: -47.6
     SpeedXMin: 2
     SpeedXMax: 4
-    SpeedYMin: 50
-    SpeedYMax: 100
+    SpeedYMin: 100
+    SpeedYMax: 200
     PackSpawnOffsetMin: 0.15
     PackSpawnOffsetMax: 0.3
     PackSize: 3

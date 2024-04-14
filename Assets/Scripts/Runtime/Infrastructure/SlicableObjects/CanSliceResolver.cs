@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Effects;
+using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private readonly MouseManager _mouseManager;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly SlicableMovementService _slicableMovementService;
+        private readonly GameParameters _gameParameters;
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
@@ -20,6 +22,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             MouseManager mouseManager,
             SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
+            GameParameters gameParameters,
             SliceableObjectDummy.Pool dummyPool,
             BlotEffect.Pool blotEffectPool,
             SplashEffect.Pool splashEffectPool
@@ -28,6 +31,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             _mouseManager = mouseManager;
             _slicableVisualContainer = slicableVisualContainer;
             _slicableMovementService = slicableMovementService;
+            _gameParameters = gameParameters;
             _dummyPool = dummyPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
@@ -37,25 +41,31 @@ namespace Runtime.Infrastructure.SlicableObjects
         {
             if (_mouseManager.CanSlice)
             {
-                Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
-                Sprite sprite = GetSlicedSpriteByName(slicableObjectSprite);
-                
-                SliceableObjectDummy[] dummyArray = TakeDummies();
-                
-                dummyArray[0].ChangeSprite(sprite);
-                dummyArray[1].ChangeSprite(sprite);
-                
-                SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
-
-                ChangeDummiesPosition(slicableModel, dummyArray, slicableObjectSprite);
-                AddMappingToMovementService(slicableModel, dummyArray);
-
-                _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
-                slicableObjectView.gameObject.SetActive(false);
-
-                AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
-                AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
+                SliceObject(slicableObjectView);
+                _gameParameters.ChangeScore(Random.Range(25, 100));
             }
+        }
+
+        private void SliceObject(SlicableObjectView slicableObjectView)
+        {
+            Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
+            Sprite sprite = GetSlicedSpriteByName(slicableObjectSprite);
+
+            SliceableObjectDummy[] dummyArray = TakeDummies();
+
+            dummyArray[0].ChangeSprite(sprite);
+            dummyArray[1].ChangeSprite(sprite);
+
+            SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
+
+            ChangeDummiesPosition(slicableModel, dummyArray, slicableObjectSprite);
+            AddMappingToMovementService(slicableModel, dummyArray);
+
+            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
+            slicableObjectView.gameObject.SetActive(false);
+
+            AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
+            AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
         }
 
         private void AddSplashEffect(Vector3 transformPosition, string spriteName)
@@ -86,6 +96,9 @@ namespace Runtime.Infrastructure.SlicableObjects
             SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
             SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
 
+            modelFirstDummy.AddDirection(_mouseManager.GetMouseNormalizedDirection());
+            modelSecondDummy.AddDirection(_mouseManager.GetMouseNormalizedDirection());
+            
             _slicableMovementService.AddMapping(modelFirstDummy, dummyArray[0].transform);
             _slicableMovementService.AddMapping(modelSecondDummy, dummyArray[1].transform);
         }

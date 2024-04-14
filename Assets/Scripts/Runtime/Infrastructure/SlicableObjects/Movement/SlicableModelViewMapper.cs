@@ -4,6 +4,7 @@ using Runtime.Constants;
 using Runtime.Extensions;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -91,7 +92,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
             while (maxHeight >= Mathf.Abs(_gameScreenManager.GetOrthographicSize() - position.y) - 0.5f)
             {
-                speedY -= 0.15f;
+                speedY -= 0.05f;
                 maxHeight = speedY * speedY * constantValue;
             }
 
@@ -100,11 +101,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         private Vector2 GetDirection(SlicableObjectSpawnerData spawnerData, Vector2 firstPosition)
         {
-            //TODO использовать OnValidate, чтобы убрать эту проверку
-            float randomAngle =
-                spawnerData.FirstOffset >= spawnerData.SecondOffset ?
-                    Random.Range(spawnerData.SecondOffset, spawnerData.FirstOffset) :
-                    Random.Range(spawnerData.FirstOffset, spawnerData.SecondOffset);
+            float quaternionAngle = Quaternion.Angle(Quaternion.Euler(0f, 0f, spawnerData.FirstOffset), Quaternion.Euler(0f, 0f, spawnerData.SecondOffset));
+
+            float randomAngle = Random.Range(-quaternionAngle, quaternionAngle);
 
             Vector2 directionPoint = _gameScreenManager.GetRotatableVectorPoint(spawnerData.MainDirectionOffset + randomAngle);
 

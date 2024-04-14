@@ -38,7 +38,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 
             directionAngle += sideType.GetAngle();
             
-            _constantValueInSpeedYFormula = _speedY * Mathf.Sin(directionAngle);
+            _constantValueInSpeedYFormula = _speedY * Mathf.Sin(directionAngle.ConvertToRadians());
             
             if (direction.y < 0f)
             {
@@ -46,7 +46,17 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             }
         }
 
-        public Vector2 Direction => _direction;
+        public Vector2 Direction
+        {
+            get => _direction;
+            set
+            {
+                _speedX += 0.45f;
+                _speedY += 0.45f;
+                
+            }
+        }
+
         public float SpeedX => _speedX;
         public float SpeedY => _speedY;
         public Vector2 Position => _position;
@@ -56,6 +66,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             float deltaTime = Time.deltaTime;
             _allTime += deltaTime;
 
+            Debug.DrawLine(_position, _position + _direction, Color.red);
+            Debug.DrawLine(_position, _position + new Vector2(_speedX, _speedY * _directionMultiplier * _directionMultiplier * deltaTime), Color.blue);
+            
             _speedY = _constantValueInSpeedYFormula + World.Gravity * _allTime;
             
             _position += new Vector2(_speedX, _speedY * _directionMultiplier) * deltaTime * _direction;

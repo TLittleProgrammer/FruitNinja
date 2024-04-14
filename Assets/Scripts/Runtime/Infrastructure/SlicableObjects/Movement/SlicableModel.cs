@@ -25,6 +25,11 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _modelAnimation.SimulateAnimation();
         }
 
+        public void AddDirection(Vector2 direction)
+        {
+            _movementObject.Direction = direction;
+        }
+
         public SlicableModelParams GetParams()
         {
             return new(_movementObject.Direction, _movementObject.SpeedX, _movementObject.SpeedY, _modelAnimation);

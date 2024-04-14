@@ -1,5 +1,6 @@
 ﻿using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
+using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.Movement;
@@ -32,7 +33,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             Container.Bind<CanSliceResolver>().AsSingle();
-            
+
             Container.BindInterfacesAndSelfTo<MouseMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
