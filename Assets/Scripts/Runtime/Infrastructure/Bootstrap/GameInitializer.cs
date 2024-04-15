@@ -2,6 +2,7 @@
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
@@ -16,7 +17,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly Canvas _gameCanvas;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
-        private readonly MouseMoveService _mouseMoveService;
+        private readonly TrailMoveService _trailMoveService;
         private readonly IWorldFactory _worldFactory;
         private readonly MouseManager _mouseManager;
         private readonly IGameStateMachine _gameStateMachine;
@@ -28,7 +29,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Canvas gameCanvas,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
-            MouseMoveService mouseMoveService,
+            TrailMoveService trailMoveService,
             MouseManager mouseManager,
             DiContainer diContainer,
             IGameStateMachine gameStateMachine,
@@ -39,7 +40,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _gameCanvas = gameCanvas;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
-            _mouseMoveService = mouseMoveService;
+            _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _diContainer = diContainer;
             _gameStateMachine = gameStateMachine;
@@ -51,13 +52,13 @@ namespace Runtime.Infrastructure.Bootstrap
         {
             await _slicableVisualContainer.AsyncInitialize();
             
-            Trail trail = await _worldFactory.CreateObject<Trail>(PathToTrail, null);
+            TrailView trailView = await _worldFactory.CreateObject<TrailView>(PathToTrail, null);
 
             Camera camera = await _uiFactory.LoadUIObjectByPath<Camera>(PathToGameCameraPrefab, null, Vector3.back * 10);
             _gameCanvas.worldCamera = camera;
 
             await _mouseManager.AsyncInitialize(camera);
-            await _mouseMoveService.AsyncInitialize(trail);
+            await _trailMoveService.AsyncInitialize(trailView);
 
             GameScreen gameScreen = _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _gameCanvas.transform, _diContainer);
             await gameScreen.AsyncInitialize();

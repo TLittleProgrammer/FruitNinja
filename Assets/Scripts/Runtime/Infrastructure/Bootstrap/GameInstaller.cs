@@ -6,6 +6,7 @@ using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
 using UnityEngine;
 using Zenject;
@@ -40,7 +41,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             Container.Bind<CanSliceResolver>().AsSingle();
 
-            Container.BindInterfacesAndSelfTo<MouseMoveService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();

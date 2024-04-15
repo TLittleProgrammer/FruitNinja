@@ -1,23 +1,23 @@
 ﻿using Cysharp.Threading.Tasks;
+using Runtime.Infrastructure.Mouse;
 using UnityEngine;
 using Zenject;
 
-namespace Runtime.Infrastructure.Mouse
+namespace Runtime.Infrastructure.Trail
 {
-    public class MouseMoveService : IAsyncInitializable<Trail>, ITickable
+    public class TrailMoveService : IAsyncInitializable<TrailView>, ITickable
     {
         private readonly MouseManager _mouseManager;
-        
-        private Trail _trail;
+        private TrailView _trailView;
 
-        public MouseMoveService(MouseManager mouseManager)
+        public TrailMoveService(MouseManager mouseManager)
         {
             _mouseManager = mouseManager;
         }
 
-        public async UniTask AsyncInitialize(Trail trailTransform)
+        public async UniTask AsyncInitialize(TrailView trailViewTransform)
         {
-            _trail = trailTransform;
+            _trailView = trailViewTransform;
             
             await UniTask.CompletedTask;
         }
@@ -28,7 +28,7 @@ namespace Runtime.Infrastructure.Mouse
             {
                 Vector3 targetPosition = _mouseManager.GetMousePositionInWorldCoordinates();
                 
-                _trail.transform.position = new Vector3(targetPosition.x, targetPosition.y, 0f);
+                _trailView.transform.position = new Vector3(targetPosition.x, targetPosition.y, 0f);
             }
             
             CheckMouseButtonDown();
@@ -39,8 +39,7 @@ namespace Runtime.Infrastructure.Mouse
         {
             if (Input.GetMouseButtonUp(0))
             {
-                _trail.SpriteRenderer.enabled = false;
-                _trail.TrailRenderer.emitting = false;
+                _trailView.SpriteRenderer.enabled = false;
             }
         }
 
@@ -48,8 +47,8 @@ namespace Runtime.Infrastructure.Mouse
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _trail.SpriteRenderer.enabled = true;
-                _trail.TrailRenderer.emitting = true;
+                _trailView.TrailRenderer.Clear();
+                _trailView.SpriteRenderer.enabled = true;
             }
         }
     }

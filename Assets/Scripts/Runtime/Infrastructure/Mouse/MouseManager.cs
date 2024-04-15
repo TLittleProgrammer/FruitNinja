@@ -4,13 +4,10 @@ using Zenject;
 
 namespace Runtime.Infrastructure.Mouse
 {
-    public class MouseManager : IAsyncInitializable<Camera>, ITickable
+    public sealed class MouseManager : IAsyncInitializable<Camera>, ITickable
     {
         private Camera _camera;
-
         private Vector2 _previousMousePosition;
-        //TODO магическое число, вынести в настройки
-        private float _minRequiredDistance = 0.001f;
         private bool _canSlice;
         private bool _canCheckMousePositionDelta;
 
@@ -26,10 +23,6 @@ namespace Runtime.Infrastructure.Mouse
 
         public void Tick()
         {
-            //TODO Костылек. Подумать как можно инициализивать до вызова тиков
-            if (_camera is null)
-                return;
-
             CheckMouseButtonDown();
             CheckMouseButtonUp();
 
@@ -37,7 +30,7 @@ namespace Runtime.Infrastructure.Mouse
             {
                 Vector2 currentMousePosition = GetMousePositionInWorldCoordinates();
 
-                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= _minRequiredDistance;
+                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= Constants.Game.MinRequiredDistanceBetweenMousePositions;
                 _previousMousePosition = currentMousePosition;
             }
         }

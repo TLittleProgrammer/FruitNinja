@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Runtime.Infrastructure.Mouse
+namespace Runtime.Infrastructure.Trail
 {
-    public class Trail : MonoBehaviour
+    public class TrailView : MonoBehaviour
     {
         public SpriteRenderer SpriteRenderer;
         public TrailRenderer TrailRenderer;
