@@ -6,7 +6,7 @@ namespace Editor.UserData
     public class ClearUserData
     {
         [MenuItem("OpenMyGame/UserData/Delete UserData")]
-        private void DeleteUserData()
+        private static void DeleteUserData()
         {
             PlayerPrefs.DeleteAll();
         }
