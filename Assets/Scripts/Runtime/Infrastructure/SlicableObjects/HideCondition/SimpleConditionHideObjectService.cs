@@ -22,11 +22,6 @@ namespace Runtime.Infrastructure.SlicableObjects.HideCondition
             return Abs(currentPosition.x) >= _horizontalMaxPosition || currentPosition.y <= _verticalMinPosition;
         }
 
-        public void Reset()
-        {
-            
-        }
-
         private float Abs(float value)
         {
             return value > 0f ? value : -value;

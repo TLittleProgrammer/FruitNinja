@@ -3,6 +3,5 @@
     public interface IConditionObjectHideService
     {
         bool IsNeedHideObject();
-        void Reset();
     }
 }
