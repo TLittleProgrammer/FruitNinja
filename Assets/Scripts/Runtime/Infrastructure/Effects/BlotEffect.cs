@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 namespace Runtime.Infrastructure.Effects
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    public class BlotEffect : MonoBehaviour
+    public sealed class BlotEffect : MonoBehaviour
     {
         private SpriteRenderer _spriteRenderer;
         private BlotEffectSettings _blotEffectSettings;
