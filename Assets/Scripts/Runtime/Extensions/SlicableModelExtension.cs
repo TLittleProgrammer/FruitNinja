@@ -9,8 +9,7 @@ namespace Runtime.Extensions
         public static SlicableModel CreateCopy(this SlicableModel slicableModel, Transform targetTransform, Transform shadowTransform)
         {
             SlicableModelParams modelParams = slicableModel.GetParams();
-
-            IModelAnimation modelAnimation = GetModelAnimation(modelParams.ModelAnimation, targetTransform, shadowTransform, 0f);
+            IModelAnimation modelAnimation  = GetModelAnimation(modelParams.ModelAnimation, targetTransform, shadowTransform, 0f);
             
             return new(targetTransform, modelParams.VelocityX, modelParams.VelocityY, modelParams.Angle, modelAnimation);
         }
