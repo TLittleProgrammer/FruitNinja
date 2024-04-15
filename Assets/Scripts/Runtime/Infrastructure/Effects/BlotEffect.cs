@@ -40,6 +40,7 @@ namespace Runtime.Infrastructure.Effects
                 .SetDelay(GetRandomValue(_blotEffectSettings.MinDelay, _blotEffectSettings.MaxDelay))
                 .OnComplete(() =>
                 {
+                    gameObject.SetActive(false);
                     animationEnded?.Invoke();
                 });
         }
