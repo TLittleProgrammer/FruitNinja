@@ -42,9 +42,13 @@ namespace Runtime.Infrastructure.Mouse
             }
         }
 
+        public Vector2 GetMousePositionInWorldCoordinates()
+        {
+            return _camera.ScreenToWorldPoint(Input.mousePosition);
+        }
+
         private void CheckMouseButtonUp()
         {
-            //TODO магическое число, вынести в настройки
             if (Input.GetMouseButtonUp(0))
             {
                 _canCheckMousePositionDelta = false;
@@ -58,16 +62,6 @@ namespace Runtime.Infrastructure.Mouse
             {
                 _canCheckMousePositionDelta = true;
             }
-        }
-
-        public Vector2 GetMousePositionInWorldCoordinates()
-        {
-            return _camera.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        public Vector2 GetMouseNormalizedDirection()
-        {
-            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
         }
     }
 }

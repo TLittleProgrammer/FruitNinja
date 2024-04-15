@@ -1,14 +1,29 @@
-﻿using Runtime.UI.Screens;
+﻿using Runtime.Infrastructure.Factories;
+using Runtime.Infrastructure.NotStateMachine;
+using Runtime.UI.Screens;
+using UnityEngine;
+using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
-    public sealed class MainMenuInitializer : AbstractIntializer
+    public sealed class MainMenuInitializer : IInitializable
     {
-        private void Awake()
+        private readonly Transform _sceneCanvasTransform;
+        private readonly IGameStateMachine _gameStateMachine;
+        private readonly IUIFactory _uiFactory;
+
+        public MainMenuInitializer(Transform sceneCanvasTransform, IGameStateMachine gameStateMachine, IUIFactory uiFactory)
         {
-            UiFactory.LoadScreen<MainMenu>(ScreenType.MainMenu, SceneCanvasTransform);
+            _sceneCanvasTransform = sceneCanvasTransform;
+            _gameStateMachine = gameStateMachine;
+            _uiFactory = uiFactory;
+        }
+
+        public void Initialize()
+        {
+            _uiFactory.LoadScreen<MainMenu>(ScreenType.MainMenu, _sceneCanvasTransform);
             
-            GameStateMachine.HideLoadingScreen();
+            _gameStateMachine.HideLoadingScreen();
         }
     }
 }
