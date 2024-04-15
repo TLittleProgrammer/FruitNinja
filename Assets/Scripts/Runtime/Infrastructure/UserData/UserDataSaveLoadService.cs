@@ -18,8 +18,7 @@ namespace Runtime.Infrastructure.UserData
         
         public void Save()
         {
-            string s = JsonUtility.ToJson(_userData);
-            PlayerPrefs.SetString(UserDataKey, s);
+            PlayerPrefs.SetString(UserDataKey, _userData.ToJson());
             PlayerPrefs.Save();
         }
 
