@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Effects;
+﻿using Runtime.Extensions;
+using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
@@ -41,29 +42,10 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
 
-            Container
-                .BindMemoryPool<SlicableObjectView, SlicableObjectView.Pool>()
-                .WithInitialSize(_poolSettings.PoolInitialSize)
-                .FromComponentInNewPrefab(_slicableObjectViewPrefab)
-                .UnderTransformGroup(_poolParent.name);
-            
-            Container
-                .BindMemoryPool<SliceableObjectDummy, SliceableObjectDummy.Pool>()
-                .WithInitialSize(_poolSettings.PoolInitialSize * 2)
-                .FromComponentInNewPrefab(_dummyPrefab)
-                .UnderTransformGroup(_dummyPoolParent.name);
-
-            Container
-                .BindMemoryPool<BlotEffect, BlotEffect.Pool>()
-                .WithInitialSize(_poolSettings.PoolInitialSize * 2)
-                .FromComponentInNewPrefab(_blotEffectPrefab)
-                .UnderTransformGroup(_blotPoolParent.name);
-            
-            Container
-                .BindMemoryPool<SplashEffect, SplashEffect.Pool>()
-                .WithInitialSize(_poolSettings.PoolInitialSize)
-                .FromComponentInNewPrefab(_splashEffectPrefab)
-                .UnderTransformGroup(_splashPoolParent.name);
+            Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent.name);
+            Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent.name);
+            Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent.name);
+            Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent.name);
         }
     }
 }
