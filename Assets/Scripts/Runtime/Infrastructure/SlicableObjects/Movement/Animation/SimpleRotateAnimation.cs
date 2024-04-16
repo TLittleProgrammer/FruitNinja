@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Runtime.Extensions;
+using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 {
@@ -26,18 +27,13 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
         
         public void SimulateAnimation()
         {
-            if (Abs(_currentAngle) >= 360f)
+            if (_currentAngle.Abs() >= 360f)
             {
                 _currentAngle = 0f;
             }
 
             _currentAngle += _rotateSpeed * Time.deltaTime;
             _movementTransform.rotation = Quaternion.Euler(0f, 0f, _currentAngle);
-        }
-
-        private float Abs(float value)
-        {
-            return value < 0f ? -value : value;
         }
         
         private int GetRotateDirection()

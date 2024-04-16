@@ -3,22 +3,22 @@ using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
 using UnityEngine;
+using Zenject;
 using ITickable = Zenject.ITickable;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
-    public class SlicableObjectSpawnerManager : ITickable
+    public class SlicableObjectSpawnerManager : ITickable, IInitializable
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
         private readonly List<int> _spawnerPackResize;
         private readonly float _targetSpawnTime;
 
-        private float _spawnTime;
-
-        private bool _canCalculateTime = true;
-        private float _currentTime;
         private int _allWeightLine;
+        private bool _canCalculateTime = true;
+        private float _spawnTime;
+        private float _currentTime;
 
         public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper)
         {
@@ -27,17 +27,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _spawnTime = levelStaticData.BeginPackOffset;
             _targetSpawnTime = levelStaticData.EndPackOffset;
             _spawnerPackResize = new();
-
-            InitializeRepackSize();
-            CalculateWeightLine(levelStaticData);
         }
 
-        private void InitializeRepackSize()
+        public void Initialize()
         {
-            for (int i = 0; i < _spawnersData.Count; i++)
-            {
-                _spawnerPackResize.Add(0);
-            }
+            InitializeRepackSize();
+            CalculateWeightLine();
         }
 
         public async void Tick()
@@ -70,7 +65,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                     
                     await UniTask.Delay(delay);
                 }
-
+                
                 if (_spawnerPackResize[spawnerDataIndex] < 5)
                 {
                     _spawnerPackResize[spawnerDataIndex]++;
@@ -103,9 +98,17 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             return 0;
         }
 
-        private void CalculateWeightLine(LevelStaticData levelStaticData)
+        private void InitializeRepackSize()
         {
-            foreach (SlicableObjectSpawnerData spawnerData in levelStaticData.SlicableObjectSpawnerDataList)
+            for (int i = 0; i < _spawnersData.Count; i++)
+            {
+                _spawnerPackResize.Add(0);
+            }
+        }
+
+        private void CalculateWeightLine()
+        {
+            foreach (SlicableObjectSpawnerData spawnerData in _spawnersData)
             {
                 _allWeightLine += spawnerData.Weight;
             }

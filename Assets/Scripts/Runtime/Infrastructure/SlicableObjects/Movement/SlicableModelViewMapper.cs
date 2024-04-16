@@ -30,20 +30,20 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         
         public void AddMapping(SlicableObjectSpawnerData spawnerData)
         {
-            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.First(x => !x.gameObject.activeInHierarchy);
+            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
 
             UpdateViewSprites(slicableObjectView);
             ChangePositionAndActivate(spawnerData, slicableObjectView);
 
             float angleInRadians = GetDirectionAngleInRadians(spawnerData);
-            float velocityX = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
-            float velocityY = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
+            float velocityX      = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
+            float velocityY      = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
             
-            velocityY = CalculateSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
+            velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
@@ -60,11 +60,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             };
         }
         
-        //TODO Убрать цикл. Сделать 1ой формулой
-        private float CalculateSpeedY(float velocity, float radians, float spawnPositionY)
+        private float CalculateMaxSpeedY(float velocity, float radians, float spawnPositionY)
         {
             float maxHeight = _gameScreenManager.GetOrthographicSize() + Mathf.Abs(spawnPositionY);
-
             float maxVelocity = Mathf.Sqrt(maxHeight * -2f * World.Gravity * Mathf.Sin(radians) * Mathf.Sin(radians));
 
             if (velocity > maxVelocity)

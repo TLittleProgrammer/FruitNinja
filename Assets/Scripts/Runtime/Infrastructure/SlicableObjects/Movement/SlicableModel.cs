@@ -33,7 +33,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public SlicableModelParams GetParams()
         {
-            return new(_velocityX, _velocityY, _angle, _modelAnimation);
+            return new(_velocityX, _angle, _modelAnimation);
         }
     }
 
@@ -44,7 +44,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         public float Angle;
         public IModelAnimation ModelAnimation;
 
-        public SlicableModelParams(float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
+        public SlicableModelParams(float velocityX, float angle, IModelAnimation modelAnimation)
         {
             VelocityX = velocityX;
             Angle = angle;

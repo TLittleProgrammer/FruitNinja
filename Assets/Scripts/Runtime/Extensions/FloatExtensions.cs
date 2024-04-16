@@ -8,5 +8,10 @@ namespace Runtime.Extensions
         {
             return angleValue * Mathf.Deg2Rad;
         }
+
+        public static float Abs(this float value)
+        {
+            return value > 0f ? value : -value;
+        }
     }
 }
