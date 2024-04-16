@@ -39,6 +39,11 @@ namespace Runtime.Infrastructure.Mouse
         {
             return _camera.ScreenToWorldPoint(Input.mousePosition);
         }
+        
+        public Vector2 GetMouseNormalizedDirection()
+        {
+            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
+        }
 
         private void CheckMouseButtonUp()
         {

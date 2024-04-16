@@ -93,9 +93,21 @@ namespace Runtime.Infrastructure.SlicableObjects
 
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
         {
-            SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
+            SlicableModel modelFirstDummy  = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
             SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
 
+            SlicableModelParams firstParams  = modelFirstDummy.GetParams();
+            SlicableModelParams secondParams = modelSecondDummy.GetParams();
+
+            Vector2 mouseDirection = _mouseManager.GetMouseNormalizedDirection();
+            float angleBetweenMouseDirectionAndVectorRight = Vector2.Angle(Vector2.right, mouseDirection);
+            
+            float firstAngle  = (angleBetweenMouseDirectionAndVectorRight + Random.Range(15f, 25f)).ConvertToRadians();
+            float secondAngle = (angleBetweenMouseDirectionAndVectorRight - Random.Range(15f, 25f)).ConvertToRadians();
+            
+            modelFirstDummy.ResetMovementObjectService(firstParams.VelocityX + 0.25f, firstParams.VelocityY + 0.5f, firstAngle, dummyArray[0].transform.position);
+            modelSecondDummy.ResetMovementObjectService(secondParams.VelocityX + 0.25f, secondParams.VelocityY + 0.5f, secondAngle, dummyArray[1].transform.position);
+            
             _slicableMovementService.AddMapping(modelFirstDummy, dummyArray[0].transform);
             _slicableMovementService.AddMapping(modelSecondDummy, dummyArray[1].transform);
         }
