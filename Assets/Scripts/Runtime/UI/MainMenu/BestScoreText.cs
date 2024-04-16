@@ -25,21 +25,20 @@ namespace Runtime.UI.MainMenu
         {
             if (_targetScore != 0)
             {
-                StartCoroutine(ChangeBestScore());
+                StartCoroutine(ChangeBestScoreText());
             }
         }
 
-        private IEnumerator ChangeBestScore()
+        private IEnumerator ChangeBestScoreText()
         {
-            float timeOffset = _duration / _targetScore;
-            _currentScore = 0;
-
-            while (_currentScore <= _targetScore)
+            for (float timer = 0; timer < _duration; timer += Time.deltaTime)
             {
-                _currentScore++;
-                _bestScoreText.text = _currentScore.ToString();
+                float lerpValue = timer / _duration;
+                int scoreToDisplay = (int)Mathf.Lerp(0, _targetScore, lerpValue);
 
-                yield return new WaitForSeconds(timeOffset);
+                _bestScoreText.text = scoreToDisplay.ToString();
+                
+                yield return null;
             }
         }
     }
