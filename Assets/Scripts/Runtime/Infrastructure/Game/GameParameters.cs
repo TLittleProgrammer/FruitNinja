@@ -19,6 +19,7 @@ namespace Runtime.Infrastructure.Game
         }
 
         public int Health => _health;
+        public int CurrentScore => _currentScore;
 
         public void ChangeScore(int addScore)
         {

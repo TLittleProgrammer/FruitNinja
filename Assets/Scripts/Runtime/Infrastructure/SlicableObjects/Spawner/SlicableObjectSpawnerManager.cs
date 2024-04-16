@@ -2,8 +2,9 @@
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
+using Unity.VisualScripting;
 using UnityEngine;
-using Zenject;
+using IInitializable = Zenject.IInitializable;
 using ITickable = Zenject.ITickable;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
@@ -41,6 +42,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                 return;
 
             await CalculateTime();
+        }
+
+        public void Continue()
+        {
+            _canCalculateTime = true;
+        }
+
+        public void Stop()
+        {
+            _canCalculateTime = false;
         }
 
         private async UniTask CalculateTime()
