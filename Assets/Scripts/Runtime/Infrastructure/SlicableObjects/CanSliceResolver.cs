@@ -17,6 +17,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
+        private readonly SliceableObjectSpriteRendererOrderService _orderService;
 
         public CanSliceResolver(
             MouseManager mouseManager,
@@ -25,7 +26,8 @@ namespace Runtime.Infrastructure.SlicableObjects
             GameParameters gameParameters,
             SliceableObjectDummy.Pool dummyPool,
             BlotEffect.Pool blotEffectPool,
-            SplashEffect.Pool splashEffectPool
+            SplashEffect.Pool splashEffectPool,
+            SliceableObjectSpriteRendererOrderService orderService
         )
         {
             _mouseManager = mouseManager;
@@ -35,6 +37,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             _dummyPool = dummyPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
+            _orderService = orderService;
         }
 
         public void TrySlice(SlicableObjectView slicableObjectView)
@@ -55,6 +58,8 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             dummyArray[0].ChangeSprite(sprite);
             dummyArray[1].ChangeSprite(sprite);
+            
+            UpdateSortingInLayerIndex(dummyArray);
 
             SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
 
@@ -66,6 +71,14 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
             AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
+        }
+
+        private void UpdateSortingInLayerIndex(SliceableObjectDummy[] dummyArray)
+        {
+            _orderService.UpdateOrderInLayer(dummyArray[0].SlicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[0].SlicableObjectView.ShadowSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.ShadowSprite);
         }
 
         private void AddSplashEffect(Vector3 transformPosition, string spriteName)

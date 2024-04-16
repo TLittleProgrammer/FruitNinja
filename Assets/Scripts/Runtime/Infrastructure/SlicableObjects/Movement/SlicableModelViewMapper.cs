@@ -14,23 +14,29 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
         private readonly SlicableMovementService _slicableMovementService;
+        private readonly SliceableObjectSpriteRendererOrderService _orderService;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
-            SlicableMovementService slicableMovementService)
+            SlicableMovementService slicableMovementService,
+            SliceableObjectSpriteRendererOrderService orderService)
         {
             _objectPool = objectPool;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _slicableMovementService = slicableMovementService;
+            _orderService = orderService;
         }
         
         public void AddMapping(SlicableObjectSpawnerData spawnerData)
         {
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
+            
+            _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
 
             UpdateViewSprites(slicableObjectView);
             ChangePositionAndActivate(spawnerData, slicableObjectView);

@@ -40,6 +40,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
             Container.Bind<CanSliceResolver>().AsSingle();
+            Container.Bind<SliceableObjectSpriteRendererOrderService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();

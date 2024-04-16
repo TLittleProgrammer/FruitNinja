@@ -1,5 +1,6 @@
 ﻿using System;
 using DG.Tweening;
+using Runtime.Infrastructure.SlicableObjects;
 using Runtime.StaticData.Animations;
 using UnityEngine;
 using Zenject;
@@ -12,10 +13,12 @@ namespace Runtime.Infrastructure.Effects
     {
         private SpriteRenderer _spriteRenderer;
         private BlotEffectSettings _blotEffectSettings;
+        private SliceableObjectSpriteRendererOrderService _orderService;
 
         [Inject]
-        private void Construct(BlotEffectSettings blotEffectSettings)
+        private void Construct(BlotEffectSettings blotEffectSettings, SliceableObjectSpriteRendererOrderService orderService)
         {
+            _orderService = orderService;
             _blotEffectSettings = blotEffectSettings;
         }
         
@@ -29,6 +32,7 @@ namespace Runtime.Infrastructure.Effects
             SetPosition(position);
             SetNewBlotSprite(sprite);
             
+            _orderService.UpdateOrderInLayer(_spriteRenderer);
             gameObject.SetActive(true);
 
             GoAnimate(() =>
