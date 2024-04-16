@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects
 {
-    public class CanSliceResolver
+    public class Slicer
     {
         private readonly MouseManager _mouseManager;
         private readonly SlicableVisualContainer _slicableVisualContainer;
@@ -19,7 +19,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private readonly SplashEffect.Pool _splashEffectPool;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
 
-        public CanSliceResolver(
+        public Slicer(
             MouseManager mouseManager,
             SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
@@ -40,17 +40,10 @@ namespace Runtime.Infrastructure.SlicableObjects
             _orderService = orderService;
         }
 
-        public void TrySlice(SlicableObjectView slicableObjectView)
+        public void SliceObject(SlicableObjectView slicableObjectView)
         {
-            if (_mouseManager.CanSlice)
-            {
-                SliceObject(slicableObjectView);
-                _gameParameters.ChangeScore(Random.Range(25, 100));
-            }
-        }
-
-        private void SliceObject(SlicableObjectView slicableObjectView)
-        {
+            _gameParameters.ChangeScore(Random.Range(25, 100));
+            
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
             Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
 

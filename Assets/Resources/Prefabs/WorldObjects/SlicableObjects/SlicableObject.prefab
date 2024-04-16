@@ -187,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainSprite: {fileID: 2280792934056951685}
   _shadowSprite: {fileID: 2280792932704804672}
+  _collider2D: {fileID: 1644806174645407128}
 --- !u!58 &1644806174645407128
 CircleCollider2D:
   m_ObjectHideFlags: 0

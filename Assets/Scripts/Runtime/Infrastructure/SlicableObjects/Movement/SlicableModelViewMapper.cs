@@ -15,25 +15,30 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private readonly GameScreenManager _gameScreenManager;
         private readonly SlicableMovementService _slicableMovementService;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
+        private readonly CollisionDetector.CollisionDetector _collisionDetector;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
             SlicableMovementService slicableMovementService,
-            SliceableObjectSpriteRendererOrderService orderService)
+            SliceableObjectSpriteRendererOrderService orderService,
+            CollisionDetector.CollisionDetector collisionDetector)
         {
             _objectPool = objectPool;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _slicableMovementService = slicableMovementService;
             _orderService = orderService;
+            _collisionDetector = collisionDetector;
         }
         
         public void AddMapping(SlicableObjectSpawnerData spawnerData)
         {
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
+            
+            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
             
             _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
             _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
