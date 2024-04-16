@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
-    public sealed class MovementObjectService : IMovementObject
+    public sealed class MovementObjectServiceService : IMovementObjectService
     {
-        private readonly float _offsetX;
-        private readonly float _offsetY;
-        private readonly float _accelerationOfGravity;
+        private float _offsetX;
+        private float _offsetY;
+        private float _accelerationOfGravity;
         
         private Transform _movementTransform;
         private Vector2 _position;
@@ -18,10 +18,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         private float _allTime;
         private Vector2 _startPosition;
         
-        public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle)
+        public MovementObjectServiceService(Transform movementTransform, float velocityX, float velocityY, float angle)
         {
             _startPosition = movementTransform.position;
             _movementTransform = movementTransform;
+            
+            Initialize(velocityX, velocityY, angle);
+        }
+
+        private void Initialize(float velocityX, float velocityY, float angle)
+        {
             _velocityX = velocityX;
             _velocityY = velocityY;
             _angle = angle;
@@ -42,6 +48,13 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             
             _position = new Vector2(PositionX, PositionY);
             _movementTransform.position = Position;
+        }
+
+        public void Reset(float velocityY, float velocityX, float angle, Vector3 startPosition)
+        {
+            _allTime = 0f;
+            _startPosition = startPosition;
+            Initialize(velocityX, velocityY, angle);
         }
     }
 }

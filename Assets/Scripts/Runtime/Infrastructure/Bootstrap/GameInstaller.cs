@@ -4,6 +4,7 @@ using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.Trail;
@@ -39,13 +40,16 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
-            Container.Bind<CanSliceResolver>().AsSingle();
+            Container.Bind<Slicer>().AsSingle();
+            Container.Bind<SliceableObjectSpriteRendererOrderService>().AsSingle();
+            Container.Bind<IIntermediateMousePositionsService>().To<IntermediateMousePositionsService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
 
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent.name);
             Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent.name);
