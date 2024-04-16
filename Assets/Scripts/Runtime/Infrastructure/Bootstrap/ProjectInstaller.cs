@@ -1,25 +1,33 @@
 using Runtime.Infrastructure.AssetProvider;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.NotStateMachine;
+using Runtime.Infrastructure.UserData;
 using Runtime.UI.Screens;
 using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
-    public sealed class ProjectInstaller : MonoInstaller
+    public sealed class ProjectInstaller : MonoInstaller, IInitializable
     {
         public override void InstallBindings()
         {
-            Container.Bind<UserData.UserData>().AsSingle();
-            Container.Bind<UserData.UserDataSaveLoadService>().AsSingle();
+            Container.BindInterfacesTo<ProjectInstaller>().FromInstance(this).AsSingle();
             
+            Container.Bind<UserData.UserData>().AsSingle();
+            Container.Bind<ScreenContainer>().AsSingle();
+
+            Container.BindInterfacesAndSelfTo<UserDataSaveLoadService>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourcesAssetProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<AsyncSceneLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameStateMachine>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle();
+        }
 
-            Container.Bind<ScreenContainer>().AsSingle();
+        public void Initialize()
+        {
+            ProjectInitializer projectInitializer = Container.Instantiate<ProjectInitializer>();
             
-            Container.Bind<IUIFactory>().To<UIFactory>().AsSingle();
+            projectInitializer.Initialize();
         }
     }
 }

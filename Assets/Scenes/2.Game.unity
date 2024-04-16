@@ -275,52 +275,6 @@ Transform:
   m_Father: {fileID: 575202654}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &384244652
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 384244654}
-  - component: {fileID: 384244653}
-  m_Layer: 0
-  m_Name: GameInitializer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &384244653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384244652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9369d8319fdb4fe8b350d81432c52ea7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SceneCanvasTransform: {fileID: 1695126803}
-  _gameCanvas: {fileID: 1695126802}
---- !u!4 &384244654
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384244652}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1111880495}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &415840210
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +486,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1150447444}
-  - {fileID: 384244654}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -614,6 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0203feeebb2c4f978b54b3e1e97e4d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameCanvas: {fileID: 1695126802}
   _slicableObjectViewPrefab: {fileID: 8944360389312906573, guid: 95395e058e849b34c81eec50795eed38, type: 3}
   _poolParent: {fileID: 103499047}
   _dummyPrefab: {fileID: 5931905157059040033, guid: a552db54c5c6244418f63347ede1079e, type: 3}

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -7,16 +6,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableMovementService : ITickable
     {
-        private List<(SlicableModel, Transform)> _slicableModels;
+        private SliceableMapping _slicableMapping;
 
         public SlicableMovementService()
         {
-            _slicableModels = new();
+            _slicableMapping = new();
         }
         
         public void Tick()
         {
-            foreach ((SlicableModel model, Transform view) in _slicableModels)
+            foreach (SlicableModel model in _slicableMapping.Values)
             {
                 model.Tick();
             }
@@ -24,24 +23,22 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public void AddMapping(SlicableModel model, Transform view)
         {
-            _slicableModels.Add((model, view));
+            _slicableMapping.Add(view, model);
         }
 
         public void RemoveFromMapping(Transform view)
         {
-            (SlicableModel, Transform) mapping = _slicableModels.First(_ => EqualsTransforms(_.Item2, view));
-            
-            _slicableModels.Remove(mapping);
+            _slicableMapping.Remove(view);
         }
 
         public SlicableModel GetSliceableModel(Transform view)
         {
-            return _slicableModels.First(_ => EqualsTransforms(_.Item2, view)).Item1;
+            return _slicableMapping.TryGetValue(view, out SlicableModel slicableModel) ? slicableModel : null;
         }
+    }
 
-        private bool EqualsTransforms(Transform transform, Transform view)
-        {
-            return transform.Equals(view);
-        }
+    public sealed class SliceableMapping : Dictionary<Transform, SlicableModel>
+    {
+        
     }
 }

@@ -5,6 +5,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
     public sealed class MovementObjectService : IMovementObject
     {
+        private readonly float _offsetX;
+        private readonly float _offsetY;
+        private readonly float _accelerationOfGravity;
+        
         private Transform _movementTransform;
         private Vector2 _position;
         private float _velocityX;
@@ -17,17 +21,19 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle)
         {
             _startPosition = movementTransform.position;
-            _position = _startPosition;
             _movementTransform = movementTransform;
             _velocityX = velocityX;
             _velocityY = velocityY;
             _angle = angle;
             _allTime = 0f;
+
+            _offsetX = _velocityX * Mathf.Cos(_angle);
+            _offsetY = _velocityY * Mathf.Sin(_angle);
+            _accelerationOfGravity = 0.5f * World.Gravity;
         }
 
-        public float PositionX => _velocityX * _allTime * Mathf.Cos(_angle);
-        public float PositionY => _velocityY * _allTime * Mathf.Sin(_angle) - 0.5f * (-World.Gravity * Mathf.Pow(_allTime, 2));
-        
+        public float PositionX => _offsetX * _allTime;
+        public float PositionY => _offsetY * _allTime + _accelerationOfGravity * Mathf.Pow(_allTime, 2);
         public Vector2 Position => _position + _startPosition;
 
         public void SimulateMovement()
@@ -35,7 +41,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             _allTime += Time.deltaTime;
             
             _position = new Vector2(PositionX, PositionY);
-            _movementTransform.position = _position + _startPosition;
+            _movementTransform.position = Position;
         }
     }
 }

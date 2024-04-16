@@ -39,8 +39,6 @@ namespace Runtime.Infrastructure.SlicableObjects
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
 
-                _conditionObjectHideService.Reset();
-                
                 if (_isSlicableObject)
                 {
                     _gameParameters.ChangeHealth(-1);

@@ -11,13 +11,14 @@ namespace Runtime.Infrastructure.Game
         
         public event Action<int> HealthChanged;
         public event Action<int> ScoreChanged;
-        public int Health => _health;
 
         public GameParameters(LevelStaticData levelStaticData, UserData.UserData userData)
         {
             _userData = userData;
             _health = levelStaticData.HealthCount * 2;
         }
+
+        public int Health => _health;
 
         public void ChangeScore(int addScore)
         {

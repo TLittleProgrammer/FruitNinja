@@ -6,18 +6,28 @@ using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
-    public sealed class ProjectInitializer : MonoBehaviour
+    public sealed class ProjectInitializer : IInitializable
     {
-        [Inject] private ScreenContainer _screenContainer;
-        [Inject] private IGameStateMachine _gameStateMachine;
-        [Inject] private UserDataSaveLoadService _userDataSaveLoadService;
-        
-        private async void Awake()
+        private readonly ScreenContainer _screenContainer;
+        private readonly IGameStateMachine _gameStateMachine;
+        private readonly IUserDataSaveLoadService _userDataSaveLoadService;
+
+        public ProjectInitializer(
+            ScreenContainer screenContainer,
+            IGameStateMachine gameStateMachine,
+            IUserDataSaveLoadService userDataSaveLoadService)
+        {
+            _screenContainer = screenContainer;
+            _gameStateMachine = gameStateMachine;
+            _userDataSaveLoadService = userDataSaveLoadService;
+        }
+
+        public async void Initialize()
         {
             await _screenContainer.AsyncInitialize();
             await _gameStateMachine.AsyncInitialize();
             _userDataSaveLoadService.Load();
-            
+
             _gameStateMachine.AsyncLoadScene(Constants.SceneNames.MainMenu);
         }
     }

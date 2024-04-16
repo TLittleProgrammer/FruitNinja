@@ -2,7 +2,7 @@
 {
     public interface IModelAnimation
     {
-        void SimulateAnimation();
         float Rotation { get; }
+        void SimulateAnimation();
     }
 }

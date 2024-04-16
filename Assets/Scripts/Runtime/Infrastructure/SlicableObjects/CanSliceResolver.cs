@@ -49,7 +49,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private void SliceObject(SlicableObjectView slicableObjectView)
         {
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
-            Sprite sprite = GetSlicedSpriteByName(slicableObjectSprite);
+            Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
 
             SliceableObjectDummy[] dummyArray = TakeDummies();
 
@@ -119,15 +119,6 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             dummyArray[0].gameObject.SetActive(true);
             dummyArray[1].gameObject.SetActive(true);
-        }
-
-        //TODO снова попробовать перенести хранение половинок в SpriteContainer, чтобы не пересчитывать спрайт постоянно
-        private Sprite GetSlicedSpriteByName(Sprite sprite)
-        {
-            Texture2D texture2D = sprite.texture;
-            Rect rect = new Rect(0f, 0f, texture2D.width / 2f, texture2D.height);
-                    
-            return Sprite.Create(texture2D, rect, new Vector2(0.5f, 0.5f));
         }
 
         private SliceableObjectDummy[] TakeDummies()
