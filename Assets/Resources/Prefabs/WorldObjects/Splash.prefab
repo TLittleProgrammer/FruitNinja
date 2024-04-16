@@ -1422,13 +1422,13 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
-    mode: 0
+    enabled: 1
+    mode: 1
     timeMode: 0
     fps: 30
     frameOverTime:
       serializedVersion: 2
-      minMaxState: 1
+      minMaxState: 2
       scalar: 0.9999
       minScalar: 0.9999
       maxCurve:
@@ -1436,22 +1436,58 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 1
+          value: 1
+          inSlope: -2
+          outSlope: -2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.112775356
+          value: 0.43824765
+          inSlope: -1.4020543
+          outSlope: -1.4020543
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.41816068
+          value: 0.4800415
+          inSlope: -0.65634936
+          outSlope: -0.65634936
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.60979277
+          value: 0.15370727
+          inSlope: -1.0822437
+          outSlope: -1.0822437
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.8268047
+          value: 0.2221888
+          inSlope: -0.3753652
+          outSlope: -0.3753652
           tangentMode: 0
           weightedMode: 0
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
           time: 1
-          value: 1
-          inSlope: 1
+          value: 0
+          inSlope: 0
           outSlope: 0
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -1468,8 +1504,35 @@ ParticleSystem:
           inWeight: 0.33333334
           outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
+          time: 0.21899553
+          value: 0.787234
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.40638947
           value: 1
+          inSlope: 0.69066566
+          outSlope: 0.69066566
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.6750939
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.93509185
+          value: 0.74468046
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -1541,7 +1604,14 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: 0}
+    - sprite: {fileID: 960284279, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: 1642712194, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: 495625288, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: -1535476314, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: -265472548, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: -1964692291, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: 1441503605, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
+    - sprite: {fileID: 737016370, guid: 5463d2d4f92ce2a4d814e491c39ebaff, type: 3}
     flipU: 0
     flipV: 0
   VelocityModule:
@@ -4820,7 +4890,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 420055e6da0c16742a89804171ada767, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
