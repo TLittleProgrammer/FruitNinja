@@ -61,7 +61,6 @@ namespace Runtime.UI.Game
                 int targetHealth = _healthChangeQueue.Dequeue();
                 int offset = _lastHealth > targetHealth ? -1 : 1;
             
-                Debug.LogError($"Target health: {targetHealth}");
                 while (_lastHealth != targetHealth)
                 {
                     if (offset == -1)
@@ -74,8 +73,6 @@ namespace Runtime.UI.Game
                     }
                     _lastHealth += offset;
                 }
-                
-                Debug.LogError($"Last health: {_lastHealth}");
             }
 
             _canAnimate = true;
