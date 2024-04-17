@@ -25,9 +25,8 @@ namespace Editor.Level
                         levelStaticData
                         .SlicableObjectSpawnerDataList
                         .Add(new(
-                            marker.SideType,
-                            marker.FirstSpawnPointPercent,
-                            marker.SecondSpawnPointPercent,
+                            marker.XPositions,
+                            marker.YPositions,
                             marker.MainDirectionOffset,
                             marker.FirstOffsetAngle,
                             marker.SecondOffsetAngle,

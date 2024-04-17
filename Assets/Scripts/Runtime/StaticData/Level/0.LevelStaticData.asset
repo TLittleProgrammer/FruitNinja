@@ -13,45 +13,54 @@ MonoBehaviour:
   m_Name: 0.LevelStaticData
   m_EditorClassIdentifier: 
   SlicableObjectSpawnerDataList:
-  - SideType: 2
-    Weight: 5
-    FirstSpawnPoint: 0.207
-    SecondSpawnPoint: 0.613
-    MainDirectionOffset: 70
-    FirstOffset: 41.7
-    SecondOffset: -38.43
-    VelocityXMin: 5
-    VelocityXMax: 12
+  - Weight: 5
+    FirstSpawnPoint:
+      Min: 2.2
+      Max: 2.2
+    SecondSpawnPoint:
+      Min: 0
+      Max: 1.2
+    MainDirectionOffset: 42.7
+    FirstOffset: -38.43
+    SecondOffset: 41.7
+    VelocityXMin: 8
+    VelocityXMax: 15
     VelocityYMin: 4
     VelocityYMax: 13
     PackSpawnOffsetMin: 0.5
     PackSpawnOffsetMax: 0.6
     PackSize: 2
-  - SideType: 1
-    Weight: 5
-    FirstSpawnPoint: 0.236
-    SecondSpawnPoint: 0.887
-    MainDirectionOffset: -67.43
-    FirstOffset: -32.77
-    SecondOffset: 35.6
+  - Weight: 5
+    FirstSpawnPoint:
+      Min: 0
+      Max: 2
+    SecondSpawnPoint:
+      Min: -0.2
+      Max: -0.2
+    MainDirectionOffset: 2.21
+    FirstOffset: -61.9
+    SecondOffset: 58
     VelocityXMin: 2
     VelocityXMax: 8
-    VelocityYMin: 5
-    VelocityYMax: 10
+    VelocityYMin: 15
+    VelocityYMax: 25
     PackSpawnOffsetMin: 0.25
     PackSpawnOffsetMax: 0.75
     PackSize: 1
-  - SideType: 3
-    Weight: 25
-    FirstSpawnPoint: 0.241
-    SecondSpawnPoint: 0.77
-    MainDirectionOffset: 16.2
+  - Weight: 8
+    FirstSpawnPoint:
+      Min: -0.2
+      Max: -0.2
+    SecondSpawnPoint:
+      Min: 1.7
+      Max: 0.1
+    MainDirectionOffset: -60.77
     FirstOffset: -47.6
     SecondOffset: 34.8
-    VelocityXMin: 2
-    VelocityXMax: 7
-    VelocityYMin: 45
-    VelocityYMax: 90
+    VelocityXMin: 7
+    VelocityXMax: 13
+    VelocityYMin: 10
+    VelocityYMax: 25
     PackSpawnOffsetMin: 0.15
     PackSpawnOffsetMax: 0.3
     PackSize: 3
