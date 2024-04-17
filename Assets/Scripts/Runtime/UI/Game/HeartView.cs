@@ -28,6 +28,7 @@ namespace Runtime.UI.Game
         {
             if (_health == 0)
             {
+                Debug.Log("A");
                 await AnimateHeart(_rightHeart, 1f, _duration / 2f, 1);
                 _health++;
             }

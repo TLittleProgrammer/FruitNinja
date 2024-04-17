@@ -52,11 +52,11 @@ namespace Runtime.UI.Game
 
         private async void GetHeel(int health)
         {
-            while (_lastHealth < health)
+            while (_lastHealth <= health)
             {
-                int healthViewIndex = _lastHealth / 2 + (_lastHealth % 2 == 0 ? -1 : 0);
+                int healthViewIndex = _lastHealth / 2 + (_lastHealth % 2 == 0 && _lastHealth != 0 ? -1 : 0);
 
-                await _heartViews[healthViewIndex].AnimateGetHealth();
+                await _heartViews[^(healthViewIndex + 1)].AnimateGetHealth();
                 _lastHealth++;
             }
         }
@@ -66,6 +66,7 @@ namespace Runtime.UI.Game
             int healthOffset = _initialHealthCount - health;
 
             int healthViewIndex = healthOffset / 2 + (healthOffset % 2 == 0 ? -1 : 0);
+            _lastHealth = health;
 
             _heartViews[healthViewIndex].AnimateGetDamage();
         }
