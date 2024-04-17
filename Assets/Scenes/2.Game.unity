@@ -167,17 +167,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 2
   Weight: 5
-  FirstSpawnPointPercent: 0.207
-  SecondSpawnPointPercent: 0.613
-  VelocityXMin: 5
-  VelocityXMax: 12
+  XPositions:
+    Min: 2.2
+    Max: 2.2
+  YPositions:
+    Min: 0.47
+    Max: 1.2
+  VelocityXMin: 8
+  VelocityXMax: 15
   VelocityYMin: 4
   VelocityYMax: 13
   SpawnPackOffsetMin: 0.5
   SpawnPackOffsetMax: 0.6
-  MainDirectionOffset: 70
+  MainDirectionOffset: 42.7
   FirstOffsetAngle: 41.7
   SecondOffsetAngle: -38.43
   PackSize: 2
@@ -383,19 +386,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 1
   Weight: 5
-  FirstSpawnPointPercent: 0.236
-  SecondSpawnPointPercent: 0.887
+  XPositions:
+    Min: 0.66
+    Max: 1.36
+  YPositions:
+    Min: -0.2
+    Max: -0.2
   VelocityXMin: 2
   VelocityXMax: 8
-  VelocityYMin: 5
-  VelocityYMax: 10
+  VelocityYMin: 15
+  VelocityYMax: 25
   SpawnPackOffsetMin: 0.25
   SpawnPackOffsetMax: 0.75
-  MainDirectionOffset: -67.43
-  FirstOffsetAngle: 35.6
-  SecondOffsetAngle: -32.77
+  MainDirectionOffset: 2.21
+  FirstOffsetAngle: 58
+  SecondOffsetAngle: -61.9
   PackSize: 1
 --- !u!1 &572143239
 GameObject:
@@ -441,17 +447,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 3
-  Weight: 25
-  FirstSpawnPointPercent: 0.241
-  SecondSpawnPointPercent: 0.77
-  VelocityXMin: 2
-  VelocityXMax: 7
+  Weight: 8
+  XPositions:
+    Min: -0.2
+    Max: -0.2
+  YPositions:
+    Min: 1.46
+    Max: 0.34
+  VelocityXMin: 7
+  VelocityXMax: 13
   VelocityYMin: 10
   VelocityYMax: 25
   SpawnPackOffsetMin: 0.15
   SpawnPackOffsetMax: 0.3
-  MainDirectionOffset: 16.2
+  MainDirectionOffset: -60.77
   FirstOffsetAngle: 34.8
   SecondOffsetAngle: -47.6
   PackSize: 3

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Runtime.Extensions;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 
@@ -22,46 +23,12 @@ namespace Runtime.Infrastructure
             _horizontalPlusOneStepSize  = _resolution * (_orthographicSize + 1);
             _cameraRect                 = camera.rect;
 
-            _cameraRect.width += 400f;
-            _cameraRect.height += 400f;
-            
-            _cameraRect.center = Vector2.zero;
-
             await UniTask.CompletedTask;
         }
 
-        public Vector2 GetRandomPositionBetweenTwoPercents(SlicableObjectSpawnerData spawnerData)
+        public float GetHorizontalSizeWithStep()
         {
-            float constantPositionValue = GetPositionBySide(spawnerData.SideType);
-            
-            return GetPositionInWorld(constantPositionValue, spawnerData.SideType, Random.Range(spawnerData.FirstSpawnPoint, spawnerData.SecondSpawnPoint));
-        }
-
-        private float GetPositionBySide(SideType sideType)
-        {
-            return sideType switch
-            {
-                SideType.Bottom => -_orthographicSize - 1,
-                SideType.Left   => -_horizontalPlusOneStepSize,
-                SideType.Right  => _horizontalPlusOneStepSize,
-                _               => 0f
-            };
-        }
-
-        private Vector2 GetPositionInWorld(float constantPositionValue, SideType sideType, float lerpValue)
-        {
-            return sideType switch
-            {
-                SideType.Bottom => new Vector2(GetLerp(sideType, lerpValue), constantPositionValue),
-                SideType.Left   => new Vector2(constantPositionValue, GetLerp(sideType, lerpValue)),
-                SideType.Right  => new Vector2(constantPositionValue, GetLerp(sideType, lerpValue)),
-                _               => Vector2.zero
-            };
-        }
-
-        public Camera GetCamera()
-        {
-            return _camera;
+            return _horizontalPlusOneStepSize;
         }
 
         public float GetOrthographicSize()
@@ -69,25 +36,33 @@ namespace Runtime.Infrastructure
             return _orthographicSize;
         }
 
-        public bool WorldPositionAtScreenRect(Vector2 worldPosition)
+        public Vector2 GetRandomPositionBetweenTwoPercents(SlicableObjectSpawnerData spawnerData)
         {
-            Vector2 screenPoint = _camera.WorldToViewportPoint(worldPosition);
-            return _cameraRect.Contains(screenPoint);
+            Vector2 positionInWorldFirstPoint  = GetPositionInWorld(new Vector2(spawnerData.FirstSpawnPoint.Min, spawnerData.SecondSpawnPoint.Min));
+            Vector2 positionInWorldSecondPoint = GetPositionInWorld(new Vector2(spawnerData.FirstSpawnPoint.Max, spawnerData.SecondSpawnPoint.Max));
+
+            return new Vector2(
+                Random.Range(positionInWorldFirstPoint.x, positionInWorldSecondPoint.x),
+                Random.Range(positionInWorldFirstPoint.y, positionInWorldSecondPoint.y)
+                );
+        }
+        
+        private Vector2 GetPositionInWorld(Vector2 pointData)
+        {
+            float x = GetPositionFromPoint(pointData.x, _horizontalSize);
+            float y = GetPositionFromPoint(pointData.y, _orthographicSize);
+
+            return new Vector2(x, y);
         }
 
-        private float GetLerp(SideType sideType, float lerpValue)
+        private float GetPositionFromPoint(float value, float sideLength)
         {
-            return sideType switch
+            if (value < 0f)
             {
-                SideType.Bottom => Mathf.Lerp(-_horizontalSize, _horizontalSize, lerpValue),
-                
-                _ => Mathf.Lerp(-_orthographicSize, _orthographicSize, lerpValue) 
-            };
-        }
+                return -sideLength - (value.Abs() * sideLength);
+            }
 
-        public float GetHorizontalSizeWithStep()
-        {
-            return _horizontalPlusOneStepSize;
+            return -sideLength + value * sideLength;
         }
     }
 }

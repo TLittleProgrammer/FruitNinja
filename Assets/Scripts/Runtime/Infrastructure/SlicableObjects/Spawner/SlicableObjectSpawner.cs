@@ -1,16 +1,15 @@
 ﻿using System;
+using Runtime.Infrastructure.Data;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     [Serializable]
     public class SlicableObjectSpawnerData
     {
-        public SideType SideType;
-
         //TODO поправить названия переменных
         public int Weight;
-        public float FirstSpawnPoint;
-        public float SecondSpawnPoint;
+        public MinMaxValue FirstSpawnPoint;
+        public MinMaxValue SecondSpawnPoint;
         public float MainDirectionOffset;
         public float FirstOffset;
         public float SecondOffset;
@@ -24,9 +23,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public int PackSize;
 
         public SlicableObjectSpawnerData(
-            SideType sideType,
-            float firstSpawnPoint,
-            float secondSpawnPoint,
+            MinMaxValue xPositions,
+            MinMaxValue yPositions,
             float mainDirectionOffset,
             float firstOffset,
             float secondOffset,
@@ -40,9 +38,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             float packSpawnOffsetMax
             )
         {
-            SideType            = sideType;
-            FirstSpawnPoint     = firstSpawnPoint;
-            SecondSpawnPoint    = secondSpawnPoint;
+            FirstSpawnPoint     = xPositions;
+            SecondSpawnPoint    = yPositions;
             MainDirectionOffset = mainDirectionOffset;
             FirstOffset         = firstOffset;
             SecondOffset        = secondOffset;
@@ -54,11 +51,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             VelocityYMax        = velocityYMax;
             PackSpawnOffsetMin  = packSpawnOffsetMin;
             PackSpawnOffsetMax  = packSpawnOffsetMax;
-
-            if (FirstSpawnPoint > SecondSpawnPoint)
-            {
-                (FirstSpawnPoint, SecondSpawnPoint) = (SecondSpawnPoint, FirstSpawnPoint);
-            }
         }
     }
 }
