@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
-using Unity.VisualScripting;
 using UnityEngine;
 using IInitializable = Zenject.IInitializable;
 using ITickable = Zenject.ITickable;
