@@ -15,6 +15,8 @@ namespace Runtime.UI.Game
         private const string PathToHeartView = "Prefabs/UI/HealthView_01";
         private int _initialHealthCount;
         private int _lastHealth;
+        private bool _canAnimate;
+        private Queue<int> _healthChangeQueue;
 
         [Inject]
         private void Construct(GameParameters gameParameters)
@@ -22,11 +24,13 @@ namespace Runtime.UI.Game
             gameParameters.HealthChanged += OnChangedHealth;
             _initialHealthCount = gameParameters.Health;
             _lastHealth = _initialHealthCount;
+            _canAnimate = true;
+            _healthChangeQueue = new();
         }
         
         public async UniTask AsyncInitialize(IUIFactory uiFactory)
         {
-            int heartsCounter = _initialHealthCount / 2;
+            int heartsCounter = _initialHealthCount;
 
             for (int i = 0; i < heartsCounter; i++)
             {
@@ -40,40 +44,45 @@ namespace Runtime.UI.Game
 
         private void OnChangedHealth(int health)
         {
-            if (_lastHealth > health)
-            {
-                GetDamage(health);
-            }
-            else
-            {
-                GetHeel(health);
-            }
+            _healthChangeQueue.Enqueue(health);
+            
+            GoAnimate();
         }
 
-        private async void GetHeel(int health)
+        private async void GoAnimate()
         {
-            while (_lastHealth <= health)
+            if (_canAnimate is false)
+                return;
+
+            _canAnimate = false;
+
+            while (_healthChangeQueue.Count != 0)
             {
-                int healthViewIndex = _lastHealth / 2 + (_lastHealth % 2 == 0 && _lastHealth != 0 ? -1 : 0);
-
-                await _heartViews[^(healthViewIndex + 1)].AnimateGetHealth();
-                _lastHealth++;
+                int targetHealth = _healthChangeQueue.Dequeue();
+                int offset = _lastHealth > targetHealth ? -1 : 1;
+            
+                Debug.LogError($"Target health: {targetHealth}");
+                while (_lastHealth != targetHealth)
+                {
+                    if (offset == -1)
+                    {
+                        await _heartViews[^_lastHealth].AnimateGetDamage();
+                    }
+                    else
+                    {
+                        await _heartViews[^(_lastHealth + 1)].AnimateGetHealth();
+                    }
+                    _lastHealth += offset;
+                }
+                
+                Debug.LogError($"Last health: {_lastHealth}");
             }
-        }
 
-        private void GetDamage(int health)
-        {
-            int healthOffset = _initialHealthCount - health;
-
-            int healthViewIndex = healthOffset / 2 + (healthOffset % 2 == 0 ? -1 : 0);
-            _lastHealth = health;
-
-            _heartViews[healthViewIndex].AnimateGetDamage();
+            _canAnimate = true;
         }
 
         private void CorrectView(HeartView heartView)
         {
-
             heartView.transform.localScale = Vector3.one;
         }
     }
