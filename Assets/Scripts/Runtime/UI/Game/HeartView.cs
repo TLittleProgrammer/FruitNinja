@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,36 @@ namespace Runtime.UI.Game
         [SerializeField] private Image _rightHeart;
         [SerializeField] private float _duration;
 
-        private bool _isFirstAnimate = true;
+        private int _health = 2;
         
-        public void AnimateGetDamage()
+        public async void AnimateGetDamage()
         {
-            if (_isFirstAnimate)
+            if (_health == 2)
             {
-                _leftHeart.DOFillAmount(0f, _duration);
-                _isFirstAnimate = false;
+                await AnimateHeart(_leftHeart, 0f, _duration, -1);
                 return;
             }
-            
-            _rightHeart.DOFillAmount(0f, _duration);
+
+            await AnimateHeart(_rightHeart, 0f, _duration, -1);
+        }
+
+        public async UniTask AnimateGetHealth()
+        {
+            if (_health == 0)
+            {
+                await AnimateHeart(_rightHeart, 1f, _duration / 2f, 1);
+                _health++;
+            }
+            else
+            {
+                await AnimateHeart(_leftHeart, 1f, _duration / 2f, 1);
+            }
+        }
+
+        private async UniTask AnimateHeart(Image image, float endValue, float duration, int value)
+        {
+            await image.DOFillAmount(endValue, duration).ToUniTask();
+            _health += value;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Runtime.Constants;
+using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
@@ -16,14 +17,17 @@ namespace Runtime.UI.Screens
         private IGameStateMachine _gameStateMachine;
         private SlicableMovementService _movementService;
         private SlicableObjectSpawnerManager _spawnerManager;
+        private GameParameters _gameParameters;
 
         [Inject]
         private void Construct(
             IGameStateMachine gameStateMachine,
             SlicableMovementService movementService,
-            SlicableObjectSpawnerManager spawnerManager
+            SlicableObjectSpawnerManager spawnerManager,
+            GameParameters gameParameters
         )
         {
+            _gameParameters = gameParameters;
             _spawnerManager = spawnerManager;
             _movementService = movementService;
             _gameStateMachine = gameStateMachine;
@@ -48,6 +52,11 @@ namespace Runtime.UI.Screens
         {
             _movementService.Reset();
             _spawnerManager.Continue();
+            
+            _gameParameters.Reset();
+            
+            //TODO он не должен отвечать за свй жизненный цикл, но пусть пока будет так
+            Destroy(gameObject);
         }
 
         private void OnMenuButtonClicked()

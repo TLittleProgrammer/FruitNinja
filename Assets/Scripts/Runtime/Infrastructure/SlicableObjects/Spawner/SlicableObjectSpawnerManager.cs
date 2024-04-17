@@ -18,6 +18,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
         private int _allWeightLine;
         private bool _canCalculateTime = true;
+        private bool _stop = false;
         private float _spawnTime;
         private float _currentTime;
 
@@ -38,7 +39,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
         public async void Tick()
         {
-            if (_canCalculateTime is false)
+            if (_canCalculateTime is false || _stop)
                 return;
 
             await CalculateTime();
@@ -46,12 +47,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
         public void Continue()
         {
-            _canCalculateTime = true;
+            _stop = false;
         }
 
         public void Stop()
         {
-            _canCalculateTime = false;
+            _stop = true;
         }
 
         private async UniTask CalculateTime()
@@ -70,6 +71,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
                 for (int i = 0; i < packSize; i++)
                 {
+                    if (_stop)
+                        return;
+                    
                     _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
 
                     int delay = (int)(Random.Range(spawnerData.PackSpawnOffsetMin, spawnerData.PackSpawnOffsetMax) * 1000);

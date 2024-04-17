@@ -29,6 +29,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         public void Reset()
         {
             _canMove = true;
+
+            foreach (Transform transform in _slicableMapping.Keys)
+            {
+                transform.gameObject.SetActive(false);
+            }
+            
             _slicableMapping.Clear();
         }
         
