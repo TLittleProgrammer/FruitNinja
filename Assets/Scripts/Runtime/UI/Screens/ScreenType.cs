@@ -7,5 +7,6 @@
         Loading  = 1,
         MainMenu = 2,
         Game     = 3,
+        Loose    = 4,
     }
 }

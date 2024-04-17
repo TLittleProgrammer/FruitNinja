@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Runtime.Constants;
 using Runtime.Extensions;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
@@ -15,35 +14,46 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
         private readonly SlicableMovementService _slicableMovementService;
+        private readonly SliceableObjectSpriteRendererOrderService _orderService;
+        private readonly CollisionDetector.CollisionDetector _collisionDetector;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
-            SlicableMovementService slicableMovementService)
+            SlicableMovementService slicableMovementService,
+            SliceableObjectSpriteRendererOrderService orderService,
+            CollisionDetector.CollisionDetector collisionDetector)
         {
             _objectPool = objectPool;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _slicableMovementService = slicableMovementService;
+            _orderService = orderService;
+            _collisionDetector = collisionDetector;
         }
         
         public void AddMapping(SlicableObjectSpawnerData spawnerData)
         {
-            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.First(x => !x.gameObject.activeInHierarchy);
+            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
+            
+            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
+            
+            _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
 
             UpdateViewSprites(slicableObjectView);
             ChangePositionAndActivate(spawnerData, slicableObjectView);
 
             float angleInRadians = GetDirectionAngleInRadians(spawnerData);
-            float velocityX = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
-            float velocityY = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
+            float velocityX      = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
+            float velocityY      = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
             
-            velocityY = CalculateSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
+            velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
@@ -60,11 +70,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             };
         }
         
-        //TODO Убрать цикл. Сделать 1ой формулой
-        private float CalculateSpeedY(float velocity, float radians, float spawnPositionY)
+        private float CalculateMaxSpeedY(float velocity, float radians, float spawnPositionY)
         {
             float maxHeight = _gameScreenManager.GetOrthographicSize() + Mathf.Abs(spawnPositionY);
-
             float maxVelocity = Mathf.Sqrt(maxHeight * -2f * World.Gravity * Mathf.Sin(radians) * Mathf.Sin(radians));
 
             if (velocity > maxVelocity)

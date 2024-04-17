@@ -2,12 +2,11 @@
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
-    public interface IMovementObject
+    public interface IMovementObjectService
     {
-        public float PositionX { get; }
-        public float PositionY { get; }
         Vector2 Position { get; }
 
         void SimulateMovement();
+        void Reset(float velocityX, float velocityY, float angle, Vector3 startPosition);
     }
 }

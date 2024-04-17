@@ -1,5 +1,4 @@
-﻿using Runtime.Infrastructure.Effects;
-using Runtime.StaticData.Animations;
+﻿using Runtime.StaticData.Animations;
 using Runtime.StaticData.Level;
 using Runtime.StaticData.UI;
 using UnityEngine;

@@ -14,12 +14,14 @@ namespace Runtime.UI.Game
 
         private const string PathToHeartView = "Prefabs/UI/HealthView_01";
         private int _initialHealthCount;
+        private int _lastHealth;
 
         [Inject]
         private void Construct(GameParameters gameParameters)
         {
             gameParameters.HealthChanged += OnChangedHealth;
             _initialHealthCount = gameParameters.Health;
+            _lastHealth = _initialHealthCount;
         }
         
         public async UniTask AsyncInitialize(IUIFactory uiFactory)
@@ -38,10 +40,34 @@ namespace Runtime.UI.Game
 
         private void OnChangedHealth(int health)
         {
+            if (_lastHealth > health)
+            {
+                GetDamage(health);
+            }
+            else
+            {
+                GetHeel(health);
+            }
+        }
+
+        private async void GetHeel(int health)
+        {
+            while (_lastHealth <= health)
+            {
+                int healthViewIndex = _lastHealth / 2 + (_lastHealth % 2 == 0 && _lastHealth != 0 ? -1 : 0);
+
+                await _heartViews[^(healthViewIndex + 1)].AnimateGetHealth();
+                _lastHealth++;
+            }
+        }
+
+        private void GetDamage(int health)
+        {
             int healthOffset = _initialHealthCount - health;
 
             int healthViewIndex = healthOffset / 2 + (healthOffset % 2 == 0 ? -1 : 0);
-  
+            _lastHealth = health;
+
             _heartViews[healthViewIndex].AnimateGetDamage();
         }
 

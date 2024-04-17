@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects
 {
-    public class CanSliceResolver
+    public class Slicer
     {
         private readonly MouseManager _mouseManager;
         private readonly SlicableVisualContainer _slicableVisualContainer;
@@ -17,15 +17,17 @@ namespace Runtime.Infrastructure.SlicableObjects
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
+        private readonly SliceableObjectSpriteRendererOrderService _orderService;
 
-        public CanSliceResolver(
+        public Slicer(
             MouseManager mouseManager,
             SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
             GameParameters gameParameters,
             SliceableObjectDummy.Pool dummyPool,
             BlotEffect.Pool blotEffectPool,
-            SplashEffect.Pool splashEffectPool
+            SplashEffect.Pool splashEffectPool,
+            SliceableObjectSpriteRendererOrderService orderService
         )
         {
             _mouseManager = mouseManager;
@@ -35,26 +37,22 @@ namespace Runtime.Infrastructure.SlicableObjects
             _dummyPool = dummyPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
+            _orderService = orderService;
         }
 
-        public void TrySlice(SlicableObjectView slicableObjectView)
+        public void SliceObject(SlicableObjectView slicableObjectView)
         {
-            if (_mouseManager.CanSlice)
-            {
-                SliceObject(slicableObjectView);
-                _gameParameters.ChangeScore(Random.Range(25, 100));
-            }
-        }
-
-        private void SliceObject(SlicableObjectView slicableObjectView)
-        {
+            _gameParameters.ChangeScore(Random.Range(25, 100));
+            
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
-            Sprite sprite = GetSlicedSpriteByName(slicableObjectSprite);
+            Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
 
             SliceableObjectDummy[] dummyArray = TakeDummies();
 
             dummyArray[0].ChangeSprite(sprite);
             dummyArray[1].ChangeSprite(sprite);
+            
+            UpdateSortingInLayerIndex(dummyArray);
 
             SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
 
@@ -66,6 +64,14 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
             AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
+        }
+
+        private void UpdateSortingInLayerIndex(SliceableObjectDummy[] dummyArray)
+        {
+            _orderService.UpdateOrderInLayer(dummyArray[0].SlicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[0].SlicableObjectView.ShadowSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.ShadowSprite);
         }
 
         private void AddSplashEffect(Vector3 transformPosition, string spriteName)
@@ -93,9 +99,21 @@ namespace Runtime.Infrastructure.SlicableObjects
 
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
         {
-            SlicableModel modelFirstDummy = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
+            SlicableModel modelFirstDummy  = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
             SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
 
+            SlicableModelParams firstParams  = modelFirstDummy.GetParams();
+            SlicableModelParams secondParams = modelSecondDummy.GetParams();
+
+            Vector2 mouseDirection = _mouseManager.GetMouseNormalizedDirection();
+            float angleBetweenMouseDirectionAndVectorRight = Vector2.Angle(Vector2.right, mouseDirection);
+            
+            float firstAngle  = (angleBetweenMouseDirectionAndVectorRight + Random.Range(15f, 25f)).ConvertToRadians();
+            float secondAngle = (angleBetweenMouseDirectionAndVectorRight - Random.Range(15f, 25f)).ConvertToRadians();
+            
+            modelFirstDummy.ResetMovementObjectService(firstParams.VelocityX + 0.25f, firstParams.VelocityY + 0.5f, firstAngle, dummyArray[0].transform.position);
+            modelSecondDummy.ResetMovementObjectService(secondParams.VelocityX + 0.25f, secondParams.VelocityY + 0.5f, secondAngle, dummyArray[1].transform.position);
+            
             _slicableMovementService.AddMapping(modelFirstDummy, dummyArray[0].transform);
             _slicableMovementService.AddMapping(modelSecondDummy, dummyArray[1].transform);
         }
@@ -119,15 +137,6 @@ namespace Runtime.Infrastructure.SlicableObjects
 
             dummyArray[0].gameObject.SetActive(true);
             dummyArray[1].gameObject.SetActive(true);
-        }
-
-        //TODO снова попробовать перенести хранение половинок в SpriteContainer, чтобы не пересчитывать спрайт постоянно
-        private Sprite GetSlicedSpriteByName(Sprite sprite)
-        {
-            Texture2D texture2D = sprite.texture;
-            Rect rect = new Rect(0f, 0f, texture2D.width / 2f, texture2D.height);
-                    
-            return Sprite.Create(texture2D, rect, new Vector2(0.5f, 0.5f));
         }
 
         private SliceableObjectDummy[] TakeDummies()

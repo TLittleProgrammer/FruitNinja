@@ -7,21 +7,27 @@ namespace Runtime.Infrastructure.Effects
     public sealed class SplashEffect : MonoBehaviour
     {
         private ParticleSystem _particleSystem;
+        private ParticleSystem.MainModule _particleSystemMainModule;
         
         private void Awake()
         {
             _particleSystem = GetComponent<ParticleSystem>();
+            _particleSystemMainModule = _particleSystem.main;
         }
 
         public void PlayEffect(Vector3 position, Color color)
         {
-            ParticleSystem.MainModule particleSystemMain = _particleSystem.main;
-            particleSystemMain.startColor = color;
-            
+            ChangeParticleColor(color);
+
             transform.position = position;
-            
             gameObject.SetActive(true);
+            
             _particleSystem.Play();
+        }
+
+        private void ChangeParticleColor(Color color)
+        {
+            _particleSystemMainModule.startColor = color;
         }
 
         private void Reset(Vector3 startPosition)

@@ -8,6 +8,7 @@ namespace Runtime.StaticData.Installers
     [CreateAssetMenu(fileName = "ProjectSettingsInstaller", menuName = "Installers/ProjectSettingsInstaller")]
     public sealed class ProjectSettingsInstaller : ScriptableObjectInstaller<ProjectSettingsInstaller>
     {
+        public ProjectSettings ProjectSettings;
         public ButtonAnimationSettings ButtonAnimationSettings;
         public LoadingScreenFadeDuration LoadingScreenFadeDuration;
         
@@ -15,6 +16,7 @@ namespace Runtime.StaticData.Installers
         {
             Container.Bind<ButtonAnimationSettings>().FromInstance(ButtonAnimationSettings).AsSingle();
             Container.Bind<LoadingScreenFadeDuration>().FromInstance(LoadingScreenFadeDuration).AsSingle();
+            Container.Bind<ProjectSettings>().FromInstance(ProjectSettings).AsSingle();
         }
     }
 }

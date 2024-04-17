@@ -4,13 +4,11 @@ using Zenject;
 
 namespace Runtime.Infrastructure.Mouse
 {
-    public class MouseManager : IAsyncInitializable<Camera>, ITickable
+    public sealed class MouseManager : IAsyncInitializable<Camera>, ITickable
     {
         private Camera _camera;
-
         private Vector2 _previousMousePosition;
-        //TODO магическое число, вынести в настройки
-        private float _minRequiredDistance = 0.001f;
+        private Vector2 _previousMousePositionForOther;
         private bool _canSlice;
         private bool _canCheckMousePositionDelta;
 
@@ -26,10 +24,6 @@ namespace Runtime.Infrastructure.Mouse
 
         public void Tick()
         {
-            //TODO Костылек. Подумать как можно инициализивать до вызова тиков
-            if (_camera is null)
-                return;
-
             CheckMouseButtonDown();
             CheckMouseButtonUp();
 
@@ -37,14 +31,29 @@ namespace Runtime.Infrastructure.Mouse
             {
                 Vector2 currentMousePosition = GetMousePositionInWorldCoordinates();
 
-                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= _minRequiredDistance;
+                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= Constants.Game.MinRequiredDistanceBetweenMousePositions;
+                _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
             }
         }
 
+        public Vector2 GetMousePositionInWorldCoordinates()
+        {
+            return _camera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        
+        public Vector2 GetMouseNormalizedDirection()
+        {
+            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
+        }
+
+        public Vector2 GetPreviousMousePosition()
+        {
+            return _previousMousePositionForOther;
+        }
+
         private void CheckMouseButtonUp()
         {
-            //TODO магическое число, вынести в настройки
             if (Input.GetMouseButtonUp(0))
             {
                 _canCheckMousePositionDelta = false;
@@ -58,16 +67,6 @@ namespace Runtime.Infrastructure.Mouse
             {
                 _canCheckMousePositionDelta = true;
             }
-        }
-
-        public Vector2 GetMousePositionInWorldCoordinates()
-        {
-            return _camera.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        public Vector2 GetMouseNormalizedDirection()
-        {
-            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
         }
     }
 }

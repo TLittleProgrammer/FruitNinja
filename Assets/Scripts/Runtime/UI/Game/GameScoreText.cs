@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.UserData;
 using TMPro;
@@ -19,6 +18,8 @@ namespace Runtime.UI.Game
         
         private int _currentScoreValue;
         private int _currentBestScoreValue;
+        private Coroutine _lastCurrentScoreCoroutine;
+        private Coroutine _lastCurrentBestScoreCoroutine;
         
         [Inject]
         private void Construct(GameParameters gameParameters, UserData userData)
@@ -33,29 +34,48 @@ namespace Runtime.UI.Game
             _bestScoreText.text = BestScorePrefix + _currentBestScoreValue.ToString();
         }
 
-        private async void OnScoreChanged(int newScore)
+        private void OnScoreChanged(int newScore)
         {
-            _currentScoreValue = await ChangeScoreText(_currentScoreText, String.Empty, _currentScoreValue, newScore);
+            GoAnimateText(_currentScoreText, String.Empty, _currentScoreValue, newScore, _lastCurrentScoreCoroutine, false);
         }
 
-        private async void OnBestScoreChanged(int newBestScore)
+        private void OnBestScoreChanged(int newBestScore)
         {
-            _currentBestScoreValue = await ChangeScoreText(_bestScoreText, BestScorePrefix, _currentBestScoreValue, newBestScore);
+            GoAnimateText(_bestScoreText, BestScorePrefix, _currentBestScoreValue, newBestScore, _lastCurrentBestScoreCoroutine, true);
         }
 
-        private async UniTask<int> ChangeScoreText(TMP_Text scoreText, string prefix, int currentValue, int targetValue)
+        private void GoAnimateText(TMP_Text scoreText, string prefix, int currentValue, int targetValue, Coroutine coroutine, bool isBestScore)
         {
-            float timeOffset = MaxTimeInMillisecondToChangeString / (targetValue - currentValue);
-
-            while (currentValue <= targetValue)
+            if (coroutine is not null)
             {
-                currentValue++;
-                scoreText.text = prefix + currentValue.ToString();
-
-                await UniTask.Delay((int)(timeOffset * 1000));
+                StopCoroutine(coroutine);
             }
 
-            return currentValue;
+            coroutine = StartCoroutine(ChangeScoreText(scoreText, prefix, currentValue, targetValue, isBestScore));
+        }
+
+        private IEnumerator ChangeScoreText(TMP_Text scoreText, string prefix, int currentValue, int targetValue, bool isBestScore)
+        {
+            for (float timer = 0; timer <= MaxTimeInMillisecondToChangeString; timer += Time.deltaTime)
+            {
+                float lerpValue = timer / MaxTimeInMillisecondToChangeString;
+                int scoreToDisplay = (int)Mathf.Lerp(currentValue, targetValue, lerpValue);
+
+                if (isBestScore)
+                {
+                    _currentBestScoreValue = scoreToDisplay;
+                }
+                else
+                {
+                    _currentScoreValue = scoreToDisplay;
+                }
+
+                scoreText.text = prefix + scoreToDisplay.ToString();
+                
+                yield return null;
+            }
+            
+            scoreText.text = prefix + targetValue.ToString();
         }
     }
 }

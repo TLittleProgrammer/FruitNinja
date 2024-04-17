@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c5d27d6cf84436a9df83b7785c692ee, type: 3}
   m_Name: ProjectSettingsInstaller
   m_EditorClassIdentifier: 
+  ProjectSettings: {fileID: 11400000, guid: db7d0b0ec2a330e4c8133d00973d092c, type: 2}
   ButtonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
   LoadingScreenFadeDuration: {fileID: 11400000, guid: fefdf30fe07e9c042ba8672bfa757a7f, type: 2}
