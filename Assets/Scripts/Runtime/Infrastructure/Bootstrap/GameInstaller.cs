@@ -2,6 +2,7 @@
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.Loose;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
@@ -9,6 +10,7 @@ using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
+using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
 
@@ -17,6 +19,7 @@ namespace Runtime.Infrastructure.Bootstrap
     public sealed class GameInstaller : MonoInstaller, IInitializable
     {
         [SerializeField] private Canvas _gameCanvas;
+        [SerializeField] private Canvas _overlayCanvas;
         
         [SerializeField] private SlicableObjectView _slicableObjectViewPrefab;
         [SerializeField] private GameObject _poolParent;
@@ -55,6 +58,15 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent.name);
             Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent.name);
             Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent.name);
+
+            InstallAndBindLooseService();
+        }
+
+        private void InstallAndBindLooseService()
+        {
+            LooseService looseService = Container.Instantiate<LooseService>(new[] { _overlayCanvas });
+
+            Container.BindInterfacesAndSelfTo<LooseService>().FromInstance(looseService);
         }
 
         public void Initialize()

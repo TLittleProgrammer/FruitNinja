@@ -6,6 +6,7 @@ namespace Runtime.Infrastructure.Game
     public class GameParameters
     {
         private readonly UserData.UserData _userData;
+        private readonly int _initialHealthCount;
         private int _health;
         private int _currentScore = 0;
         
@@ -16,9 +17,11 @@ namespace Runtime.Infrastructure.Game
         {
             _userData = userData;
             _health = levelStaticData.HealthCount * 2;
+            _initialHealthCount = _health;
         }
 
         public int Health => _health;
+        public int CurrentScore => _currentScore;
 
         public void ChangeScore(int addScore)
         {
@@ -46,7 +49,7 @@ namespace Runtime.Infrastructure.Game
 
         public void Reset()
         {
-            _health = Constants.Game.InitialHealthCount;
+            _health = _initialHealthCount;
             _currentScore = 0;
             
             ScoreChanged?.Invoke(_currentScore);

@@ -7,18 +7,40 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
     public class SlicableMovementService : ITickable
     {
         private SliceableMapping _slicableMapping;
-
+        private bool _canMove;
+        
         public SlicableMovementService()
         {
             _slicableMapping = new();
+            _canMove = true;
         }
         
         public void Tick()
         {
+            if (_canMove is false)
+                return;
+            
             foreach (SlicableModel model in _slicableMapping.Values)
             {
                 model.Tick();
             }
+        }
+
+        public void Reset()
+        {
+            _canMove = true;
+
+            foreach (Transform transform in _slicableMapping.Keys)
+            {
+                transform.gameObject.SetActive(false);
+            }
+            
+            _slicableMapping.Clear();
+        }
+        
+        public void Stop()
+        {
+            _canMove = false;
         }
 
         public void AddMapping(SlicableModel model, Transform view)

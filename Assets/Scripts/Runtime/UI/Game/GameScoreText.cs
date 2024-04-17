@@ -56,7 +56,7 @@ namespace Runtime.UI.Game
 
         private IEnumerator ChangeScoreText(TMP_Text scoreText, string prefix, int currentValue, int targetValue, bool isBestScore)
         {
-            for (float timer = 0; timer < MaxTimeInMillisecondToChangeString; timer += Time.deltaTime)
+            for (float timer = 0; timer <= MaxTimeInMillisecondToChangeString; timer += Time.deltaTime)
             {
                 float lerpValue = timer / MaxTimeInMillisecondToChangeString;
                 int scoreToDisplay = (int)Mathf.Lerp(currentValue, targetValue, lerpValue);
@@ -74,6 +74,8 @@ namespace Runtime.UI.Game
                 
                 yield return null;
             }
+            
+            scoreText.text = prefix + targetValue.ToString();
         }
     }
 }
