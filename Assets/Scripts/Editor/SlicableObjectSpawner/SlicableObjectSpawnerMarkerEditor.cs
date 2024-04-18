@@ -57,13 +57,15 @@ namespace Editor.SlicableObjectSpawner
             Gizmos.color = SlicableEditorHelper.GetColor(slicableObjectSpawnerMarker);
             SlicableEditorHelper.SetColor(slicableObjectSpawnerMarker, Gizmos.color);
 
-            Vector2 positionInWorldFirstPoint  = GetPositionInWorld(new Vector2(slicableObjectSpawnerMarker.XPositions.Min, slicableObjectSpawnerMarker.YPositions.Min));
-            Vector2 positionInWorldSecondPoint = GetPositionInWorld(new Vector2(slicableObjectSpawnerMarker.XPositions.Max, slicableObjectSpawnerMarker.YPositions.Max));
+            SlicableObjectSpawnerData spawnerData = slicableObjectSpawnerMarker.SpawnerData;
+            
+            Vector2 positionInWorldFirstPoint  = GetPositionInWorld(new Vector2(spawnerData.FirstSpawnPoint.Min, spawnerData.SecondSpawnPoint.Min));
+            Vector2 positionInWorldSecondPoint = GetPositionInWorld(new Vector2(spawnerData.FirstSpawnPoint.Max, spawnerData.SecondSpawnPoint.Max));
             
             Vector2 middlePoint    = (positionInWorldFirstPoint + positionInWorldSecondPoint) / 2f;
-            Vector2 mainEndPoint   = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset);
-            Vector2 firstEndPoint  = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.FirstOffsetAngle);
-            Vector2 secondEndPoint = GetRotatableVector(slicableObjectSpawnerMarker.MainDirectionOffset + slicableObjectSpawnerMarker.SecondOffsetAngle);
+            Vector2 mainEndPoint   = GetRotatableVector(spawnerData.MainDirectionOffset);
+            Vector2 firstEndPoint  = GetRotatableVector(spawnerData.MainDirectionOffset + spawnerData.FirstOffset);
+            Vector2 secondEndPoint = GetRotatableVector(spawnerData.MainDirectionOffset + spawnerData.SecondOffset);
             
             Gizmos.DrawSphere(positionInWorldFirstPoint, 0.25f);
             Gizmos.DrawSphere(positionInWorldSecondPoint, 0.25f);

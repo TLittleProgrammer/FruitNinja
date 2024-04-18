@@ -24,21 +24,7 @@ namespace Editor.Level
                 {
                         levelStaticData
                         .SlicableObjectSpawnerDataList
-                        .Add(new(
-                            marker.XPositions,
-                            marker.YPositions,
-                            marker.MainDirectionOffset,
-                            marker.FirstOffsetAngle,
-                            marker.SecondOffsetAngle,
-                            marker.PackSize,
-                            marker.Weight,
-                            marker.VelocityXMin,
-                            marker.VelocityXMax,
-                            marker.VelocityYMin,
-                            marker.VelocityYMax,
-                            marker.SpawnPackOffsetMin,
-                            marker.SpawnPackOffsetMax
-                            ));
+                        .Add(marker.SpawnerData);
                 }
             }
 

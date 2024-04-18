@@ -75,7 +75,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                     
                     _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
 
-                    int delay = (int)(Random.Range(spawnerData.PackSpawnOffsetMin, spawnerData.PackSpawnOffsetMax) * 1000);
+                    int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
                     
                     await UniTask.Delay(delay);
                 }
