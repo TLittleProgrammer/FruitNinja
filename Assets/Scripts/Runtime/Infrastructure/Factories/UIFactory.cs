@@ -34,7 +34,7 @@ namespace Runtime.Infrastructure.Factories
                 .GetComponentInChildren<TResult>();
 
             Transform screenTransform = screen.GetComponent<Transform>();
-            screenTransform.SetAsFirstSibling();
+            screenTransform.SetAsLastSibling();
             
             RectTransform screenRectTransform = screen.GetComponent<RectTransform>();
             screenRectTransform.offsetMin = Vector2.zero;
