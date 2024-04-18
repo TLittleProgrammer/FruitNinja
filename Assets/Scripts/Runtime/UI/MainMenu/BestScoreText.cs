@@ -40,6 +40,8 @@ namespace Runtime.UI.MainMenu
                 
                 yield return null;
             }
+
+            _bestScoreText.text = _targetScore.ToString();
         }
     }
 }
