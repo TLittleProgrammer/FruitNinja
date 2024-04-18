@@ -22,24 +22,26 @@ namespace Runtime.Infrastructure.Mouse
             await UniTask.CompletedTask;
         }
 
-        public bool CanSlice => _canSlice;
+        public bool CanSlice => _canSlice && _stop is false;
 
         public void Tick()
         {
             if (_stop)
                 return;
-            
-            CheckMouseButtonDown();
-            CheckMouseButtonUp();
 
             if (_canCheckMousePositionDelta)
             {
                 Vector2 currentMousePosition = GetMousePositionInWorldCoordinates();
 
-                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= Constants.Game.MinRequiredDistanceBetweenMousePositions;
+                float speed = Vector2.Distance(currentMousePosition, _previousMousePosition) / Time.deltaTime;
+                _canSlice = speed >= Constants.Game.MinRequiredSliceSpeed;
+                
                 _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
             }
+            
+            CheckMouseButtonDown();
+            CheckMouseButtonUp();
         }
 
         public void SetStopValue(bool value)
@@ -75,7 +77,11 @@ namespace Runtime.Infrastructure.Mouse
         {
             if (Input.GetMouseButtonDown(0))
             {
+                _previousMousePosition = GetMousePositionInWorldCoordinates();
+                _previousMousePositionForOther = _previousMousePosition;
+                
                 _canCheckMousePositionDelta = true;
+                _canSlice = false;
             }
         }
     }

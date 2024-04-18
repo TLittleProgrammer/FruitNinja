@@ -19,7 +19,7 @@ MonoBehaviour:
       Max: -0.1
     SecondSpawnPoint:
       Min: 1
-      Max: 0
+      Max: 0.34
     XVelocity:
       Min: 6
       Max: 15
@@ -30,8 +30,8 @@ MonoBehaviour:
       Min: 0.12
       Max: 0.57
     MainDirectionOffset: -38.71
-    FirstOffset: -18.2
-    SecondOffset: 12.64
+    FirstOffset: 12.64
+    SecondOffset: -18.2
     PackSize: 1
   - Weight: 5
     FirstSpawnPoint:
@@ -58,20 +58,20 @@ MonoBehaviour:
       Min: 2.2
       Max: 2.2
     SecondSpawnPoint:
-      Min: 0
+      Min: 0.37
       Max: 1.2
     XVelocity:
       Min: 7
       Max: 12
     YVelocity:
-      Min: 8
+      Min: 6
       Max: 15
     SpawnOffset:
       Min: 0.15
       Max: 0.25
     MainDirectionOffset: 60
-    FirstOffset: -28.28
-    SecondOffset: 51.01
+    FirstOffset: 32.5
+    SecondOffset: -33.25
     PackSize: 4
   BeginPackOffset: 2
   EndPackOffset: 3
