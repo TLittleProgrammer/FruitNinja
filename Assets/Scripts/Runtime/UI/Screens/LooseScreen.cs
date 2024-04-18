@@ -14,14 +14,14 @@ namespace Runtime.UI.Screens
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _menuButton;
         
-        private IGameStateMachine _gameStateMachine;
+        private IEntryPoint _entryPoint;
         private SlicableMovementService _movementService;
         private SlicableObjectSpawnerManager _spawnerManager;
         private GameParameters _gameParameters;
 
         [Inject]
         private void Construct(
-            IGameStateMachine gameStateMachine,
+            IEntryPoint entryPoint,
             SlicableMovementService movementService,
             SlicableObjectSpawnerManager spawnerManager,
             GameParameters gameParameters
@@ -30,13 +30,11 @@ namespace Runtime.UI.Screens
             _gameParameters = gameParameters;
             _spawnerManager = spawnerManager;
             _movementService = movementService;
-            _gameStateMachine = gameStateMachine;
+            _entryPoint = entryPoint;
         }
 
         private void OnEnable()
         {
-            _movementService.Stop();
-            _spawnerManager.Stop();
             
             _menuButton.onClick.AddListener(OnMenuButtonClicked);
             _restartButton.onClick.AddListener(OnRestartButtonClicked);
@@ -50,7 +48,6 @@ namespace Runtime.UI.Screens
 
         private void OnRestartButtonClicked()
         {
-            _movementService.Reset();
             _spawnerManager.Continue();
             
             _gameParameters.Reset();
@@ -61,7 +58,7 @@ namespace Runtime.UI.Screens
 
         private void OnMenuButtonClicked()
         {
-            _gameStateMachine.AsyncLoadScene(SceneNames.MainMenu);
+            _entryPoint.AsyncLoadScene(SceneNames.MainMenu);
         }
     }
 }

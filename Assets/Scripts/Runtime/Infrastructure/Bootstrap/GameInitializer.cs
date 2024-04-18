@@ -22,7 +22,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly TrailMoveService _trailMoveService;
         private readonly IWorldFactory _worldFactory;
         private readonly MouseManager _mouseManager;
-        private readonly IGameStateMachine _gameStateMachine;
+        private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
         //TODO крайне плохое решение, стоит подумать и действительно посмотреть на Zenject фабрики 
         private readonly DiContainer _diContainer;
@@ -35,7 +35,7 @@ namespace Runtime.Infrastructure.Bootstrap
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
             DiContainer diContainer,
-            IGameStateMachine gameStateMachine,
+            IEntryPoint entryPoint,
             IUIFactory uiFactory,
             IWorldFactory worldFactory
         )
@@ -47,7 +47,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _diContainer = diContainer;
-            _gameStateMachine = gameStateMachine;
+            _entryPoint = entryPoint;
             _uiFactory = uiFactory;
             _worldFactory = worldFactory;
         }
@@ -70,7 +70,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
             await _gameScreenManager.AsyncInitialize(camera);
             
-            _gameStateMachine.HideLoadingScreen();
+            _entryPoint.HideLoadingScreen();
         }
     }
 }
