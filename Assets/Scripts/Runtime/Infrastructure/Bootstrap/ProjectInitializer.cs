@@ -11,18 +11,18 @@ namespace Runtime.Infrastructure.Bootstrap
     {
         private readonly ProjectSettings _projectSettings;
         private readonly ScreenContainer _screenContainer;
-        private readonly IGameStateMachine _gameStateMachine;
+        private readonly IEntryPoint _entryPoint;
         private readonly IUserDataSaveLoadService _userDataSaveLoadService;
 
         public ProjectInitializer(
             ProjectSettings projectSettings,
             ScreenContainer screenContainer,
-            IGameStateMachine gameStateMachine,
+            IEntryPoint entryPoint,
             IUserDataSaveLoadService userDataSaveLoadService)
         {
             _projectSettings = projectSettings;
             _screenContainer = screenContainer;
-            _gameStateMachine = gameStateMachine;
+            _entryPoint = entryPoint;
             _userDataSaveLoadService = userDataSaveLoadService;
         }
 
@@ -32,10 +32,10 @@ namespace Runtime.Infrastructure.Bootstrap
             Application.targetFrameRate = _projectSettings.ApplicationTargetFrameCount;
             
             await _screenContainer.AsyncInitialize();
-            await _gameStateMachine.AsyncInitialize();
+            await _entryPoint.AsyncInitialize();
             _userDataSaveLoadService.Load();
 
-            _gameStateMachine.AsyncLoadScene(Constants.SceneNames.MainMenu);
+            _entryPoint.AsyncLoadScene(Constants.SceneNames.MainMenu);
         }
     }
 }
