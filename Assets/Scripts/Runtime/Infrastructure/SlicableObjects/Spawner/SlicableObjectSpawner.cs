@@ -10,47 +10,38 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public int Weight;
         public MinMaxValue FirstSpawnPoint;
         public MinMaxValue SecondSpawnPoint;
+        public MinMaxValue XVelocity;
+        public MinMaxValue YVelocity;
+        public MinMaxValue SpawnOffset;
         public float MainDirectionOffset;
         public float FirstOffset;
         public float SecondOffset;
-        public float VelocityXMin;
-        public float VelocityXMax;
-        public float VelocityYMin;
-        public float VelocityYMax;
-        public float PackSpawnOffsetMin;
-        public float PackSpawnOffsetMax;
 
         public int PackSize;
 
         public SlicableObjectSpawnerData(
             MinMaxValue xPositions,
             MinMaxValue yPositions,
+            MinMaxValue xVelocity,
+            MinMaxValue yVelocity,
+            MinMaxValue spawnOffset,
             float mainDirectionOffset,
             float firstOffset,
             float secondOffset,
             int packSize,
-            int weight,
-            float velocityXMin,
-            float velocityXMax,
-            float velocityYMin,
-            float velocityYMax,
-            float packSpawnOffsetMin,
-            float packSpawnOffsetMax
+            int weight
             )
         {
             FirstSpawnPoint     = xPositions;
             SecondSpawnPoint    = yPositions;
+            XVelocity           = xVelocity;
+            YVelocity           = yVelocity;
+            SpawnOffset         = spawnOffset;
             MainDirectionOffset = mainDirectionOffset;
             FirstOffset         = firstOffset;
             SecondOffset        = secondOffset;
             PackSize            = packSize;
             Weight              = weight;
-            VelocityXMin        = velocityXMin;
-            VelocityXMax        = velocityXMax;
-            VelocityYMin        = velocityYMin;
-            VelocityYMax        = velocityYMax;
-            PackSpawnOffsetMin  = packSpawnOffsetMin;
-            PackSpawnOffsetMax  = packSpawnOffsetMax;
         }
     }
 }
