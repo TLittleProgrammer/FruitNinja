@@ -9,6 +9,7 @@ namespace Runtime.Infrastructure.Mouse
         private Camera _camera;
         private Vector2 _previousMousePosition;
         private Vector2 _previousMousePositionForOther;
+        private bool _stop;
         private bool _canSlice;
         private bool _canCheckMousePositionDelta;
 
@@ -16,6 +17,7 @@ namespace Runtime.Infrastructure.Mouse
         {
             _camera = camera;
             _previousMousePosition = GetMousePositionInWorldCoordinates();
+            _stop = false;
             
             await UniTask.CompletedTask;
         }
@@ -24,6 +26,9 @@ namespace Runtime.Infrastructure.Mouse
 
         public void Tick()
         {
+            if (_stop)
+                return;
+            
             CheckMouseButtonDown();
             CheckMouseButtonUp();
 
@@ -35,6 +40,11 @@ namespace Runtime.Infrastructure.Mouse
                 _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
             }
+        }
+
+        public void SetStopValue(bool value)
+        {
+            _stop = value;
         }
 
         public Vector2 GetMousePositionInWorldCoordinates()

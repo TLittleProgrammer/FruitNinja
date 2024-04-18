@@ -1,8 +1,7 @@
 ﻿using Runtime.Constants;
-using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.NotStateMachine;
-using Runtime.Infrastructure.SlicableObjects.Movement;
-using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -15,21 +14,12 @@ namespace Runtime.UI.Screens
         [SerializeField] private Button _menuButton;
         
         private IEntryPoint _entryPoint;
-        private SlicableMovementService _movementService;
-        private SlicableObjectSpawnerManager _spawnerManager;
-        private GameParameters _gameParameters;
+        private IGameStateMachine _gameStateMachine;
 
         [Inject]
-        private void Construct(
-            IEntryPoint entryPoint,
-            SlicableMovementService movementService,
-            SlicableObjectSpawnerManager spawnerManager,
-            GameParameters gameParameters
-        )
+        private void Construct(IEntryPoint entryPoint, IGameStateMachine gameStateMachine)
         {
-            _gameParameters = gameParameters;
-            _spawnerManager = spawnerManager;
-            _movementService = movementService;
+            _gameStateMachine = gameStateMachine;
             _entryPoint = entryPoint;
         }
 
@@ -48,12 +38,7 @@ namespace Runtime.UI.Screens
 
         private void OnRestartButtonClicked()
         {
-            _spawnerManager.Continue();
-            
-            _gameParameters.Reset();
-            
-            //TODO он не должен отвечать за свй жизненный цикл, но пусть пока будет так
-            Destroy(gameObject);
+            _gameStateMachine.Enter<GameState>();
         }
 
         private void OnMenuButtonClicked()

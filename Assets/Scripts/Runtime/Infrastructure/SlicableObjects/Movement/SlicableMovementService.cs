@@ -14,7 +14,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _slicableMapping = new();
             _canMove = true;
         }
-        
+
+        public int MovementObjectsCount => _slicableMapping.Count;
+
         public void Tick()
         {
             if (_canMove is false)

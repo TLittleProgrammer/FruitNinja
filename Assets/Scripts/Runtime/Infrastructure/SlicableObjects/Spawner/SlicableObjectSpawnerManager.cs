@@ -44,14 +44,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             await CalculateTime();
         }
 
-        public void Continue()
+        public void SetStop(bool value)
         {
-            _stop = false;
-        }
-
-        public void Stop()
-        {
-            _stop = true;
+            _stop = value;
         }
 
         private async UniTask CalculateTime()
@@ -71,8 +66,11 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                 for (int i = 0; i < packSize; i++)
                 {
                     if (_stop)
+                    {
+                        _canCalculateTime = true;
                         return;
-                    
+                    }
+
                     _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
 
                     int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
