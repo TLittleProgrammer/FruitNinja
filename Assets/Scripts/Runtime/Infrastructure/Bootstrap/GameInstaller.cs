@@ -10,7 +10,6 @@ using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
-using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
 
@@ -71,7 +70,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
         public void Initialize()
         {
-            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new[] { _gameCanvas });
+            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new[] { _gameCanvas, _overlayCanvas });
             
             gameInitializer.Initialize();
         }

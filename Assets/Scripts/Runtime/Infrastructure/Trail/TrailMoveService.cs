@@ -32,23 +32,13 @@ namespace Runtime.Infrastructure.Trail
             }
             
             CheckMouseButtonDown();
-            CheckMouseButtonUp();
         }
-
-        private void CheckMouseButtonUp()
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                _trailView.SpriteRenderer.enabled = false;
-            }
-        }
-
+        
         private void CheckMouseButtonDown()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 _trailView.TrailRenderer.Clear();
-                _trailView.SpriteRenderer.enabled = true;
             }
         }
     }
