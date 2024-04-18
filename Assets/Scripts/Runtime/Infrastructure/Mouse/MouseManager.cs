@@ -56,7 +56,7 @@ namespace Runtime.Infrastructure.Mouse
         
         public Vector2 GetMouseNormalizedDirection()
         {
-            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
+            return (GetMousePositionInWorldCoordinates() - _previousMousePositionForOther).normalized;
         }
 
         public Vector2 GetPreviousMousePosition()
