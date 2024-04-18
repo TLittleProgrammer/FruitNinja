@@ -48,8 +48,6 @@ namespace Runtime.Infrastructure.NotStateMachine
             _rootUI = await _uiFactory.LoadUIObjectByPath<RootUI>(PathToRootUI, null);
 
             _diContainer.Bind<RootUI>().FromInstance(_rootUI).AsSingle();
-            
-            Object.DontDestroyOnLoad(_rootUI);
         }
 
         private void CreateLoadingScreen()
