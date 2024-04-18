@@ -167,20 +167,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 2
-  Weight: 5
-  FirstSpawnPointPercent: 0.207
-  SecondSpawnPointPercent: 0.613
-  VelocityXMin: 5
-  VelocityXMax: 12
-  VelocityYMin: 4
-  VelocityYMax: 13
-  SpawnPackOffsetMin: 0.5
-  SpawnPackOffsetMax: 0.6
-  MainDirectionOffset: 70
-  FirstOffsetAngle: 41.7
-  SecondOffsetAngle: -38.43
-  PackSize: 2
+  SpawnerData:
+    Weight: 4
+    FirstSpawnPoint:
+      Min: -0.1
+      Max: -0.1
+    SecondSpawnPoint:
+      Min: 1
+      Max: 0.34
+    XVelocity:
+      Min: 6
+      Max: 15
+    YVelocity:
+      Min: 6
+      Max: 35
+    SpawnOffset:
+      Min: 0.12
+      Max: 0.57
+    MainDirectionOffset: -38.71
+    FirstOffset: 12.64
+    SecondOffset: -18.2
+    PackSize: 1
 --- !u!1 &103499047
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,20 +390,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 1
-  Weight: 5
-  FirstSpawnPointPercent: 0.236
-  SecondSpawnPointPercent: 0.887
-  VelocityXMin: 2
-  VelocityXMax: 8
-  VelocityYMin: 5
-  VelocityYMax: 10
-  SpawnPackOffsetMin: 0.25
-  SpawnPackOffsetMax: 0.75
-  MainDirectionOffset: -67.43
-  FirstOffsetAngle: 35.6
-  SecondOffsetAngle: -32.77
-  PackSize: 1
+  SpawnerData:
+    Weight: 5
+    FirstSpawnPoint:
+      Min: 0.45
+      Max: 1.45
+    SecondSpawnPoint:
+      Min: -0.2
+      Max: -0.2
+    XVelocity:
+      Min: 5
+      Max: 7
+    YVelocity:
+      Min: 14
+      Max: 50
+    SpawnOffset:
+      Min: 0.1
+      Max: 0.3
+    MainDirectionOffset: 0
+    FirstOffset: -34.11
+    SecondOffset: 34.5
+    PackSize: 3
 --- !u!1 &572143239
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,20 +455,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SideType: 3
-  Weight: 25
-  FirstSpawnPointPercent: 0.241
-  SecondSpawnPointPercent: 0.77
-  VelocityXMin: 2
-  VelocityXMax: 7
-  VelocityYMin: 10
-  VelocityYMax: 25
-  SpawnPackOffsetMin: 0.15
-  SpawnPackOffsetMax: 0.3
-  MainDirectionOffset: 16.2
-  FirstOffsetAngle: 34.8
-  SecondOffsetAngle: -47.6
-  PackSize: 3
+  SpawnerData:
+    Weight: 5
+    FirstSpawnPoint:
+      Min: 2.2
+      Max: 2.2
+    SecondSpawnPoint:
+      Min: 0.37
+      Max: 1.2
+    XVelocity:
+      Min: 8
+      Max: 12
+    YVelocity:
+      Min: 6
+      Max: 15
+    SpawnOffset:
+      Min: 0.15
+      Max: 0.25
+    MainDirectionOffset: 44.7
+    FirstOffset: 5.45
+    SecondOffset: -21.08
+    PackSize: 4
 --- !u!1 &575202653
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +626,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1366, y: 768}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
@@ -630,7 +651,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -837,7 +858,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
+  m_ReferenceResolution: {x: 1366, y: 768}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3

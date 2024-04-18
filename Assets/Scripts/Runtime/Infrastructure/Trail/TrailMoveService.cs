@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.Mouse;
 using UnityEngine;
 using Zenject;
@@ -10,9 +11,12 @@ namespace Runtime.Infrastructure.Trail
         private readonly MouseManager _mouseManager;
         private TrailView _trailView;
 
+        private bool _canTrail;
+
         public TrailMoveService(MouseManager mouseManager)
         {
             _mouseManager = mouseManager;
+            _canTrail = true;
         }
 
         public async UniTask AsyncInitialize(TrailView trailViewTransform)
@@ -24,7 +28,7 @@ namespace Runtime.Infrastructure.Trail
 
         public void Tick()
         {
-            if (Input.GetMouseButton(0))
+            if (_canTrail && Input.GetMouseButton(0))
             {
                 Vector3 targetPosition = _mouseManager.GetMousePositionInWorldCoordinates();
                 
@@ -32,23 +36,18 @@ namespace Runtime.Infrastructure.Trail
             }
             
             CheckMouseButtonDown();
-            CheckMouseButtonUp();
         }
 
-        private void CheckMouseButtonUp()
+        public void SetCanTrail(bool value)
         {
-            if (Input.GetMouseButtonUp(0))
-            {
-                _trailView.SpriteRenderer.enabled = false;
-            }
+            _canTrail = value;
         }
-
+        
         private void CheckMouseButtonDown()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 _trailView.TrailRenderer.Clear();
-                _trailView.SpriteRenderer.enabled = true;
             }
         }
     }

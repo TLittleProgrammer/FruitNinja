@@ -71,17 +71,6 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
 
     public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectView)>
     {
-        public void RemoveItemWithView(SlicableObjectView slicableObjectView)
-        {
-            foreach ((Collider2D, SlicableObjectView) turple in this)
-            {
-                if (slicableObjectView.Equals(turple.Item2))
-                {
-                    Remove(turple);
-                }
-            }
-        }
-        
         public void RemoveItemWithCollider(Collider2D collider2D)
         {
             foreach ((Collider2D, SlicableObjectView) turple in this)

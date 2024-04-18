@@ -9,6 +9,7 @@ namespace Runtime.Infrastructure.Mouse
         private Camera _camera;
         private Vector2 _previousMousePosition;
         private Vector2 _previousMousePositionForOther;
+        private bool _stop;
         private bool _canSlice;
         private bool _canCheckMousePositionDelta;
 
@@ -16,25 +17,36 @@ namespace Runtime.Infrastructure.Mouse
         {
             _camera = camera;
             _previousMousePosition = GetMousePositionInWorldCoordinates();
+            _stop = false;
             
             await UniTask.CompletedTask;
         }
 
-        public bool CanSlice => _canSlice;
+        public bool CanSlice => _canSlice && _stop is false;
 
         public void Tick()
         {
-            CheckMouseButtonDown();
-            CheckMouseButtonUp();
+            if (_stop)
+                return;
 
             if (_canCheckMousePositionDelta)
             {
                 Vector2 currentMousePosition = GetMousePositionInWorldCoordinates();
 
-                _canSlice = Vector2.Distance(currentMousePosition, _previousMousePosition) >= Constants.Game.MinRequiredDistanceBetweenMousePositions;
+                float speed = Vector2.Distance(currentMousePosition, _previousMousePosition) / Time.deltaTime;
+                _canSlice = speed >= Constants.Game.MinRequiredSliceSpeed;
+                
                 _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
             }
+            
+            CheckMouseButtonDown();
+            CheckMouseButtonUp();
+        }
+
+        public void SetStopValue(bool value)
+        {
+            _stop = value;
         }
 
         public Vector2 GetMousePositionInWorldCoordinates()
@@ -44,7 +56,7 @@ namespace Runtime.Infrastructure.Mouse
         
         public Vector2 GetMouseNormalizedDirection()
         {
-            return (GetMousePositionInWorldCoordinates() - _previousMousePosition).normalized;
+            return (GetMousePositionInWorldCoordinates() - _previousMousePositionForOther).normalized;
         }
 
         public Vector2 GetPreviousMousePosition()
@@ -65,7 +77,11 @@ namespace Runtime.Infrastructure.Mouse
         {
             if (Input.GetMouseButtonDown(0))
             {
+                _previousMousePosition = GetMousePositionInWorldCoordinates();
+                _previousMousePositionForOther = _previousMousePosition;
+                
                 _canCheckMousePositionDelta = true;
+                _canSlice = false;
             }
         }
     }

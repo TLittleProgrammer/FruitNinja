@@ -29,10 +29,10 @@ namespace Runtime.UI.Buttons
         
         private void OnButtonClicked()
         {
-            transform
+            /*transform
                 .DOScale(_buttonAnimationSettings.TargetScale, _buttonAnimationSettings.Duration)
                 .SetEase(_buttonAnimationSettings.Ease)
-                .SetLoops(2, LoopType.Yoyo);
+                .SetLoops(2, LoopType.Yoyo);*/
         }
     }
 }

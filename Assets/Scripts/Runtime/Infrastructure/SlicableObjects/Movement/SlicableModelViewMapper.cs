@@ -47,8 +47,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             ChangePositionAndActivate(spawnerData, slicableObjectView);
 
             float angleInRadians = GetDirectionAngleInRadians(spawnerData);
-            float velocityX      = Random.Range(spawnerData.VelocityXMin, spawnerData.VelocityXMax);
-            float velocityY      = Random.Range(spawnerData.VelocityYMin, spawnerData.VelocityYMax);
+            float velocityX      = spawnerData.XVelocity.GetRandomValue();
+            float velocityY      = spawnerData.YVelocity.GetRandomValue();
             
             velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 

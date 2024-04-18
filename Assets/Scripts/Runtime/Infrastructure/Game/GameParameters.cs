@@ -16,7 +16,7 @@ namespace Runtime.Infrastructure.Game
         public GameParameters(LevelStaticData levelStaticData, UserData.UserData userData)
         {
             _userData = userData;
-            _health = levelStaticData.HealthCount * 2;
+            _health = levelStaticData.HealthCount;
             _initialHealthCount = _health;
         }
 

@@ -9,7 +9,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
         private readonly Vector2 _shadowDirection = new(1, -0.5f);
 
         private const float _mainScaleSpeed = 0.1f;
-        private const float _shadowOffsetSpeed = 0.05f;
+        private const float _shadowOffsetSpeed = 0.15f;
 
         public ScaleAnimation(Transform mainTransform, Transform shadowTransform)
         {

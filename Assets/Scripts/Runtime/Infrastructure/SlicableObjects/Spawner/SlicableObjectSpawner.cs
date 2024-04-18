@@ -1,64 +1,47 @@
 ﻿using System;
+using Runtime.Infrastructure.Data;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
     [Serializable]
     public class SlicableObjectSpawnerData
     {
-        public SideType SideType;
-
         //TODO поправить названия переменных
         public int Weight;
-        public float FirstSpawnPoint;
-        public float SecondSpawnPoint;
+        public MinMaxValue FirstSpawnPoint;
+        public MinMaxValue SecondSpawnPoint;
+        public MinMaxValue XVelocity;
+        public MinMaxValue YVelocity;
+        public MinMaxValue SpawnOffset;
         public float MainDirectionOffset;
         public float FirstOffset;
         public float SecondOffset;
-        public float VelocityXMin;
-        public float VelocityXMax;
-        public float VelocityYMin;
-        public float VelocityYMax;
-        public float PackSpawnOffsetMin;
-        public float PackSpawnOffsetMax;
 
         public int PackSize;
 
         public SlicableObjectSpawnerData(
-            SideType sideType,
-            float firstSpawnPoint,
-            float secondSpawnPoint,
+            MinMaxValue xPositions,
+            MinMaxValue yPositions,
+            MinMaxValue xVelocity,
+            MinMaxValue yVelocity,
+            MinMaxValue spawnOffset,
             float mainDirectionOffset,
             float firstOffset,
             float secondOffset,
             int packSize,
-            int weight,
-            float velocityXMin,
-            float velocityXMax,
-            float velocityYMin,
-            float velocityYMax,
-            float packSpawnOffsetMin,
-            float packSpawnOffsetMax
+            int weight
             )
         {
-            SideType            = sideType;
-            FirstSpawnPoint     = firstSpawnPoint;
-            SecondSpawnPoint    = secondSpawnPoint;
+            FirstSpawnPoint     = xPositions;
+            SecondSpawnPoint    = yPositions;
+            XVelocity           = xVelocity;
+            YVelocity           = yVelocity;
+            SpawnOffset         = spawnOffset;
             MainDirectionOffset = mainDirectionOffset;
             FirstOffset         = firstOffset;
             SecondOffset        = secondOffset;
             PackSize            = packSize;
             Weight              = weight;
-            VelocityXMin        = velocityXMin;
-            VelocityXMax        = velocityXMax;
-            VelocityYMin        = velocityYMin;
-            VelocityYMax        = velocityYMax;
-            PackSpawnOffsetMin  = packSpawnOffsetMin;
-            PackSpawnOffsetMax  = packSpawnOffsetMax;
-
-            if (FirstSpawnPoint > SecondSpawnPoint)
-            {
-                (FirstSpawnPoint, SecondSpawnPoint) = (SecondSpawnPoint, FirstSpawnPoint);
-            }
         }
     }
 }

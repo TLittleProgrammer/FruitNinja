@@ -11,12 +11,12 @@ namespace Runtime.UI.Screens
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _quitButton;
         
-        private IGameStateMachine _gameStateMachine;
+        private IEntryPoint _entryPoint;
 
         [Inject]
-        private void Construct(IGameStateMachine gameStateMachine)
+        private void Construct(IEntryPoint entryPoint)
         {
-            _gameStateMachine = gameStateMachine;
+            _entryPoint = entryPoint;
         }
 
         private void OnEnable()
@@ -33,7 +33,7 @@ namespace Runtime.UI.Screens
 
         private void OnPlayButtonClicked()
         {
-            _gameStateMachine.AsyncLoadScene(Constants.SceneNames.Game);
+            _entryPoint.AsyncLoadScene(Constants.SceneNames.Game);
         }
 
         private void OnQuitButtonClicked()

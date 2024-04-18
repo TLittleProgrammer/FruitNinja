@@ -14,7 +14,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _slicableMapping = new();
             _canMove = true;
         }
-        
+
+        public int MovementObjectsCount => _slicableMapping.Count;
+
         public void Tick()
         {
             if (_canMove is false)
@@ -26,21 +28,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             }
         }
 
-        public void Reset()
+        public void SetCanMove(bool value)
         {
-            _canMove = true;
-
-            foreach (Transform transform in _slicableMapping.Keys)
-            {
-                transform.gameObject.SetActive(false);
-            }
-            
-            _slicableMapping.Clear();
-        }
-        
-        public void Stop()
-        {
-            _canMove = false;
+            _canMove = value;
         }
 
         public void AddMapping(SlicableModel model, Transform view)

@@ -2,11 +2,10 @@
 using Runtime.Infrastructure.Factories;
 using Runtime.UI.Screens;
 using Zenject;
-using Object = UnityEngine.Object;
 
 namespace Runtime.Infrastructure.NotStateMachine
 {
-    public sealed class GameStateMachine : IGameStateMachine
+    public sealed class EntryPoint : IEntryPoint
     {
         private const string PathToRootUI = "Prefabs/UI/RootUI";
         
@@ -17,7 +16,7 @@ namespace Runtime.Infrastructure.NotStateMachine
         private LoadingScreen _loadingScreen;
         private RootUI _rootUI;
 
-        public GameStateMachine(IUIFactory uiFactory, ISceneLoader sceneLoader, DiContainer diContainer)
+        public EntryPoint(IUIFactory uiFactory, ISceneLoader sceneLoader, DiContainer diContainer)
         {
             _uiFactory = uiFactory;
             _sceneLoader = sceneLoader;
@@ -48,8 +47,6 @@ namespace Runtime.Infrastructure.NotStateMachine
             _rootUI = await _uiFactory.LoadUIObjectByPath<RootUI>(PathToRootUI, null);
 
             _diContainer.Bind<RootUI>().FromInstance(_rootUI).AsSingle();
-            
-            Object.DontDestroyOnLoad(_rootUI);
         }
 
         private void CreateLoadingScreen()

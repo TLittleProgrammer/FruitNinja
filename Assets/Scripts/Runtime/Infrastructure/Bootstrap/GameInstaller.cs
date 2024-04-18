@@ -1,4 +1,5 @@
-﻿using Runtime.Extensions;
+﻿using System.Collections.Generic;
+using Runtime.Extensions;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Game;
@@ -8,9 +9,10 @@ using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
-using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
 
@@ -59,19 +61,51 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent.name);
             Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent.name);
 
+            InstallGameStateMachine();
             InstallAndBindLooseService();
+        }
+
+        private void InstallGameStateMachine()
+        {
+            IGameStateMachine gameStateMachine;
+            
+            IEnumerable<IState> states = GetGameStates();
+            
+            gameStateMachine = new GameStateMachine(states);
+
+            Container.Bind<IGameStateMachine>().FromInstance(gameStateMachine).AsSingle();
+        }
+
+        
+        //TODO Шаблонный код. Вынести в методы
+        private IEnumerable<IState> GetGameStates()
+        {
+            List<IState> states = new();
+
+            LooseState looseState = Container.Instantiate<LooseState>(new[] { _overlayCanvas });
+            Container.BindInterfacesTo<LooseState>().FromInstance(looseState).AsSingle();
+            
+            PauseState pauseState = Container.Instantiate<PauseState>(new[] { _overlayCanvas });
+            Container.Bind<PauseState>().FromInstance(pauseState).AsSingle();
+            
+            states.Add(Container.Instantiate<GameState>());
+            states.Add(Container.Instantiate<RestartState>());
+            states.Add(looseState);
+            states.Add(pauseState);
+
+            return states;
         }
 
         private void InstallAndBindLooseService()
         {
-            LooseService looseService = Container.Instantiate<LooseService>(new[] { _overlayCanvas });
+            LooseService looseService = Container.Instantiate<LooseService>();
 
             Container.BindInterfacesAndSelfTo<LooseService>().FromInstance(looseService);
         }
 
         public void Initialize()
         {
-            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new[] { _gameCanvas });
+            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new[] { _gameCanvas, _overlayCanvas });
             
             gameInitializer.Initialize();
         }

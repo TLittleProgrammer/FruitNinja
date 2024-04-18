@@ -1,37 +1,27 @@
-﻿using Runtime.Infrastructure.Factories;
-using Runtime.Infrastructure.Game;
-using Runtime.UI.Screens;
-using UnityEngine;
-using Zenject;
+﻿using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 
 namespace Runtime.Infrastructure.Loose
 {
     public sealed class LooseService : ILooseService
     {
-        private readonly Canvas _looseScreenParent;
-        private readonly IUIFactory _uiFactory;
-        private readonly DiContainer _diContainer;
+        private readonly IGameStateMachine _gameStateMachine;
         private readonly UserData.UserData _userData;
 
-        public LooseService(
-            Canvas looseScreenParent,
-            IUIFactory uiFactory,
-            GameParameters gameParameters,
-            DiContainer diContainer
-            )
+
+        public LooseService(GameParameters gameParameters,  IGameStateMachine gameStateMachine)
         {
-            _looseScreenParent = looseScreenParent;
-            _uiFactory = uiFactory;
-            _diContainer = diContainer;
+            _gameStateMachine = gameStateMachine;
 
             gameParameters.HealthChanged += OnHealthChanged;
         }
 
         private void OnHealthChanged(int health)
         {
-            if (health == 0)
+            if (health <= 0)
             {
-                _uiFactory.LoadScreen<LooseScreen>(ScreenType.Loose, _looseScreenParent.transform, _diContainer);
+                _gameStateMachine.Enter<LooseState>();
             }
         }
     }
