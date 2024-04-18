@@ -28,21 +28,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             }
         }
 
-        public void Reset()
+        public void SetCanMove(bool value)
         {
-            _canMove = true;
-
-            foreach (Transform transform in _slicableMapping.Keys)
-            {
-                transform.gameObject.SetActive(false);
-            }
-            
-            _slicableMapping.Clear();
-        }
-        
-        public void Stop()
-        {
-            _canMove = false;
+            _canMove = value;
         }
 
         public void AddMapping(SlicableModel model, Transform view)

@@ -8,9 +8,9 @@ using Zenject;
 
 namespace Runtime.UI.Screens
 {
-    public sealed class LooseScreen : MonoBehaviour
+    public class PauseScreen : MonoBehaviour
     {
-        [SerializeField] private Button _restartButton;
+        [SerializeField] private Button _continueButton;
         [SerializeField] private Button _menuButton;
         
         private IEntryPoint _entryPoint;
@@ -26,18 +26,17 @@ namespace Runtime.UI.Screens
         private void OnEnable()
         {
             _menuButton.onClick.AddListener(OnMenuButtonClicked);
-            _restartButton.onClick.AddListener(OnRestartButtonClicked);
+            _continueButton.onClick.AddListener(OnContinueButtonClicked);
         }
 
         private void OnDisable()
         {
             _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
-            _restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+            _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
         }
 
-        private void OnRestartButtonClicked()
+        private void OnContinueButtonClicked()
         {
-            _gameStateMachine.Enter<RestartState>();
             _gameStateMachine.Enter<GameState>();
         }
 

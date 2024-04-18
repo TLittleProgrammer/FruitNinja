@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
@@ -68,13 +67,17 @@ namespace Runtime.Infrastructure.Bootstrap
 
         private void InstallGameStateMachine()
         {
+            IGameStateMachine gameStateMachine;
+            
             IEnumerable<IState> states = GetGameStates();
             
-            IGameStateMachine gameStateMachine = new GameStateMachine(states);
+            gameStateMachine = new GameStateMachine(states);
 
             Container.Bind<IGameStateMachine>().FromInstance(gameStateMachine).AsSingle();
         }
 
+        
+        //TODO Шаблонный код. Вынести в методы
         private IEnumerable<IState> GetGameStates()
         {
             List<IState> states = new();
@@ -82,9 +85,13 @@ namespace Runtime.Infrastructure.Bootstrap
             LooseState looseState = Container.Instantiate<LooseState>(new[] { _overlayCanvas });
             Container.BindInterfacesTo<LooseState>().FromInstance(looseState).AsSingle();
             
+            PauseState pauseState = Container.Instantiate<PauseState>(new[] { _overlayCanvas });
+            Container.Bind<PauseState>().FromInstance(pauseState).AsSingle();
+            
             states.Add(Container.Instantiate<GameState>());
-            states.Add(Container.Instantiate<PauseState>());
+            states.Add(Container.Instantiate<RestartState>());
             states.Add(looseState);
+            states.Add(pauseState);
 
             return states;
         }

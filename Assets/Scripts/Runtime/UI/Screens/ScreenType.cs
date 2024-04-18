@@ -9,5 +9,6 @@
         Game     = 3,
         Loose    = 4,
         GameBackground = 5,
+        Pause    = 6,
     }
 }
