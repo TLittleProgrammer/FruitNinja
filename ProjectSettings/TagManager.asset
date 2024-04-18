@@ -41,15 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Shadow
-    uniqueID: 4085232497
-    locked: 0
   - name: Blots
     uniqueID: 607348903
     locked: 0
   - name: Splash
     uniqueID: 1292063779
     locked: 0
+  - name: Shadow
+    uniqueID: 4085232497
+    locked: 0
   - name: SliceableObject
     uniqueID: 1539777611
+    locked: 0
+  - name: Labels
+    uniqueID: 4139787413
+    locked: 0
+  - name: Slice
+    uniqueID: 1947275199
     locked: 0

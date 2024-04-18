@@ -4,6 +4,7 @@ using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -15,6 +16,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private const string PathToTrail = "Prefabs/WorldObjects/Trail";
         
         private readonly Canvas _gameCanvas;
+        private readonly Canvas _overlayCanvas;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
         private readonly TrailMoveService _trailMoveService;
@@ -27,6 +29,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
         public GameInitializer(
             Canvas gameCanvas,
+            Canvas overlayCanvas,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
             TrailMoveService trailMoveService,
@@ -38,6 +41,7 @@ namespace Runtime.Infrastructure.Bootstrap
         )
         {
             _gameCanvas = gameCanvas;
+            _overlayCanvas = overlayCanvas;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _trailMoveService = trailMoveService;
@@ -60,9 +64,10 @@ namespace Runtime.Infrastructure.Bootstrap
             await _mouseManager.AsyncInitialize(camera);
             await _trailMoveService.AsyncInitialize(trailView);
 
-            GameScreen gameScreen = _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _gameCanvas.transform, _diContainer);
+            _uiFactory.LoadScreen<MonoBehaviour>(ScreenType.GameBackground, _gameCanvas.transform, _diContainer);
+            GameScreen gameScreen = _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _overlayCanvas.transform, _diContainer);
             await gameScreen.AsyncInitialize();
-            
+
             await _gameScreenManager.AsyncInitialize(camera);
             
             _gameStateMachine.HideLoadingScreen();

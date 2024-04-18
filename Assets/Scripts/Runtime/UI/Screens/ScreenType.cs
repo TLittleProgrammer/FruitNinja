@@ -8,5 +8,6 @@
         MainMenu = 2,
         Game     = 3,
         Loose    = 4,
+        GameBackground = 5,
     }
 }
