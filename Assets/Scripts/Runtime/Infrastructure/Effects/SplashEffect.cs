@@ -29,18 +29,9 @@ namespace Runtime.Infrastructure.Effects
         {
             _particleSystemMainModule.startColor = color;
         }
-
-        private void Reset(Vector3 startPosition)
-        {
-            transform.position = startPosition;
-        }
         
         public class Pool : MonoMemoryPool<Vector3, SplashEffect>
         {
-            protected override void Reinitialize(Vector3 position, SplashEffect splash)
-            {
-                splash.Reset(position);
-            }
         }
     }
 }
