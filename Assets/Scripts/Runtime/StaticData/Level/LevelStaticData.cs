@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 
@@ -11,5 +12,6 @@ namespace Runtime.StaticData.Level
         public float BeginPackOffset;
         public float EndPackOffset;
         public int HealthCount;
+        public ComboData ComboData;
     }
 }

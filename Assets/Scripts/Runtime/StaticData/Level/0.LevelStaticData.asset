@@ -76,3 +76,5 @@ MonoBehaviour:
   BeginPackOffset: 2
   EndPackOffset: 3
   HealthCount: 3
+  ComboData:
+    DelayComboDestroy: 0.75
