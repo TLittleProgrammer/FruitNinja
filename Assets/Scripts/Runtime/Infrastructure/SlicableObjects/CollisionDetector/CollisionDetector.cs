@@ -4,18 +4,18 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
 {
-    public class CollisionDetector : ICollisionDetector<Collider2D, SlicableObjectData>
+    public class CollisionDetector : ICollisionDetector<Collider2D, SlicableObjectView>
     {
         private readonly MouseManager _mouseManager;
         private readonly IIntermediateMousePositionsService _intermediateMousePositionsService;
-        private readonly Slicer _slicer;
+        private readonly Slicer.Slicer _slicer;
 
         private MappingColliderAndViewToList _colliders;
 
         public CollisionDetector(
             MouseManager mouseManager,
             IIntermediateMousePositionsService intermediateMousePositionsService,
-            Slicer slicer
+            Slicer.Slicer slicer
             )
         {
             _mouseManager = mouseManager;
@@ -39,7 +39,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
 
         private void GoThrowAllCollidersAndMousePositions(Vector2[] mousePositions)
         {
-            (Collider2D, SlicableObjectData)[] turpleArray = _colliders.ToArray();
+            (Collider2D, SlicableObjectView)[] turpleArray = _colliders.ToArray();
             
             for (int i = 0; i < turpleArray.Length; i++)
             {
@@ -47,18 +47,26 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
                 {
                     if (turpleArray[i].Item1.OverlapPoint(mousePosition))
                     {
-                        _slicer.SliceObject(turpleArray[i].Item2);
-                        
-                        _colliders.Remove(turpleArray[i]);
-                        i--;
-                        
+                        i = TrySlice(turpleArray, i);
+
                         break;
                     }
                 }
             }
         }
 
-        public void AddCollider(Collider2D collider2D, SlicableObjectData slicableObjectView)
+        private int TrySlice((Collider2D, SlicableObjectView)[] turpleArray, int i)
+        {
+            if (_slicer.TrySliceObject(turpleArray[i].Item2))
+            {
+                _colliders.Remove(turpleArray[i]);
+                i--;
+            }
+
+            return i;
+        }
+
+        public void AddCollider(Collider2D collider2D, SlicableObjectView slicableObjectView)
         {
             _colliders.Add((collider2D, slicableObjectView));
         }
@@ -69,11 +77,11 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
         }
     }
 
-    public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectData)>
+    public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectView)>
     {
         public void RemoveItemWithCollider(Collider2D collider2D)
         {
-            foreach ((Collider2D, SlicableObjectData) turple in this)
+            foreach ((Collider2D, SlicableObjectView) turple in this)
             {
                 if (collider2D.Equals(turple.Item1))
                 {

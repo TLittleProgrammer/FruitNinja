@@ -38,9 +38,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
 
-            SlicableObjectData slicableObjectData = new(slicableObjectType, slicableObjectView);
-            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectData);
+            slicableObjectView.SlicableObjectType = slicableObjectType;
             
+            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
             _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
             _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
 

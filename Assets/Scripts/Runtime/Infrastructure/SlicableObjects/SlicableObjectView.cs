@@ -10,6 +10,8 @@ namespace Runtime.Infrastructure.SlicableObjects
         [SerializeField] private SpriteRenderer _shadowSprite;
         [SerializeField] private Collider2D _collider2D;
 
+        public SlicableObjectType SlicableObjectType;
+
         public SpriteRenderer MainSprite   => _mainSprite;
         public SpriteRenderer ShadowSprite => _shadowSprite;
         public Collider2D Collider2D => _collider2D;
