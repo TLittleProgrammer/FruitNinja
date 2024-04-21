@@ -66,11 +66,6 @@ namespace Runtime.Infrastructure.Effects
             transform.rotation = Quaternion.Euler(0f, 0f, Random.Range(0, 360));
         }
 
-        private void Reset(Vector3 startPosition)
-        {
-            transform.position = startPosition;
-        }
-
         private float GetRandomValue(float leftValue, float rightValue)
         {
             return Random.Range(leftValue, rightValue);
@@ -78,10 +73,6 @@ namespace Runtime.Infrastructure.Effects
 
         public class Pool : MonoMemoryPool<Vector3, BlotEffect>
         {
-            protected override void Reinitialize(Vector3 position, BlotEffect blotEffect)
-            {
-                blotEffect.Reset(position);
-            }
         }
     }
 }

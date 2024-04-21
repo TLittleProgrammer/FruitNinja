@@ -17,6 +17,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
+        private readonly ScoreEffect.Pool _scoreEffectPool;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
 
         public Slicer(
@@ -27,6 +28,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             SliceableObjectDummy.Pool dummyPool,
             BlotEffect.Pool blotEffectPool,
             SplashEffect.Pool splashEffectPool,
+            ScoreEffect.Pool scoreEffectPool,
             SliceableObjectSpriteRendererOrderService orderService
         )
         {
@@ -37,33 +39,46 @@ namespace Runtime.Infrastructure.SlicableObjects
             _dummyPool = dummyPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
+            _scoreEffectPool = scoreEffectPool;
             _orderService = orderService;
         }
 
         public void SliceObject(SlicableObjectView slicableObjectView)
         {
-            _gameParameters.ChangeScore(Random.Range(25, 100));
+            int score = Random.Range(25, 100);
+            _gameParameters.ChangeScore(score);
             
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
             Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
 
+            AddScoreEffect(slicableObjectView.transform.position, score);
+            
+            AddDummies(slicableObjectView, sprite, slicableObjectSprite);
+            RemoveSlicableObjectFromMapping(slicableObjectView);
+
+            AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
+            AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
+        }
+
+        private void RemoveSlicableObjectFromMapping(SlicableObjectView slicableObjectView)
+        {
+            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
+            slicableObjectView.gameObject.SetActive(false);
+        }
+
+        private void AddDummies(SlicableObjectView slicableObjectView, Sprite sprite, Sprite slicableObjectSprite)
+        {
             SliceableObjectDummy[] dummyArray = TakeDummies();
 
             dummyArray[0].ChangeSprite(sprite);
             dummyArray[1].ChangeSprite(sprite);
-            
+
             UpdateSortingInLayerIndex(dummyArray);
 
             SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
 
             ChangeDummiesPosition(slicableModel, dummyArray, slicableObjectSprite);
             AddMappingToMovementService(slicableModel, dummyArray);
-
-            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
-            slicableObjectView.gameObject.SetActive(false);
-
-            AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
-            AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
         }
 
         private void UpdateSortingInLayerIndex(SliceableObjectDummy[] dummyArray)
@@ -76,10 +91,18 @@ namespace Runtime.Infrastructure.SlicableObjects
 
         private void AddSplashEffect(Vector3 transformPosition, string spriteName)
         {
-            SplashEffect splashEffect = _splashEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
+            SplashEffect splashEffect = _splashEffectPool.InactiveItems.GetInactiveObject();
 
             Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
             splashEffect.PlayEffect(transformPosition, color);
+        }
+
+        private void AddScoreEffect(Vector3 slicableObjectViewPosition, int score)
+        {
+            ScoreEffect scoreEffect = _scoreEffectPool.InactiveItems.GetInactiveObject();
+            Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
+
+            scoreEffect.PlayEffect(screenPosition, score);
         }
 
         private void AddBlotEffect(Vector2 targetPosition, Sprite sprite)

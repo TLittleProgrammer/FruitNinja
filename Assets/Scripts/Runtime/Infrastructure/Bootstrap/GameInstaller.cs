@@ -34,6 +34,9 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private SplashEffect _splashEffectPrefab;
         [SerializeField] private GameObject _splashPoolParent;
+        
+        [SerializeField] private ScoreEffect _scoreEffectPrefab;
+        [SerializeField] private GameObject _scorePoolParent;
 
         [Inject] private PoolSettings _poolSettings;
         
@@ -56,10 +59,11 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
 
-            Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent.name);
-            Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent.name);
-            Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent.name);
-            Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent.name);
+            Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent.transform);
+            Container.BindPool<ScoreEffect, ScoreEffect.Pool>(_poolSettings.PoolInitialSize, _scoreEffectPrefab, _scorePoolParent.transform);
+            Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent.transform);
+            Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent.transform);
+            Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent.transform);
 
             InstallGameStateMachine();
             InstallAndBindLooseService();
