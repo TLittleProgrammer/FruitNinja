@@ -31,9 +31,14 @@ namespace Runtime.Infrastructure.Combo
             StartCoroutine(PlayAnimation(screenPosition, fruits));
         }
 
+        public void SetPosition(Vector2 position)
+        {
+            _rectTransform.anchoredPosition = position;
+        }
+
         private IEnumerator PlayAnimation(Vector3 screenPosition, int fruits)
         {
-            _rectTransform.anchoredPosition = screenPosition;
+            //_rectTransform.anchoredPosition = screenPosition;
             _fruitsCounter.text = String.Format(_fruitsCounter.text, fruits);
             _xCounterText.text = String.Format(_xCounterText.text, fruits);
 

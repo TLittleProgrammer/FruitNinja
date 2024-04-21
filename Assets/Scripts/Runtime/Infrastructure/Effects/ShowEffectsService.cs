@@ -87,6 +87,7 @@ namespace Runtime.Infrastructure.Effects
 
         public void ShowScore(Vector2 slicableObjectViewPosition, int score)
         {
+            _lastSlicedPosition = slicableObjectViewPosition;
             ScoreEffect scoreEffect = _scoreEffectPool.InactiveItems.GetInactiveObject();
             Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
 
@@ -97,10 +98,11 @@ namespace Runtime.Infrastructure.Effects
         {
             ComboView comboView = _comboViewPool.InactiveItems.GetInactiveObject();
 
-            _comboViewPositionCorrecter.CorrectPosition(comboView);
             
             Vector2 targetPosition = _mouseManager.GetScreenPosition(_lastSlicedPosition);
             comboView.ShowCombo(targetPosition, comboCounter);
+            
+            _comboViewPositionCorrecter.CorrectPosition(comboView, _lastSlicedPosition);
         }
     }
 }
