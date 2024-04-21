@@ -14,6 +14,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     public class SlicableObjectSpawnerManager : ITickable, IInitializable
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
+        private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
         private readonly List<int> _spawnerPackResize;
         private readonly float _targetSpawnTime;
@@ -24,9 +25,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private float _spawnTime;
         private float _currentTime;
 
-        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper)
+        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper, ISlicableObjectCounterOnMap slicableObjectCounterOnMap)
         {
             _slicableModelViewMapper = slicableModelViewMapper;
+            _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
             _spawnTime = levelStaticData.BeginPackOffset;
             _targetSpawnTime = levelStaticData.EndPackOffset;

@@ -60,6 +60,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IShowEffectsService>().To<ShowEffectsService>().AsSingle();
             Container.Bind<IAddScoreService>().To<AddScoreService>().AsSingle();
             Container.Bind<IComboViewPositionCorrecter>().To<ComboViewPositionCorrecter>().AsSingle();
+            Container.Bind<ISlicableObjectCounterOnMap>().To<SlicableObjectCounterOnMap>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();

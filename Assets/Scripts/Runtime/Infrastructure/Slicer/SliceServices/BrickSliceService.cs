@@ -1,20 +1,29 @@
-﻿using Runtime.Infrastructure.SlicableObjects;
+﻿using Runtime.Infrastructure.Effects;
+using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.Trail;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices
 {
     public sealed class BrickSliceService : ISliceService
     {
+        private readonly TrailMoveService _trailMoveService;
+        private readonly MouseManager _mouseManager;
+        private readonly IShowEffectsService _showEffectsService;
 
-        public void Slice()
+        public BrickSliceService(TrailMoveService trailMoveService, MouseManager mouseManager, IShowEffectsService showEffectsService)
         {
-            //_lastSlicedPosition = slicableObjectView.transform.position;
-            //_trailMoveService.SetCannotMove();
-            //_mouseManager.SetCannotMouseCheckPosition();
-            //_showEffectsService.ShowSplash(_lastSlicedPosition, slicableObjectView.MainSprite.sprite);
+            _trailMoveService = trailMoveService;
+            _mouseManager = mouseManager;
+            _showEffectsService = showEffectsService;
         }
 
         public bool TrySlice(SlicableObjectView slicableObjectView)
         {
+            _trailMoveService.SetCannotMove();
+            _mouseManager.SetCannotMouseCheckPosition();
+            _showEffectsService.ShowSplash(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite);
+            
             return false;
         }
     }

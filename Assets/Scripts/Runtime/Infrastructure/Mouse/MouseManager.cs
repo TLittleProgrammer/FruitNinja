@@ -27,7 +27,10 @@ namespace Runtime.Infrastructure.Mouse
         public void Tick()
         {
             if (_stop)
+            {
+                _canSlice = false;
                 return;
+            }
 
             if (_canCheckMousePositionDelta)
             {
@@ -38,6 +41,10 @@ namespace Runtime.Infrastructure.Mouse
                 
                 _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
+            }
+            else
+            {
+                _canSlice = false;
             }
             
             CheckMouseButtonDown();
