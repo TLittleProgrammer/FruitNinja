@@ -4,7 +4,6 @@ using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
-using TMPro;
 using UnityEngine;
 using Zenject;
 

@@ -14,7 +14,6 @@ namespace Runtime.Extensions
                 .WithInitialSize(initialSize)
                 .FromComponentInNewPrefab(prefab)
                 .UnderTransform(parent);
-
         }
     }
 }

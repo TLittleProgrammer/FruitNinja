@@ -1,7 +1,7 @@
 ﻿using System;
 using Random = UnityEngine.Random;
 
-namespace Runtime.Infrastructure.Data
+namespace Runtime.Infrastructure.Common
 {
     [Serializable]
     public struct MinMaxValue

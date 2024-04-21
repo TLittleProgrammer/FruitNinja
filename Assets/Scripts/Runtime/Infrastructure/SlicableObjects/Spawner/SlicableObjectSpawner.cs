@@ -1,5 +1,5 @@
 ﻿using System;
-using Runtime.Infrastructure.Data;
+using Runtime.Infrastructure.Common;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {

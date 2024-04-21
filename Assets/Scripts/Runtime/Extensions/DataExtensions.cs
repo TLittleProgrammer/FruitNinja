@@ -9,6 +9,5 @@ namespace Runtime.Extensions
 
         public static TResult ToDeserialized<TResult>(this string json) =>
             JsonUtility.FromJson<TResult>(json);
-
     }
 }
