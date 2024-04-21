@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.Level;
+using Unity.VisualScripting;
 using UnityEngine;
 using IInitializable = Zenject.IInitializable;
 using ITickable = Zenject.ITickable;
@@ -11,6 +14,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     public class SlicableObjectSpawnerManager : ITickable, IInitializable
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
+        private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
         private readonly List<int> _spawnerPackResize;
         private readonly float _targetSpawnTime;
@@ -21,9 +25,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private float _spawnTime;
         private float _currentTime;
 
-        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper)
+        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper, ISlicableObjectCounterOnMap slicableObjectCounterOnMap)
         {
             _slicableModelViewMapper = slicableModelViewMapper;
+            _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
             _spawnTime = levelStaticData.BeginPackOffset;
             _targetSpawnTime = levelStaticData.EndPackOffset;
@@ -33,7 +38,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         public void Initialize()
         {
             InitializeRepackSize();
-            CalculateWeightLine();
+            CalculateWeightLineForSpawners();
         }
 
         public async void Tick()
@@ -55,41 +60,72 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
             if (_currentTime >= _spawnTime)
             {
-                int spawnerDataIndex = ChooseSpawnerDataIndex();
-                SlicableObjectSpawnerData spawnerData = _spawnersData[spawnerDataIndex];
-                
-                _currentTime = 0f;
-                _canCalculateTime = false;
+                await Spawn();
+            }
+        }
 
-                int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
+        private async UniTask Spawn()
+        {
+            int spawnerDataIndex = ChooseSpawnerDataIndex();
+            SlicableObjectSpawnerData spawnerData = _spawnersData[spawnerDataIndex];
 
-                for (int i = 0; i < packSize; i++)
+            _currentTime = 0f;
+            _canCalculateTime = false;
+
+            int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
+
+            for (int i = 0; i < packSize; i++)
+            {
+                if (_stop)
                 {
-                    if (_stop)
-                    {
-                        _canCalculateTime = true;
-                        return;
-                    }
-
-                    _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex]);
-
-                    int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
-                    
-                    await UniTask.Delay(delay);
+                    _canCalculateTime = true;
+                    return;
                 }
-                
-                if (_spawnerPackResize[spawnerDataIndex] < 5)
+
+                SlicableObjectType type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas);
+                _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], type);
+
+                int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
+                await UniTask.Delay(delay);
+            }
+
+            if (_spawnerPackResize[spawnerDataIndex] < 5)
+            {
+                _spawnerPackResize[spawnerDataIndex]++;
+            }
+
+            _canCalculateTime = true;
+
+            if (_spawnTime - 0.1f >= _targetSpawnTime)
+            {
+                _spawnTime -= 0.1f;
+            }
+        }
+
+        private SlicableObjectType ChooseSlicableObjectType(List<SliceableObjectSpawnerData> slicableObjectSpawnerDatas)
+        {
+            List<SliceableObjectSpawnerData> spawnerDatas =
+                _slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Brick) >= 1 ? 
+                slicableObjectSpawnerDatas.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList() :
+                slicableObjectSpawnerDatas;
+
+            
+            float weightLine = spawnerDatas.Sum(x => x.Weight);
+
+            float targetWeight  = Random.Range(0f, weightLine);
+            float currentWeight = 0f;
+
+            for (int i = 0; i < spawnerDatas.Count; i++)
+            {
+                currentWeight += spawnerDatas[i].Weight;
+
+                if (targetWeight <= currentWeight)
                 {
-                    _spawnerPackResize[spawnerDataIndex]++;
-                }
-                
-                _canCalculateTime = true;
-                
-                if (_spawnTime - 0.1f >= _targetSpawnTime)
-                {
-                    _spawnTime -= 0.1f;
+                    return spawnerDatas[i].SlicableObjectType;
                 }
             }
+
+            return SlicableObjectType.Simple;
         }
 
         private int ChooseSpawnerDataIndex()
@@ -118,7 +154,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             }
         }
 
-        private void CalculateWeightLine()
+        private void CalculateWeightLineForSpawners()
         {
             foreach (SlicableObjectSpawnerData spawnerData in _spawnersData)
             {

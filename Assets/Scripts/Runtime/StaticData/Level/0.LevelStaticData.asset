@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SlicableObjectSpawnerDataList:
   - Weight: 4
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 1
+      Weight: 3
     FirstSpawnPoint:
       Min: -0.1
       Max: -0.1
@@ -30,10 +33,15 @@ MonoBehaviour:
       Min: 0.12
       Max: 0.57
     MainDirectionOffset: -38.71
-    FirstOffset: -18.2
-    SecondOffset: 12.64
+    FirstOffset: 12.64
+    SecondOffset: -18.2
     PackSize: 1
   - Weight: 5
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 1
+      Weight: 5
+    - SlicableObjectType: 4
+      Weight: 25
     FirstSpawnPoint:
       Min: 0.45
       Max: 1.45
@@ -54,6 +62,9 @@ MonoBehaviour:
     SecondOffset: 34.5
     PackSize: 3
   - Weight: 5
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 1
+      Weight: 2
     FirstSpawnPoint:
       Min: 2.2
       Max: 2.2
@@ -70,8 +81,8 @@ MonoBehaviour:
       Min: 0.15
       Max: 0.25
     MainDirectionOffset: 44.7
-    FirstOffset: -21.08
-    SecondOffset: 5.45
+    FirstOffset: 5.45
+    SecondOffset: -21.08
     PackSize: 4
   BeginPackOffset: 2
   EndPackOffset: 3

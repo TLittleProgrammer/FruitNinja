@@ -27,7 +27,10 @@ namespace Runtime.Infrastructure.Mouse
         public void Tick()
         {
             if (_stop)
+            {
+                _canSlice = false;
                 return;
+            }
 
             if (_canCheckMousePositionDelta)
             {
@@ -39,6 +42,10 @@ namespace Runtime.Infrastructure.Mouse
                 _previousMousePositionForOther = _previousMousePosition;
                 _previousMousePosition = currentMousePosition;
             }
+            else
+            {
+                _canSlice = false;
+            }
             
             CheckMouseButtonDown();
             CheckMouseButtonUp();
@@ -47,6 +54,11 @@ namespace Runtime.Infrastructure.Mouse
         public void SetStopValue(bool value)
         {
             _stop = value;
+        }
+        
+        public void SetCannotMouseCheckPosition()
+        {
+            _canCheckMousePositionDelta = false;
         }
 
         public Vector2 GetMousePositionInWorldCoordinates()

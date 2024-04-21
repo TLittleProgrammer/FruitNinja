@@ -71,7 +71,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -209734799
-  m_SortingLayer: 1
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c63d31eddbdb5f841b26ce294206f8c0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.4117647}
@@ -186,6 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainSprite: {fileID: 2280792934056951685}
   _shadowSprite: {fileID: 2280792932704804672}
+  _collider2D: {fileID: 0}
+  SlicableObjectType: 0
 --- !u!114 &5931905157059040033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,3 +214,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isSlicableObject: 0
+  _slicableObjectView: {fileID: 6274477010574624227}

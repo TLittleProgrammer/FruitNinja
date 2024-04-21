@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.Mouse;
 using UnityEngine;
 using Zenject;
@@ -12,6 +11,7 @@ namespace Runtime.Infrastructure.Trail
         private TrailView _trailView;
 
         private bool _canTrail;
+        private bool _canMove;
 
         public TrailMoveService(MouseManager mouseManager)
         {
@@ -30,9 +30,12 @@ namespace Runtime.Infrastructure.Trail
         {
             if (_canTrail && Input.GetMouseButton(0))
             {
-                Vector3 targetPosition = _mouseManager.GetMousePositionInWorldCoordinates();
+                if (_canMove)
+                {
+                    Vector3 targetPosition = _mouseManager.GetMousePositionInWorldCoordinates();
                 
-                _trailView.transform.position = new Vector3(targetPosition.x, targetPosition.y, 0f);
+                    _trailView.transform.position = new Vector3(targetPosition.x, targetPosition.y, 0f);
+                }
             }
             
             CheckMouseButtonDown();
@@ -42,12 +45,18 @@ namespace Runtime.Infrastructure.Trail
         {
             _canTrail = value;
         }
+
+        public void SetCannotMove()
+        {
+            _canMove = false;
+        }
         
         private void CheckMouseButtonDown()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 _trailView.TrailRenderer.Clear();
+                _canMove = true;
             }
         }
     }

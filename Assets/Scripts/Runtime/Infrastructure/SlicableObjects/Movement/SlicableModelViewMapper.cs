@@ -33,17 +33,18 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _collisionDetector = collisionDetector;
         }
         
-        public void AddMapping(SlicableObjectSpawnerData spawnerData)
+        public void AddMapping(SlicableObjectSpawnerData spawnerData, SlicableObjectType slicableObjectType)
         {
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
+
+            slicableObjectView.SlicableObjectType = slicableObjectType;
             
             _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
-            
             _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
             _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
 
-            UpdateViewSprites(slicableObjectView);
+            UpdateViewSprites(slicableObjectView, slicableObjectType);
             ChangePositionAndActivate(spawnerData, slicableObjectView);
 
             float angleInRadians = GetDirectionAngleInRadians(spawnerData);
@@ -91,7 +92,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             }
             
             float randomAngle = Random.Range(spawnerData.FirstOffset, spawnerData.SecondOffset);
-
             return (spawnerData.MainDirectionOffset + 90f + randomAngle).ConvertToRadians();
         }
 
@@ -103,9 +103,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             slicableObjectView.gameObject.SetActive(true);
         }
 
-        private void UpdateViewSprites(SlicableObjectView slicableObjectView)
+        private void UpdateViewSprites(SlicableObjectView slicableObjectView, SlicableObjectType type)
         {
-            Sprite sprite = _slicableVisualContainer.GetRandomSprite(SlicableObjectType.Simple);
+            Sprite sprite = _slicableVisualContainer.GetRandomSprite(type);
 
             slicableObjectView.MainSprite.sprite = sprite;
             slicableObjectView.ShadowSprite.sprite = sprite;

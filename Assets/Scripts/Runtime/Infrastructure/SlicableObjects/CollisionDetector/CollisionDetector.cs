@@ -8,19 +8,22 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
     {
         private readonly MouseManager _mouseManager;
         private readonly IIntermediateMousePositionsService _intermediateMousePositionsService;
-        private readonly Slicer _slicer;
+        private readonly Slicer.Slicer _slicer;
+        private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
 
         private MappingColliderAndViewToList _colliders;
 
         public CollisionDetector(
             MouseManager mouseManager,
             IIntermediateMousePositionsService intermediateMousePositionsService,
-            Slicer slicer
+            Slicer.Slicer slicer,
+            ISlicableObjectCounterOnMap slicableObjectCounterOnMap
             )
         {
             _mouseManager = mouseManager;
             _intermediateMousePositionsService = intermediateMousePositionsService;
             _slicer = slicer;
+            _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
             _colliders = new();
         }
 
@@ -47,10 +50,10 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
                 {
                     if (turpleArray[i].Item1.OverlapPoint(mousePosition))
                     {
-                        _slicer.SliceObject(turpleArray[i].Item2);
-                        
-                        _colliders.Remove(turpleArray[i]);
-                        i--;
+                        if (TrySlice(turpleArray, ref i) is false)
+                        {
+                            return;
+                        }
                         
                         break;
                     }
@@ -58,8 +61,23 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             }
         }
 
+        private bool TrySlice((Collider2D, SlicableObjectView)[] turpleArray, ref int i)
+        {
+            if (_slicer.TrySliceObject(turpleArray[i].Item2))
+            {
+                _slicableObjectCounterOnMap.RemoveType(turpleArray[i].Item2.SlicableObjectType);
+                _colliders.Remove(turpleArray[i]);
+                i--;
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void AddCollider(Collider2D collider2D, SlicableObjectView slicableObjectView)
         {
+            _slicableObjectCounterOnMap.AddType(slicableObjectView.SlicableObjectType);
             _colliders.Add((collider2D, slicableObjectView));
         }
 

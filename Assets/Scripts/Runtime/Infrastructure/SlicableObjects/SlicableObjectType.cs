@@ -5,7 +5,8 @@
         None = 0,
         
         Simple = 1,
-        Boost  = 2,
-        Enemy  = 3,
+        Health = 2,
+        Bomb   = 3,
+        Brick  = 4,
     }
 }
