@@ -53,11 +53,11 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
             Container.Bind<SlicableModelViewMapper>().AsSingle();
-            Container.Bind<Slicer>().AsSingle();
             Container.Bind<SliceableObjectSpriteRendererOrderService>().AsSingle();
             Container.Bind<IIntermediateMousePositionsService>().To<IntermediateMousePositionsService>().AsSingle();
             Container.Bind<IShowEffectsService>().To<ShowEffectsService>().AsSingle();
             Container.Bind<IAddScoreService>().To<AddScoreService>().AsSingle();
+            Container.Bind<IComboViewPositionCorrecter>().To<ComboViewPositionCorrecter>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
@@ -66,6 +66,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Slicer>().AsSingle();
 
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);
             Container.BindPool<ScoreEffect, ScoreEffect.Pool>(_poolSettings.PoolInitialSize, _scoreEffectPrefab, _scorePoolParent);

@@ -8,7 +8,7 @@ namespace Runtime.Infrastructure.Combo
     {
         public event Action<int> ComboEnded; 
         bool IsActive { get; }
-        void AddCombo(Transform slicableObjectTransform);
+        void AddCombo();
     }
     
     public sealed class ComboService : IComboService
@@ -29,7 +29,7 @@ namespace Runtime.Infrastructure.Combo
             _comboIsActive = false;
         }
 
-        public bool IsActive { get; }
+        public bool IsActive => _comboIsActive;
 
         public void Tick()
         {
@@ -37,15 +37,21 @@ namespace Runtime.Infrastructure.Combo
 
             if (_currentTime >= _comboData.DelayComboDestroy)
             {
-                _comboCounter = 1;
+                if (_comboIsActive)
+                {
+                    if (_comboCounter != 1)
+                    {
+                        ComboEnded?.Invoke(_comboCounter);
+                    }
+                }
+                
+                _comboCounter = 0;
                 _comboIsActive = false;
                 _currentTime = 0f;
-
-                ComboEnded?.Invoke(_comboCounter);
             }
         }
 
-        public void AddCombo(Transform slicableObjectTransform)
+        public void AddCombo()
         {
             _comboCounter++;
             _comboIsActive = true;

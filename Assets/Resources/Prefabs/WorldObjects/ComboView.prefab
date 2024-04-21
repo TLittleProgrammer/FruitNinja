@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "{} \u0444\u0440\u0443\u043A\u0442\u0430"
+  m_text: "{0} \u0444\u0440\u0443\u043A\u0442\u0430"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b439f38043f889b4bab848bf5c374d36, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a81265b4f6011144f90989fc81f33ca0, type: 2}
@@ -479,6 +479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e29e3722fa45d1ad2de02196a9b91b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fruisCounter: {fileID: 8707818569141698826}
+  _fruitsCounter: {fileID: 8707818569141698826}
   _xCounterText: {fileID: 8707818569295547472}
   _animator: {fileID: 8707818569938918419}

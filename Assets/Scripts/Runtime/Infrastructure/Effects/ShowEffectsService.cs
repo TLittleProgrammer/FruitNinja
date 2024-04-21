@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Runtime.Extensions;
+using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using UnityEngine;
@@ -8,7 +9,8 @@ namespace Runtime.Infrastructure.Effects
 {
     public interface IShowEffectsService
     {
-        void ShowEffects(Vector2 position, Sprite sprite, int score);
+        void ShowEffects(Vector2 position, Sprite sprite);
+        void ShowScoreEffect(Vector2 position, int score);
     }
 
     public sealed class ShowEffectsService : IShowEffectsService
@@ -16,29 +18,49 @@ namespace Runtime.Infrastructure.Effects
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
         private readonly ScoreEffect.Pool _scoreEffectPool;
+        private readonly ComboView.Pool _comboViewPool;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly MouseManager _mouseManager;
+        private readonly IComboViewPositionCorrecter _comboViewPositionCorrecter;
+
+        private Vector2 _lastSlicedPosition;
+        private int _lastScore;
 
         public ShowEffectsService(
                 BlotEffect.Pool blotEffectPool,
                 SplashEffect.Pool splashEffectPool,
                 ScoreEffect.Pool scoreEffectPool,
+                ComboView.Pool comboViewPool,
                 SlicableVisualContainer slicableVisualContainer,
-                MouseManager mouseManager
+                MouseManager mouseManager,
+                IComboService comboService,
+                IComboViewPositionCorrecter comboViewPositionCorrecter
             )
         {
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
             _scoreEffectPool = scoreEffectPool;
+            _comboViewPool = comboViewPool;
             _slicableVisualContainer = slicableVisualContainer;
             _mouseManager = mouseManager;
+            _comboViewPositionCorrecter = comboViewPositionCorrecter;
+
+            comboService.ComboEnded += OnComboEnded;
         }
-        
-        public void ShowEffects(Vector2 position, Sprite sprite, int score)
+
+        public void ShowEffects(Vector2 position, Sprite sprite)
         {
+            _lastSlicedPosition = position;
             AddBlotEffect(position, sprite);
             AddSplashEffect(position, sprite.name);
-            AddScoreEffect(position, score);
+        }
+
+        public void ShowScoreEffect(Vector2 slicableObjectViewPosition, int score)
+        {
+            ScoreEffect scoreEffect = _scoreEffectPool.InactiveItems.GetInactiveObject();
+            Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
+
+            scoreEffect.PlayEffect(screenPosition, score);
         }
 
         private void AddBlotEffect(Vector2 targetPosition, Sprite sprite)
@@ -63,13 +85,15 @@ namespace Runtime.Infrastructure.Effects
             Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
             splashEffect.PlayEffect(transformPosition, color);
         }
-        
-        private void AddScoreEffect(Vector3 slicableObjectViewPosition, int score)
-        {
-            ScoreEffect scoreEffect = _scoreEffectPool.InactiveItems.GetInactiveObject();
-            Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
 
-            scoreEffect.PlayEffect(screenPosition, score);
+        private void OnComboEnded(int comboCounter)
+        {
+            ComboView comboView = _comboViewPool.InactiveItems.GetInactiveObject();
+
+            _comboViewPositionCorrecter.CorrectPosition(comboView);
+            
+            Vector2 targetPosition = _mouseManager.GetScreenPosition(_lastSlicedPosition);
+            comboView.ShowCombo(targetPosition, comboCounter);
         }
     }
 }
