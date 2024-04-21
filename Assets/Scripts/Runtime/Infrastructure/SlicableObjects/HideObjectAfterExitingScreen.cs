@@ -9,7 +9,8 @@ namespace Runtime.Infrastructure.SlicableObjects
     public class HideObjectAfterExitingScreen : MonoBehaviour
     {
         [SerializeField] private bool _isSlicableObject = true;
-
+        [SerializeField] private SlicableObjectView _slicableObjectView;
+        
         private SlicableMovementService _slicableMovementService;
         private GameParameters _gameParameters;
         private IConditionObjectHideService _conditionObjectHideService;
@@ -39,7 +40,7 @@ namespace Runtime.Infrastructure.SlicableObjects
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
 
-                if (_isSlicableObject)
+                if (_isSlicableObject && _slicableObjectView.SlicableObjectType is SlicableObjectType.Simple)
                 {
                     _gameParameters.ChangeHealth(-1);
                 }
