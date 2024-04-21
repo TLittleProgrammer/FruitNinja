@@ -14,17 +14,8 @@ namespace Runtime.Infrastructure.SlicableObjects
         public SpriteRenderer ShadowSprite => _shadowSprite;
         public Collider2D Collider2D => _collider2D;
 
-        private void Reset(Vector3 startPosition)
-        {
-            transform.position = startPosition;
-        }
-
         public class Pool : MonoMemoryPool<Vector3, SlicableObjectView>
         {
-            protected override void Reinitialize(Vector3 position, SlicableObjectView slicableObjectView)
-            {
-                slicableObjectView.Reset(position);
-            }
         }
     }
 }
