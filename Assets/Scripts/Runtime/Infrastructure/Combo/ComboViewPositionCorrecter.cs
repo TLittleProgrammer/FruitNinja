@@ -35,7 +35,6 @@ namespace Runtime.Infrastructure.Combo
                 }
             }
             
-            
             if (viewportPosition.y < 0.15f)
             {
                 viewportPosition.y = 0.15f;

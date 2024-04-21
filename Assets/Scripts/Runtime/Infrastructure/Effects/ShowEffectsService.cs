@@ -97,11 +97,8 @@ namespace Runtime.Infrastructure.Effects
         private void OnComboEnded(int comboCounter)
         {
             ComboView comboView = _comboViewPool.InactiveItems.GetInactiveObject();
-
             
-            Vector2 targetPosition = _mouseManager.GetScreenPosition(_lastSlicedPosition);
-            comboView.ShowCombo(targetPosition, comboCounter);
-            
+            comboView.ShowCombo(comboCounter);
             _comboViewPositionCorrecter.CorrectPosition(comboView, _lastSlicedPosition);
         }
     }
