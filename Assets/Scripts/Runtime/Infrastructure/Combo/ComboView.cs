@@ -25,15 +25,19 @@ namespace Runtime.Infrastructure.Combo
             _xCounterInitialText = _xCounterText.text;
         }
         
-        public void ShowCombo(Vector3 screenPosition, int fruits)
+        public void ShowCombo(int fruits)
         {
             gameObject.SetActive(true);
-            StartCoroutine(PlayAnimation(screenPosition, fruits));
+            StartCoroutine(PlayAnimation(fruits));
         }
 
-        private IEnumerator PlayAnimation(Vector3 screenPosition, int fruits)
+        public void SetPosition(Vector2 position)
         {
-            _rectTransform.anchoredPosition = screenPosition;
+            _rectTransform.anchoredPosition = position;
+        }
+
+        private IEnumerator PlayAnimation(int fruits)
+        {
             _fruitsCounter.text = String.Format(_fruitsCounter.text, fruits);
             _xCounterText.text = String.Format(_xCounterText.text, fruits);
 

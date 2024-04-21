@@ -1,5 +1,4 @@
-﻿using System;
-using Runtime.Constants;
+﻿using Runtime.Constants;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

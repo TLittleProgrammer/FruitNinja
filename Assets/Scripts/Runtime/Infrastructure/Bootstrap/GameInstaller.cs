@@ -11,6 +11,7 @@ using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.Slicer.SliceServices;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Trail;
@@ -48,7 +49,8 @@ namespace Runtime.Infrastructure.Bootstrap
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<GameInstaller>().FromInstance(this).AsSingle();
-            
+
+
             Container.Bind<GameParameters>().AsSingle();
             Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
@@ -58,6 +60,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IShowEffectsService>().To<ShowEffectsService>().AsSingle();
             Container.Bind<IAddScoreService>().To<AddScoreService>().AsSingle();
             Container.Bind<IComboViewPositionCorrecter>().To<ComboViewPositionCorrecter>().AsSingle();
+            Container.Bind<ISlicableObjectCounterOnMap>().To<SlicableObjectCounterOnMap>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
@@ -66,7 +69,6 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<Slicer>().AsSingle();
 
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);
             Container.BindPool<ScoreEffect, ScoreEffect.Pool>(_poolSettings.PoolInitialSize, _scoreEffectPrefab, _scorePoolParent);
@@ -74,9 +76,24 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent);
             Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent);
             Container.BindPool<ComboView, ComboView.Pool>(_poolSettings.PoolInitialSize, _comboViewPrefab, _comboPoolParent);
+            
+            Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices();
+            
+            Container.Bind<Dictionary<SlicableObjectType, ISliceService>>().FromInstance(sliceServices).AsSingle();
+            Container.BindInterfacesAndSelfTo<Slicer.Slicer>().AsSingle();
 
             InstallGameStateMachine();
             InstallAndBindLooseService();
+        }
+
+        private Dictionary<SlicableObjectType, ISliceService> GetSliceServices()
+        {
+            Dictionary<SlicableObjectType, ISliceService> sliceServices = new();
+
+            sliceServices.Add(SlicableObjectType.Simple, Container.Instantiate<SimpleSliceService>());
+            sliceServices.Add(SlicableObjectType.Brick, Container.Instantiate<BrickSliceService>());
+            
+            return sliceServices;
         }
 
         private void InstallGameStateMachine()

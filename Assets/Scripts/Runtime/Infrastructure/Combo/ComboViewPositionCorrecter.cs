@@ -5,7 +5,7 @@ namespace Runtime.Infrastructure.Combo
 {
     public interface IComboViewPositionCorrecter
     {
-        void CorrectPosition(ComboView comboView);
+        void CorrectPosition(ComboView comboView, Vector2 position);
     }
 
     public sealed class ComboViewPositionCorrecter : IComboViewPositionCorrecter
@@ -19,14 +19,13 @@ namespace Runtime.Infrastructure.Combo
             _manager = manager;
         }
         
-        //TODO доработать логику. Не работает
-        public void CorrectPosition(ComboView comboView)
+        public void CorrectPosition(ComboView comboView, Vector2 position)
         {
-            Vector2 viewportPosition = _manager.GetViewportPosition(comboView.transform.position);
+            Vector2 viewportPosition = _manager.GetViewportPosition(position);
 
-            if (viewportPosition.x < 0.15f)
+            if (viewportPosition.x < 0.25f)
             {
-                viewportPosition.x = 0.15f;
+                viewportPosition.x = 0.25f;
             }
             else
             {
@@ -35,7 +34,6 @@ namespace Runtime.Infrastructure.Combo
                     viewportPosition.x = 0.75f;
                 }
             }
-            
             
             if (viewportPosition.y < 0.15f)
             {
@@ -49,7 +47,7 @@ namespace Runtime.Infrastructure.Combo
                 }
             }
 
-            comboView.transform.position = _manager.GetWorldPositionByViewport(viewportPosition);
+            comboView.SetPosition(_manager.GetScreenPositionByViewport(viewportPosition));
         }
     }
 }

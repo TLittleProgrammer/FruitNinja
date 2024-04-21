@@ -1,5 +1,6 @@
 ﻿using System;
-using Runtime.Infrastructure.Data;
+using System.Collections.Generic;
+using Runtime.Infrastructure.Common;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
@@ -8,6 +9,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     {
         //TODO поправить названия переменных
         public int Weight;
+        public List<SliceableObjectSpawnerData> SlicableObjectSpawnerDatas;
         public MinMaxValue FirstSpawnPoint;
         public MinMaxValue SecondSpawnPoint;
         public MinMaxValue XVelocity;
@@ -43,5 +45,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             PackSize            = packSize;
             Weight              = weight;
         }
+    }
+
+    [Serializable]
+    public struct SliceableObjectSpawnerData
+    {
+        public SlicableObjectType SlicableObjectType;
+        public int Weight;
     }
 }
