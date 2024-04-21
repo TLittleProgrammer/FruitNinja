@@ -1,63 +1,74 @@
 ﻿using System.Linq;
 using Runtime.Extensions;
+using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Effects;
-using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.Score;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects
 {
-    public class Slicer
+    public interface ISlicer
+    {
+    }
+    
+    public sealed class Slicer : ISlicer
     {
         private readonly MouseManager _mouseManager;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly SlicableMovementService _slicableMovementService;
-        private readonly GameParameters _gameParameters;
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
-        private readonly ScoreEffect.Pool _scoreEffectPool;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
+        private readonly IShowEffectsService _showEffectsService;
+        private readonly IAddScoreService _addScoreService;
+        private readonly IComboService _comboService;
 
+        private Vector2 _lastSlicedPosition;
+        
         public Slicer(
             MouseManager mouseManager,
             SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
-            GameParameters gameParameters,
             SliceableObjectDummy.Pool dummyPool,
-            BlotEffect.Pool blotEffectPool,
-            SplashEffect.Pool splashEffectPool,
-            ScoreEffect.Pool scoreEffectPool,
-            SliceableObjectSpriteRendererOrderService orderService
+            SliceableObjectSpriteRendererOrderService orderService,
+            IShowEffectsService showEffectsService,
+            IAddScoreService addScoreService,
+            IComboService comboService
         )
         {
             _mouseManager = mouseManager;
             _slicableVisualContainer = slicableVisualContainer;
             _slicableMovementService = slicableMovementService;
-            _gameParameters = gameParameters;
             _dummyPool = dummyPool;
-            _blotEffectPool = blotEffectPool;
-            _splashEffectPool = splashEffectPool;
-            _scoreEffectPool = scoreEffectPool;
             _orderService = orderService;
+            _showEffectsService = showEffectsService;
+            _addScoreService = addScoreService;
+            _comboService = comboService;
+
+            _addScoreService.AddedScore += OnAddedScore;
         }
 
         public void SliceObject(SlicableObjectView slicableObjectView)
         {
-            int score = Random.Range(25, 100);
-            _gameParameters.ChangeScore(score);
-            
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
             Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
-
-            AddScoreEffect(slicableObjectView.transform.position, score);
+            _lastSlicedPosition = slicableObjectView.transform.position;
             
             AddDummies(slicableObjectView, sprite, slicableObjectSprite);
             RemoveSlicableObjectFromMapping(slicableObjectView);
 
-            AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
-            AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
+            _addScoreService.Add();
+            _showEffectsService.ShowEffects(_lastSlicedPosition, slicableObjectSprite);
+
+            _comboService.AddCombo();
+        }
+
+        private void OnAddedScore(int score)
+        {
+            _showEffectsService.ShowScoreEffect(_lastSlicedPosition, score);
         }
 
         private void RemoveSlicableObjectFromMapping(SlicableObjectView slicableObjectView)
@@ -89,37 +100,6 @@ namespace Runtime.Infrastructure.SlicableObjects
             _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.ShadowSprite);
         }
 
-        private void AddSplashEffect(Vector3 transformPosition, string spriteName)
-        {
-            SplashEffect splashEffect = _splashEffectPool.InactiveItems.GetInactiveObject();
-
-            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
-            splashEffect.PlayEffect(transformPosition, color);
-        }
-
-        private void AddScoreEffect(Vector3 slicableObjectViewPosition, int score)
-        {
-            ScoreEffect scoreEffect = _scoreEffectPool.InactiveItems.GetInactiveObject();
-            Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
-
-            scoreEffect.PlayEffect(screenPosition, score);
-        }
-
-        private void AddBlotEffect(Vector2 targetPosition, Sprite sprite)
-        {
-            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(sprite.name);
-
-            if (blotSprite is not null)
-            {
-                BlotEffect blotEffect = _blotEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
-                
-                blotEffect.Animate(targetPosition, blotSprite, () =>
-                {
-                    blotEffect.enabled = false;
-                });
-            }
-        }
-
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
         {
             SlicableModel modelFirstDummy  = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
@@ -142,6 +122,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         }
 
         //TODO Исправить смещение половинок
+
         private static void ChangeDummiesPosition(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray, Sprite sprite)
         {
             float offsetX = sprite.texture.height / sprite.pixelsPerUnit / 4f;

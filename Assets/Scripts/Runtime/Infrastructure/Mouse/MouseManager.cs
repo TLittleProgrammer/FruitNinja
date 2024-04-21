@@ -69,6 +69,16 @@ namespace Runtime.Infrastructure.Mouse
         {
             return _camera.WorldToScreenPoint(position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
         }
+        
+        public Vector2 GetViewportPosition(Vector3 position)
+        {
+            return _camera.WorldToViewportPoint(position);
+        }
+        
+        public Vector2 GetWorldPositionByViewport(Vector2 position)
+        {
+            return _camera.ViewportToWorldPoint(position);
+        }
 
         private void CheckMouseButtonUp()
         {
