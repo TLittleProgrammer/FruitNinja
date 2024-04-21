@@ -104,18 +104,24 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
         private SlicableObjectType ChooseSlicableObjectType(List<SliceableObjectSpawnerData> slicableObjectSpawnerDatas)
         {
-            float weightLine = slicableObjectSpawnerDatas.Sum(x => x.Weight);
+            List<SliceableObjectSpawnerData> spawnerDatas =
+                _slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Brick) >= 1 ? 
+                slicableObjectSpawnerDatas.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList() :
+                slicableObjectSpawnerDatas;
+
+            
+            float weightLine = spawnerDatas.Sum(x => x.Weight);
 
             float targetWeight  = Random.Range(0f, weightLine);
             float currentWeight = 0f;
 
-            for (int i = 0; i < slicableObjectSpawnerDatas.Count; i++)
+            for (int i = 0; i < spawnerDatas.Count; i++)
             {
-                currentWeight += slicableObjectSpawnerDatas[i].Weight;
+                currentWeight += spawnerDatas[i].Weight;
 
                 if (targetWeight <= currentWeight)
                 {
-                    return slicableObjectSpawnerDatas[i].SlicableObjectType;
+                    return spawnerDatas[i].SlicableObjectType;
                 }
             }
 

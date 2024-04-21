@@ -15,13 +15,16 @@ namespace Runtime.Infrastructure.SlicableObjects
         private GameParameters _gameParameters;
         private IConditionObjectHideService _conditionObjectHideService;
         private GameScreenManager _gameScreenManager;
+        private ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
 
         [Inject]
         private void Construct(
             SlicableMovementService slicableMovementService,
             GameScreenManager gameScreenManager,
-            GameParameters gameParameters)
+            GameParameters gameParameters,
+            ISlicableObjectCounterOnMap slicableObjectCounterOnMap)
         {
+            _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
             _gameScreenManager = gameScreenManager;
             _gameParameters = gameParameters;
             _slicableMovementService = slicableMovementService;
@@ -39,6 +42,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             {
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
+                _slicableObjectCounterOnMap.RemoveType(_slicableObjectView.SlicableObjectType);
 
                 if (_isSlicableObject && _slicableObjectView.SlicableObjectType is SlicableObjectType.Simple)
                 {
