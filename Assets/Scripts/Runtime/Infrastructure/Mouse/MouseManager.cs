@@ -64,6 +64,12 @@ namespace Runtime.Infrastructure.Mouse
             return _previousMousePositionForOther;
         }
 
+        //TODO потом создать что-то типа CameraService
+        public Vector2 GetScreenPosition(Vector3 position)
+        {
+            return _camera.WorldToScreenPoint(position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+        }
+
         private void CheckMouseButtonUp()
         {
             if (Input.GetMouseButtonUp(0))

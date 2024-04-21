@@ -5,7 +5,7 @@ namespace Runtime.Extensions
 {
     public static class ZenjectContainerExtension
     {
-        public static void BindPool<TInstance, TPool>(this DiContainer diContainer, int initialSize, TInstance prefab, string parentName)
+        public static void BindPool<TInstance, TPool>(this DiContainer diContainer, int initialSize, TInstance prefab, Transform parent)
             where TPool : IMemoryPool
             where TInstance : MonoBehaviour 
         {
@@ -13,7 +13,7 @@ namespace Runtime.Extensions
                 .BindMemoryPool<TInstance, TPool>()
                 .WithInitialSize(initialSize)
                 .FromComponentInNewPrefab(prefab)
-                .UnderTransformGroup(parentName);
+                .UnderTransform(parent);
 
         }
     }

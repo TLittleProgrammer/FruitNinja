@@ -555,6 +555,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b1de97257c4c18b21b7115dab1efe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &932905674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 932905675}
+  m_Layer: 5
+  m_Name: ScoreEffectParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &932905675
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932905674}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1144550808}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1366, y: 768}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1144550807
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,7 +621,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 932905675}
   m_Father: {fileID: 417086663}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -743,6 +780,8 @@ MonoBehaviour:
   _blotPoolParent: {fileID: 321533277}
   _splashEffectPrefab: {fileID: 8110268083914312286, guid: 34cc25bf113c3124daceca3914b53d1f, type: 3}
   _splashPoolParent: {fileID: 415840210}
+  _scoreEffectPrefab: {fileID: 2615723692103224297, guid: 6ac3e3ce8d3f39a46b7d37b5120463c2, type: 3}
+  _scorePoolParent: {fileID: 932905674}
 --- !u!1 &1225721055
 GameObject:
   m_ObjectHideFlags: 0
