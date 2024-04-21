@@ -1,69 +1,95 @@
 ﻿using System.Linq;
 using Runtime.Extensions;
+using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Effects;
-using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.Score;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects
 {
-    public class Slicer
+    public interface ISlicer
+    {
+    }
+    
+    public sealed class Slicer : ISlicer
     {
         private readonly MouseManager _mouseManager;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly SlicableMovementService _slicableMovementService;
-        private readonly GameParameters _gameParameters;
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly BlotEffect.Pool _blotEffectPool;
         private readonly SplashEffect.Pool _splashEffectPool;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
+        private readonly IShowEffectsService _showEffectsService;
+        private readonly IAddScoreService _addScoreService;
+        private readonly IComboService _comboService;
 
+        private Vector2 _lastSlicedPosition;
+        
         public Slicer(
             MouseManager mouseManager,
             SlicableVisualContainer slicableVisualContainer,
             SlicableMovementService slicableMovementService,
-            GameParameters gameParameters,
             SliceableObjectDummy.Pool dummyPool,
-            BlotEffect.Pool blotEffectPool,
-            SplashEffect.Pool splashEffectPool,
-            SliceableObjectSpriteRendererOrderService orderService
+            SliceableObjectSpriteRendererOrderService orderService,
+            IShowEffectsService showEffectsService,
+            IAddScoreService addScoreService,
+            IComboService comboService
         )
         {
             _mouseManager = mouseManager;
             _slicableVisualContainer = slicableVisualContainer;
             _slicableMovementService = slicableMovementService;
-            _gameParameters = gameParameters;
             _dummyPool = dummyPool;
-            _blotEffectPool = blotEffectPool;
-            _splashEffectPool = splashEffectPool;
             _orderService = orderService;
+            _showEffectsService = showEffectsService;
+            _addScoreService = addScoreService;
+            _comboService = comboService;
+
+            _addScoreService.AddedScore += OnAddedScore;
         }
 
         public void SliceObject(SlicableObjectView slicableObjectView)
         {
-            _gameParameters.ChangeScore(Random.Range(25, 100));
-            
             Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
             Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
+            _lastSlicedPosition = slicableObjectView.transform.position;
+            
+            AddDummies(slicableObjectView, sprite, slicableObjectSprite);
+            RemoveSlicableObjectFromMapping(slicableObjectView);
 
+            _addScoreService.Add();
+            _showEffectsService.ShowEffects(_lastSlicedPosition, slicableObjectSprite);
+
+            _comboService.AddCombo();
+        }
+
+        private void OnAddedScore(int score)
+        {
+            _showEffectsService.ShowScoreEffect(_lastSlicedPosition, score);
+        }
+
+        private void RemoveSlicableObjectFromMapping(SlicableObjectView slicableObjectView)
+        {
+            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
+            slicableObjectView.gameObject.SetActive(false);
+        }
+
+        private void AddDummies(SlicableObjectView slicableObjectView, Sprite sprite, Sprite slicableObjectSprite)
+        {
             SliceableObjectDummy[] dummyArray = TakeDummies();
 
             dummyArray[0].ChangeSprite(sprite);
             dummyArray[1].ChangeSprite(sprite);
-            
+
             UpdateSortingInLayerIndex(dummyArray);
 
             SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
 
             ChangeDummiesPosition(slicableModel, dummyArray, slicableObjectSprite);
             AddMappingToMovementService(slicableModel, dummyArray);
-
-            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
-            slicableObjectView.gameObject.SetActive(false);
-
-            AddBlotEffect(slicableObjectView.transform.position, slicableObjectSprite);
-            AddSplashEffect(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
         }
 
         private void UpdateSortingInLayerIndex(SliceableObjectDummy[] dummyArray)
@@ -72,29 +98,6 @@ namespace Runtime.Infrastructure.SlicableObjects
             _orderService.UpdateOrderInLayer(dummyArray[0].SlicableObjectView.ShadowSprite);
             _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.MainSprite);
             _orderService.UpdateOrderInLayer(dummyArray[1].SlicableObjectView.ShadowSprite);
-        }
-
-        private void AddSplashEffect(Vector3 transformPosition, string spriteName)
-        {
-            SplashEffect splashEffect = _splashEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
-
-            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
-            splashEffect.PlayEffect(transformPosition, color);
-        }
-
-        private void AddBlotEffect(Vector2 targetPosition, Sprite sprite)
-        {
-            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(sprite.name);
-
-            if (blotSprite is not null)
-            {
-                BlotEffect blotEffect = _blotEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
-                
-                blotEffect.Animate(targetPosition, blotSprite, () =>
-                {
-                    blotEffect.enabled = false;
-                });
-            }
         }
 
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
@@ -119,6 +122,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         }
 
         //TODO Исправить смещение половинок
+
         private static void ChangeDummiesPosition(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray, Sprite sprite)
         {
             float offsetX = sprite.texture.height / sprite.pixelsPerUnit / 4f;
