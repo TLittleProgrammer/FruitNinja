@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
 {
-    public class CollisionDetector : ICollisionDetector<Collider2D, SlicableObjectView>
+    public class CollisionDetector : ICollisionDetector<Collider2D, SlicableObjectData>
     {
         private readonly MouseManager _mouseManager;
         private readonly IIntermediateMousePositionsService _intermediateMousePositionsService;
@@ -39,7 +39,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
 
         private void GoThrowAllCollidersAndMousePositions(Vector2[] mousePositions)
         {
-            (Collider2D, SlicableObjectView)[] turpleArray = _colliders.ToArray();
+            (Collider2D, SlicableObjectData)[] turpleArray = _colliders.ToArray();
             
             for (int i = 0; i < turpleArray.Length; i++)
             {
@@ -58,7 +58,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             }
         }
 
-        public void AddCollider(Collider2D collider2D, SlicableObjectView slicableObjectView)
+        public void AddCollider(Collider2D collider2D, SlicableObjectData slicableObjectView)
         {
             _colliders.Add((collider2D, slicableObjectView));
         }
@@ -69,11 +69,11 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
         }
     }
 
-    public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectView)>
+    public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectData)>
     {
         public void RemoveItemWithCollider(Collider2D collider2D)
         {
-            foreach ((Collider2D, SlicableObjectView) turple in this)
+            foreach ((Collider2D, SlicableObjectData) turple in this)
             {
                 if (collider2D.Equals(turple.Item1))
                 {

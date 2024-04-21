@@ -51,14 +51,14 @@ namespace Runtime.Infrastructure.SlicableObjects
             _addScoreService.AddedScore += OnAddedScore;
         }
 
-        public void SliceObject(SlicableObjectView slicableObjectView)
+        public void SliceObject(SlicableObjectData slicableObjectData)
         {
-            Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
+            Sprite slicableObjectSprite = slicableObjectData.View.MainSprite.sprite;
             Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
-            _lastSlicedPosition = slicableObjectView.transform.position;
+            _lastSlicedPosition = slicableObjectData.View.transform.position;
             
-            AddDummies(slicableObjectView, sprite, slicableObjectSprite);
-            RemoveSlicableObjectFromMapping(slicableObjectView);
+            AddDummies(slicableObjectData.View, sprite, slicableObjectSprite);
+            RemoveSlicableObjectFromMapping(slicableObjectData.View);
 
             _addScoreService.Add();
             _showEffectsService.ShowEffects(_lastSlicedPosition, slicableObjectSprite);
