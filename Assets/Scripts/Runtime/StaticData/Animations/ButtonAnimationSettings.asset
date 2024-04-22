@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ButtonAnimationSettings
   m_EditorClassIdentifier: 
   Duration: 0.15
-  TargetScale: {x: 1.05, y: 1.05, z: 1}
+  TargetScale: {x: 0.95, y: 0.95, z: 0.95}
   Ease: 2

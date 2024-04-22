@@ -1,12 +1,13 @@
 ﻿using DG.Tweening;
 using Runtime.StaticData.Animations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Runtime.UI.Buttons
 {
     [RequireComponent(typeof(Button))]
-    public class AnimatableButton : MonoBehaviour
+    public class AnimatableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private ButtonAnimationSettings _buttonAnimationSettings;
 
@@ -26,6 +27,7 @@ namespace Runtime.UI.Buttons
         private void OnDisable()
         {
             _button.onClick.RemoveListener(OnButtonClicked);
+            _sequence.Kill();
         }
         
         private void OnButtonClicked()
@@ -39,9 +41,24 @@ namespace Runtime.UI.Buttons
             _sequence.Play();
         }
 
-        private void OnDestroy()
+        public void OnPointerDown(PointerEventData eventData)
         {
-            _sequence.Kill();
+            _sequence = DOTween.Sequence();
+            _sequence.Append(transform
+                .DOScale(_buttonAnimationSettings.TargetScale, _buttonAnimationSettings.Duration)
+                .SetEase(_buttonAnimationSettings.Ease));
+
+            _sequence.Play();
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
+            _sequence = DOTween.Sequence();
+            _sequence.Append(transform
+                .DOScale(1f, _buttonAnimationSettings.Duration)
+                .SetEase(_buttonAnimationSettings.Ease));
+
+            _sequence.Play();
         }
     }
 }
