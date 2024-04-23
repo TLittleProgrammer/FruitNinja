@@ -12,7 +12,5 @@ namespace Runtime.StaticData.Animations
         public Vector3 TargetScale;
 
         public Ease Ease;
-
-        public Sequence Tween;
     }
 }

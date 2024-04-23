@@ -1,4 +1,5 @@
 using Runtime.Infrastructure.AssetProvider;
+using Runtime.Infrastructure.DOTweenAnimationServices.Score;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.UserData;
@@ -15,6 +16,7 @@ namespace Runtime.Infrastructure.Bootstrap
             
             Container.Bind<UserData.UserData>().AsSingle();
             Container.Bind<ScreenContainer>().AsSingle();
+            Container.Bind<IScoreAnimationService>().To<ScoreAnimationService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<UserDataSaveLoadService>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourcesAssetProvider>().AsSingle();
