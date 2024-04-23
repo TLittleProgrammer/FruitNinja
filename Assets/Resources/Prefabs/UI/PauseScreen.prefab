@@ -882,3 +882,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _continueButton: {fileID: 4656246083614538814}
   _menuButton: {fileID: 4656246084199032156}
+  _background: {fileID: 4656246084482443605}
+  _label: {fileID: 4656246084868885481}

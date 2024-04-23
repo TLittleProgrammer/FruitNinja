@@ -12,7 +12,9 @@ namespace Runtime.UI.Screens
     {
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _menuButton;
-        
+        [SerializeField] private Image _background;
+        [SerializeField] private Transform _allInfo;
+
         private IEntryPoint _entryPoint;
         private IGameStateMachine _gameStateMachine;
 
@@ -22,6 +24,9 @@ namespace Runtime.UI.Screens
             _gameStateMachine = gameStateMachine;
             _entryPoint = entryPoint;
         }
+
+        public Image Background => _background;
+        public Transform AllInfo => _allInfo;
 
         private void OnEnable()
         {

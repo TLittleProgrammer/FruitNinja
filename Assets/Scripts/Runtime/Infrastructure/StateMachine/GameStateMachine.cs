@@ -18,6 +18,8 @@ namespace Runtime.Infrastructure.StateMachine
                 .ToDictionary(x => x.GetType(), x => x);
         }
 
+        public IState CurrentState => _activeState as IState;
+
         public void Enter<TState>() where TState : class, IState
         {
             TState state = ChangeState<TState>();
