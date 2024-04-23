@@ -19,26 +19,9 @@ namespace Runtime.UI.Buttons
             _button = GetComponent<Button>();
         }
 
-        private void OnEnable()
-        {
-            _button.onClick.AddListener(OnButtonClicked);
-        }
-
         private void OnDisable()
         {
-            _button.onClick.RemoveListener(OnButtonClicked);
             _sequence.Kill();
-        }
-        
-        private void OnButtonClicked()
-        {
-            _sequence = DOTween.Sequence();
-            _sequence.Append(transform
-                .DOScale(_buttonAnimationSettings.TargetScale, _buttonAnimationSettings.Duration)
-                .SetEase(_buttonAnimationSettings.Ease)
-                .SetLoops(2, LoopType.Yoyo));
-
-            _sequence.Play();
         }
 
         public void OnPointerDown(PointerEventData eventData)
