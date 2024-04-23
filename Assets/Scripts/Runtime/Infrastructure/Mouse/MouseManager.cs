@@ -26,7 +26,7 @@ namespace Runtime.Infrastructure.Mouse
 
         public void Tick()
         {
-            if (_stop)
+            if (_stop || _camera is null)
             {
                 _canSlice = false;
                 return;
