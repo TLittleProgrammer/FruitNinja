@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectSettings: {fileID: 11400000, guid: db7d0b0ec2a330e4c8133d00973d092c, type: 2}
   ButtonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
+  ScoreAnimationSettings: {fileID: 11400000, guid: b2e8c7fb069eb86479f27963880b4b4d, type: 2}
   LoadingScreenFadeDuration: {fileID: 11400000, guid: fefdf30fe07e9c042ba8672bfa757a7f, type: 2}

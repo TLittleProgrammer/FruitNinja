@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.Mouse;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -22,12 +23,16 @@ namespace Runtime.Infrastructure.Trail
         public async UniTask AsyncInitialize(TrailView trailViewTransform)
         {
             _trailView = trailViewTransform;
+            TrailClear();
             
             await UniTask.CompletedTask;
         }
 
         public void Tick()
         {
+            if (_trailView is null)
+                return;
+            
             if (_canTrail && Input.GetMouseButton(0))
             {
                 if (_canMove)
@@ -35,6 +40,8 @@ namespace Runtime.Infrastructure.Trail
                     Vector3 targetPosition = _mouseManager.GetMousePositionInWorldCoordinates();
                 
                     _trailView.transform.position = new Vector3(targetPosition.x, targetPosition.y, 0f);
+                    
+                    _trailView.TrailRenderer.enabled = true;
                 }
             }
             
@@ -50,14 +57,19 @@ namespace Runtime.Infrastructure.Trail
         {
             _canMove = false;
         }
-        
+
         private void CheckMouseButtonDown()
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _trailView.TrailRenderer.Clear();
+                TrailClear();
                 _canMove = true;
             }
+        }
+
+        private void TrailClear()
+        {
+            _trailView.TrailRenderer.Clear();
         }
     }
 }

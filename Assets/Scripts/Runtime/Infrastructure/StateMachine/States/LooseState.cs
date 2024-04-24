@@ -1,4 +1,6 @@
-﻿using Runtime.Infrastructure.Factories;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
@@ -20,7 +22,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly MouseManager _mouseManager;
 
         private bool _isEntered;
-        private GameObject _looseScreen;
+        private LooseScreen _looseScreen;
         
         public LooseState(
             Canvas looseScreenParent,
@@ -58,26 +60,66 @@ namespace Runtime.Infrastructure.StateMachine.States
             _spawnerManager.SetStop(true);
             _mouseManager.SetStopValue(true);
             _trailMoveService.SetCanTrail(false);
-
-
+            
             _isEntered = true;
         }
 
-        public void Exit()
+        public async void Exit()
         {
+            await HideLooseScreen();
+            
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
             _trailMoveService.SetCanTrail(true);
             
-            Object.Destroy(_looseScreen);
+            Object.Destroy(_looseScreen.gameObject);
+
             _looseScreen = null;
-            
             _isEntered = false;
         }
 
-        private void CreateLooseWindow()
+        private async void CreateLooseWindow()
         {
-            _looseScreen = _uiFactory.LoadScreen<LooseScreen>(ScreenType.Loose, _looseScreenParent.transform, _diContainer).gameObject;
+            _looseScreen = _uiFactory.LoadScreen<LooseScreen>(ScreenType.Loose, _looseScreenParent.transform, _diContainer);
+
+            await ShowLooseScreen();
+        }
+
+        private async UniTask ShowLooseScreen()
+        {
+            Sequence sequence = DOTween.Sequence();
+
+            Color initialColor = _looseScreen.Background.color;
+            _looseScreen.Background.color = Color.clear;
+
+            sequence.Append(_looseScreen.Background.DOColor(initialColor, 0.5f));
+
+            _looseScreen.AllInfo.localScale = Vector3.zero;
+            sequence.Append(_looseScreen.AllInfo.DOScale(Vector3.one, 0.15f).SetEase(Ease.InCubic));
+
+            sequence.OnComplete(() =>
+            {
+                sequence.Kill();
+            });
+
+            await sequence.Play().ToUniTask();
+        }
+        
+        private async UniTask HideLooseScreen()
+        {
+            Sequence sequence = DOTween.Sequence();
+            
+            _looseScreen.AllInfo.localScale = Vector3.one;
+            sequence.Append(_looseScreen.AllInfo.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InCubic));
+            
+            sequence.Append(_looseScreen.Background.DOColor(Color.clear, 0.5f));
+
+            sequence.OnComplete(() =>
+            {
+                sequence.Kill();
+            });
+
+            await sequence.Play().ToUniTask();
         }
     }
 }

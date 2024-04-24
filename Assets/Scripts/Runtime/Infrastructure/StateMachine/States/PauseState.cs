@@ -1,4 +1,6 @@
-﻿using Runtime.Infrastructure.Factories;
+﻿using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
@@ -19,7 +21,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly MouseManager _mouseManager;
         private readonly TrailMoveService _trailMoveService;
         
-        private Object _pauseScreen;
+        private PauseScreen _pauseScreen;
 
         public PauseState(
             Canvas pauseScreenParent,
@@ -47,22 +49,57 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService.SetCanTrail(false);
             _movementService.SetCanMove(false);
 
-            CreateLooseWindow();
+            CreatePauseWindow();
         }
 
-        public void Exit()
+        public async void Exit()
         {
+            await AnimatePauseScreen(Vector3.one, Vector3.zero, _pauseScreen.Background.color, Color.clear, false);
+            
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
             _trailMoveService.SetCanTrail(true);
             _movementService.SetCanMove(true);
             
-            Object.Destroy(_pauseScreen);
+            Object.Destroy(_pauseScreen.gameObject);
         }
 
-        private void CreateLooseWindow()
+        private async void CreatePauseWindow()
         {
-            _pauseScreen = _uiFactory.LoadScreen<PauseScreen>(ScreenType.Pause, _pauseScreenParent.transform, _diContainer).gameObject;
+            _pauseScreen = _uiFactory.LoadScreen<PauseScreen>(ScreenType.Pause, _pauseScreenParent.transform, _diContainer);
+
+            Color targetColor = _pauseScreen.Background.color;
+            await AnimatePauseScreen(Vector3.zero, Vector3.one, new(targetColor.r, targetColor.g, targetColor.b, 0f), targetColor, true);
+        }
+
+        private async UniTask AnimatePauseScreen(Vector3 initialScale, Vector3 targetScale, Color initialColor, Color targetColor, bool animateBackBeforeTransform)
+        {
+            Sequence sequence = DOTween.Sequence();
+            
+            _pauseScreen.Background.color = initialColor;
+
+            if (animateBackBeforeTransform)
+            {
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+            }
+            
+            foreach (Transform transform in _pauseScreen.Transforms)
+            {
+                transform.localScale = initialScale;
+                sequence.Append(transform.DOScale(targetScale, 0.15f).SetEase(Ease.InCubic));
+            }
+
+            if (!animateBackBeforeTransform)
+            {
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+            }
+
+            sequence.OnComplete(() =>
+            {
+                sequence.Kill();
+            });
+
+            await sequence.Play().ToUniTask();
         }
     }
 }

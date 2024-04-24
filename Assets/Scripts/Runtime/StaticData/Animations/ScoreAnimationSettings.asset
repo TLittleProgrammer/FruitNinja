@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f10e6c7833fe42d08bf039a7922a2c19, type: 3}
-  m_Name: ButtonAnimationSettings
+  m_Script: {fileID: 11500000, guid: 06e4489ea5dd44699791a6f70be694b6, type: 3}
+  m_Name: ScoreAnimationSettings
   m_EditorClassIdentifier: 
-  Duration: 0.15
-  TargetScale: {x: 0.95, y: 0.95, z: 0.95}
-  Ease: 2
+  Duration: 0.3
