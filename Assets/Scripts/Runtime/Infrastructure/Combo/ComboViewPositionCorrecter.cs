@@ -27,8 +27,7 @@ namespace Runtime.Infrastructure.Combo
             Vector2 comboSize  = comboView.RectSize * new Vector2(_screenSize.x / _originalSize.x, _screenSize.y / _originalSize.y);
             Vector2 targetPosition = viewportPosition;
             
-            Debug.Log($"ViewPortPosition: {viewportPosition}, comboSize: {comboSize}, screenSize: {_screenSize}");
-
+            
             if (viewportPosition.x + comboSize.x >= _screenSize.x)
             {
                 targetPosition.x = _screenSize.x - comboSize.x * 1.1f;
@@ -52,8 +51,6 @@ namespace Runtime.Infrastructure.Combo
                     targetPosition.y = comboSize.y * 1.1f;
                 }
             }
-            
-            Debug.Log($"TargetPosition: {targetPosition}");
             
             
             comboView.SetPosition(targetPosition);
