@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Mouse;
+﻿using Runtime.Extensions;
+using Runtime.Infrastructure.Mouse;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.Combo
@@ -11,43 +12,51 @@ namespace Runtime.Infrastructure.Combo
     public sealed class ComboViewPositionCorrecter : IComboViewPositionCorrecter
     {
         private readonly MouseManager _manager;
+        private readonly Vector2 _screenSize;
+        private readonly Vector2 _originalSize = new(1366f, 768f);
 
-        public ComboViewPositionCorrecter(
-                MouseManager manager
-            )
+        public ComboViewPositionCorrecter(MouseManager manager)
         {
             _manager = manager;
+            _screenSize = new Vector2(Screen.width, Screen.height);
         }
         
         public void CorrectPosition(ComboView comboView, Vector2 position)
         {
-            Vector2 viewportPosition = _manager.GetViewportPosition(position);
+            Vector2 viewportPosition = _manager.GetScreenPosition(position);
+            Vector2 comboSize  = comboView.RectSize * new Vector2(_screenSize.x / _originalSize.x, _screenSize.y / _originalSize.y);
+            Vector2 targetPosition = viewportPosition;
+            
+            Debug.Log($"ViewPortPosition: {viewportPosition}, comboSize: {comboSize}, screenSize: {_screenSize}");
 
-            if (viewportPosition.x < 0.25f)
+            if (viewportPosition.x + comboSize.x >= _screenSize.x)
             {
-                viewportPosition.x = 0.25f;
+                targetPosition.x = _screenSize.x - comboSize.x * 1.1f;
             }
             else
             {
-                if (viewportPosition.x > 0.75f)
+                if (viewportPosition.x - comboSize.x <= 0f)
                 {
-                    viewportPosition.x = 0.75f;
+                    targetPosition.x = comboSize.x * 1.1f;
                 }
             }
             
-            if (viewportPosition.y < 0.15f)
+            if (viewportPosition.y + comboSize.y >= _screenSize.y)
             {
-                viewportPosition.y = 0.15f;
+                targetPosition.y = _screenSize.y - comboSize.y * 1.1f;
             }
             else
             {
-                if (viewportPosition.y > 0.75f)
+                if (viewportPosition.y - comboSize.y <= 0f)
                 {
-                    viewportPosition.y = 0.75f;
+                    targetPosition.y = comboSize.y * 1.1f;
                 }
             }
-
-            comboView.SetPosition(_manager.GetScreenPositionByViewport(viewportPosition));
+            
+            Debug.Log($"TargetPosition: {targetPosition}");
+            
+            
+            comboView.SetPosition(targetPosition);
         }
     }
 }

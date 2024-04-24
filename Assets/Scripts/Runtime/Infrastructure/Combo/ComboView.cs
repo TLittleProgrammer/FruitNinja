@@ -17,12 +17,18 @@ namespace Runtime.Infrastructure.Combo
         private RectTransform _rectTransform;
         private string _fruitsCounterInitialText;
         private string _xCounterInitialText;
+        private Vector2 _rectSize;
+
+        public RectTransform RectTransform => _rectTransform;
+        public Vector2 RectSize => _rectSize;
 
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
             _fruitsCounterInitialText = _fruitsCounter.text;
             _xCounterInitialText = _xCounterText.text;
+
+            _rectSize = new Vector2(_rectTransform.rect.width / 2f, _rectTransform.rect.height / 2f);
         }
         
         public void ShowCombo(int fruits)
@@ -33,7 +39,7 @@ namespace Runtime.Infrastructure.Combo
 
         public void SetPosition(Vector2 position)
         {
-            _rectTransform.anchoredPosition = position;
+            _rectTransform.position = position;
         }
 
         private IEnumerator PlayAnimation(int fruits)
