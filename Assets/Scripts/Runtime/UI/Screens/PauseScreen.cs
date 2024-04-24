@@ -2,7 +2,9 @@
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
+using Runtime.UI.Buttons;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -13,6 +15,7 @@ namespace Runtime.UI.Screens
     {
         [SerializeField] private Button _continueButton;
         [SerializeField] private Button _menuButton;
+        [SerializeField] private AnimatableButton[] _animatableButtons;
         [SerializeField] private Image _background;
         [SerializeField] private TMP_Text _label;
 
@@ -37,18 +40,36 @@ namespace Runtime.UI.Screens
 
         private void OnDisable()
         {
-            _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
-            _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
+            DisableButtons();
         }
 
         private void OnContinueButtonClicked()
         {
+            DisableButtons();
+            
             _gameStateMachine.Enter<GameState>();
         }
 
         private void OnMenuButtonClicked()
         {
+            if (_gameStateMachine.CurrentState is GameState)
+            {
+                return;
+            }
+            DisableButtons();
+
             _entryPoint.AsyncLoadScene(SceneNames.MainMenu);
+        }
+
+        private void DisableButtons()
+        {
+            _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
+            _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
+
+            foreach (AnimatableButton button in _animatableButtons)
+            {
+                button.enabled = false;
+            }
         }
     }
 }

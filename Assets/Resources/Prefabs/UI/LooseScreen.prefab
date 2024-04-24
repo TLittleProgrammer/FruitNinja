@@ -372,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
+  _disableAfterClick: 1
 --- !u!1 &4656246083923304829
 GameObject:
   m_ObjectHideFlags: 0
@@ -952,6 +953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonAnimationSettings: {fileID: 11400000, guid: 891e086a64287a143988cf64b6182a6d, type: 2}
+  _disableAfterClick: 1
 --- !u!1 &4656246084482443607
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,5 +1353,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _restartButton: {fileID: 4656246083614538814}
   _menuButton: {fileID: 4656246084199032156}
+  _animatableButtons:
+  - {fileID: 1325855838096992308}
+  - {fileID: 8037292975788143144}
   _background: {fileID: 4656246084482443605}
   _allInfo: {fileID: 3456236263202009276}
