@@ -29,15 +29,15 @@ namespace Runtime.Infrastructure.Effects
 
         public void PlayEffect(Vector3 screenPosition, int score)
         {
+            _scoreText.text = score.ToString();
+            _rectTransform.position = screenPosition;
+            
             gameObject.SetActive(true);
-            StartCoroutine(PlayAnimation(screenPosition, score));
+            StartCoroutine(PlayAnimation());
         }
 
-        private IEnumerator PlayAnimation(Vector3 screenPosition, int score)
+        private IEnumerator PlayAnimation()
         {
-            _scoreText.text = score.ToString();
-            _rectTransform.anchoredPosition = screenPosition;
-
             _animator.Play(ScoreFly);
 
             yield return new WaitForSeconds(1f);

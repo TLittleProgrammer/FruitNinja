@@ -79,7 +79,7 @@ namespace Runtime.Infrastructure.Mouse
         //TODO потом создать что-то типа CameraService
         public Vector2 GetScreenPosition(Vector3 position)
         {
-            return _camera.WorldToScreenPoint(position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+            return _camera.WorldToScreenPoint(position);
         }
         
         public Vector2 GetViewportPosition(Vector3 position)
