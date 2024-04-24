@@ -76,7 +76,6 @@ namespace Runtime.Infrastructure.Mouse
             return _previousMousePositionForOther;
         }
 
-        //TODO потом создать что-то типа CameraService
         public Vector2 GetScreenPosition(Vector3 position)
         {
             return _camera.WorldToScreenPoint(position);
@@ -89,7 +88,7 @@ namespace Runtime.Infrastructure.Mouse
         
         public Vector2 GetScreenPositionByViewport(Vector2 position)
         {
-            return _camera.ViewportToScreenPoint(position) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+            return _camera.ViewportToScreenPoint(position);
         }
 
         private void CheckMouseButtonUp()
