@@ -5,6 +5,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
 {
     public interface ICreateDummiesService
     {
-        void AddDummies(SlicableObjectView slicableObjectView, Sprite sprite, Sprite slicableObjectSprite);
+        void AddDummies(SlicableObjectView slicableObjectView);
     }
 }

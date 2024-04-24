@@ -13,26 +13,32 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
         private readonly SliceableObjectDummy.Pool _dummyPool;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
         private readonly SlicableMovementService _slicableMovementService;
+        private readonly SlicableVisualContainer _slicableVisualContainer;
 
         public CreateDummiesService(
             MouseManager mouseManager,
             SliceableObjectDummy.Pool dummyPool,
             SliceableObjectSpriteRendererOrderService orderService,
-            SlicableMovementService slicableMovementService
+            SlicableMovementService slicableMovementService,
+            SlicableVisualContainer slicableVisualContainer
             )
         {
             _mouseManager = mouseManager;
             _dummyPool = dummyPool;
             _orderService = orderService;
             _slicableMovementService = slicableMovementService;
+            _slicableVisualContainer = slicableVisualContainer;
         }
         
-        public void AddDummies(SlicableObjectView slicableObjectView, Sprite sprite, Sprite slicableObjectSprite)
+        public void AddDummies(SlicableObjectView slicableObjectView)
         {
+            Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
+            Sprite slicedSprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
+            
             SliceableObjectDummy[] dummyArray = TakeDummies();
 
-            dummyArray[0].ChangeSprite(sprite);
-            dummyArray[1].ChangeSprite(sprite);
+            dummyArray[0].ChangeSprite(slicedSprite);
+            dummyArray[1].ChangeSprite(slicedSprite);
 
             UpdateSortingInLayerIndex(dummyArray);
 

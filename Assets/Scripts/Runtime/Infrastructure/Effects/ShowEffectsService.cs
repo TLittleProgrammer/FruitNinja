@@ -10,8 +10,8 @@ namespace Runtime.Infrastructure.Effects
 {
     public interface IShowEffectsService
     {
-        void ShowSplash(Vector2 position, Sprite sprite);
-        void ShowBlots(Vector2 position, Sprite sprite);
+        void ShowSplash(Vector2 position, string spriteName);
+        void ShowBlots(Vector2 position, string spriteName);
         void ShowScore(Vector2 position, int score);
     }
 
@@ -50,7 +50,7 @@ namespace Runtime.Infrastructure.Effects
             comboService.ComboEnded += OnComboEnded;
         }
 
-        public void ShowSplash(Vector2 position, Sprite sprite)
+        public void ShowSplash(Vector2 position, string spriteName)
         {
             _lastSlicedPosition = position;
             SplashEffect splashEffect;
@@ -65,14 +65,14 @@ namespace Runtime.Infrastructure.Effects
                 throw;
             }
 
-            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(sprite.name);
+            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
             splashEffect.PlayEffect(position, color);
         }
 
-        public void ShowBlots(Vector2 position, Sprite sprite)
+        public void ShowBlots(Vector2 position, string spriteName)
         {
             _lastSlicedPosition = position;
-            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(sprite.name);
+            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(spriteName);
 
             if (blotSprite is not null)
             {

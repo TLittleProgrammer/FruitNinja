@@ -2,9 +2,9 @@
 
 namespace Runtime.Infrastructure.Slicer.SliceServices
 {
-    public sealed class HealthSlicer : ISlicer
+    public sealed class HealthSlicer : ISliceService
     {
-        public bool TrySliceObject(SlicableObjectView slicableObjectView)
+        public bool TrySlice(SlicableObjectView slicableObjectView)
         {
             return true;
         }

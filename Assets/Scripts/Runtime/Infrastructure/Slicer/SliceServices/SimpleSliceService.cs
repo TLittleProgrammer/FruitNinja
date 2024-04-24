@@ -43,16 +43,15 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         
         public bool TrySlice(SlicableObjectView slicableObjectView)
         {
-            Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
-            Sprite sprite = _slicableVisualContainer.GetSlicedSpriteByName(slicableObjectSprite.name);
+            string mainSpriteName = slicableObjectView.MainSprite.sprite.name;
             _lastSlicedPosition = slicableObjectView.transform.position;
 
-            _createDummiesService.AddDummies(slicableObjectView, sprite, slicableObjectSprite);
+            _createDummiesService.AddDummies(slicableObjectView);
             RemoveSlicableObjectFromMapping(slicableObjectView);
 
             _addScoreService.Add();
-            _showEffectsService.ShowSplash(_lastSlicedPosition, slicableObjectSprite);
-            _showEffectsService.ShowBlots(_lastSlicedPosition, slicableObjectSprite);
+            _showEffectsService.ShowSplash(_lastSlicedPosition, mainSpriteName);
+            _showEffectsService.ShowBlots(_lastSlicedPosition, mainSpriteName);
 
             _comboService.AddCombo();
 
