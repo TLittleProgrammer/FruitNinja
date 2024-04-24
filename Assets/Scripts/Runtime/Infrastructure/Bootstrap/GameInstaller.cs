@@ -11,7 +11,9 @@ using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
 using Runtime.Infrastructure.Slicer.SliceServices;
+using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Trail;
@@ -61,6 +63,8 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IAddScoreService>().To<AddScoreService>().AsSingle();
             Container.Bind<IComboViewPositionCorrecter>().To<ComboViewPositionCorrecter>().AsSingle();
             Container.Bind<ISlicableObjectCounterOnMap>().To<SlicableObjectCounterOnMap>().AsSingle();
+            Container.Bind<ISpawnCriteriaService>().To<SpawnCriteriaService>().AsSingle();
+            Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
