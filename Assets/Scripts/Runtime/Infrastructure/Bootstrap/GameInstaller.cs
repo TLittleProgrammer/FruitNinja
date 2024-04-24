@@ -96,7 +96,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
             sliceServices.Add(SlicableObjectType.Simple, Container.Instantiate<SimpleSliceService>());
             sliceServices.Add(SlicableObjectType.Brick, Container.Instantiate<BrickSliceService>());
-            sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSlicer>());
+            sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSliceService>());
             
             return sliceServices;
         }
