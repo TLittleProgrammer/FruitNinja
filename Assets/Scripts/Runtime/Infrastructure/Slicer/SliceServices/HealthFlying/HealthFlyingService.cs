@@ -50,7 +50,19 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             {
                 return;
             }
+            
+            FlyingHealthView flyingHealthView = _healthViewPool.InactiveItems.GetInactiveObject();
+            flyingHealthView.RectTransform.position = slicedPosition;
 
+            var targetPosition = CalculateTargetPosition();
+            //TODO этим должна заниматься фабрика
+            var flyingHealth = CreateHealth(flyingHealthView, targetPosition);
+
+            _healthList.Add(flyingHealth);
+        }
+
+        private Vector2 CalculateTargetPosition()
+        {
             Vector2 targetPosition = Vector2.zero;
 
             for (int i = _gameParameters.MaxHealth - _healthList.Count - 1; i < _gameScreen.HeartViews.Count; i++)
@@ -64,10 +76,11 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
                 }
             }
 
-            FlyingHealthView flyingHealthView = _healthViewPool.InactiveItems.GetInactiveObject();
+            return targetPosition;
+        }
 
-            flyingHealthView.RectTransform.position = slicedPosition;
-            
+        private FlyingHealth CreateHealth(FlyingHealthView flyingHealthView, Vector2 targetPosition)
+        {
             FlyingHealth flyingHealth = new(flyingHealthView, _flyingHealthViewStaticData);
             flyingHealth.FlyTo(targetPosition, () =>
             {
@@ -77,8 +90,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
                 flyingHealth.FlyingHealthView.transform.localScale = Vector3.zero;
                 _healthList.RemoveAt(_healthList.Count - 1);
             });
-            
-            _healthList.Add(flyingHealth);
+            return flyingHealth;
         }
 
         private void OnHealthChanged(int health)
