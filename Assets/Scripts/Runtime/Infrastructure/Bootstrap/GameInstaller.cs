@@ -11,11 +11,15 @@ using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
 using Runtime.Infrastructure.Slicer.SliceServices;
+using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
+using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
+using Runtime.StaticData.Level;
 using UnityEngine;
 using Zenject;
 
@@ -43,13 +47,16 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private ComboView _comboViewPrefab;
         [SerializeField] private Transform _comboPoolParent;
+        
+        [SerializeField] private FlyingHealthView _healthFlyingViewPrefab;
+        [SerializeField] private Transform _healthFlyingPoolParent;
 
         [Inject] private PoolSettings _poolSettings;
+        [Inject] private LevelStaticData _levelStaticData;
         
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<GameInstaller>().FromInstance(this).AsSingle();
-
 
             Container.Bind<GameParameters>().AsSingle();
             Container.Bind<SlicableVisualContainer>().AsSingle();
@@ -61,6 +68,9 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IAddScoreService>().To<AddScoreService>().AsSingle();
             Container.Bind<IComboViewPositionCorrecter>().To<ComboViewPositionCorrecter>().AsSingle();
             Container.Bind<ISlicableObjectCounterOnMap>().To<SlicableObjectCounterOnMap>().AsSingle();
+            Container.Bind<ISpawnCriteriaService>().To<SpawnCriteriaService>().AsSingle();
+            Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
+            Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
@@ -76,6 +86,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<SliceableObjectDummy, SliceableObjectDummy.Pool>(_poolSettings.PoolInitialSize * 2, _dummyPrefab, _dummyPoolParent);
             Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent);
             Container.BindPool<ComboView, ComboView.Pool>(_poolSettings.PoolInitialSize, _comboViewPrefab, _comboPoolParent);
+            Container.BindPool<FlyingHealthView, FlyingHealthView.Pool>(_levelStaticData.HealthCount, _healthFlyingViewPrefab, _healthFlyingPoolParent);
             
             Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices();
             
@@ -92,6 +103,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
             sliceServices.Add(SlicableObjectType.Simple, Container.Instantiate<SimpleSliceService>());
             sliceServices.Add(SlicableObjectType.Brick, Container.Instantiate<BrickSliceService>());
+            sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSliceService>());
             
             return sliceServices;
         }
@@ -136,7 +148,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
         public void Initialize()
         {
-            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new[] { _gameCanvas, _overlayCanvas });
+            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new Component[] { _gameCanvas, _overlayCanvas, _healthFlyingPoolParent.transform });
             
             gameInitializer.Initialize();
         }

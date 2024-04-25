@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.StateMachine;
@@ -25,6 +26,13 @@ namespace Runtime.UI.Screens
             _uiFactory = uiFactory;
             
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
+        }
+
+        public List<HeartView> HeartViews => _heartsView.HeartViews;
+
+        public void AddHealthWithoutAnimation()
+        {
+            _heartsView.AddHealthWithoutAnimation();
         }
 
         public async UniTask AsyncInitialize()
