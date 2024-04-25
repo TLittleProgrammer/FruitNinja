@@ -14,6 +14,7 @@ namespace Runtime.StaticData.Installers
         public LevelStaticData LevelStaticData;
         public PoolSettings PoolSettings;
         public BlotEffectSettings BlotEffectSettings;
+        public FlyingHealthViewStaticData FlyingHealthViewStaticData;
         
         public override void InstallBindings()
         {
@@ -22,6 +23,7 @@ namespace Runtime.StaticData.Installers
             Container.Bind<ComboData>().FromInstance(LevelStaticData.ComboData).AsSingle();
             Container.Bind<PoolSettings>().FromInstance(PoolSettings).AsSingle();
             Container.Bind<BlotEffectSettings>().FromInstance(BlotEffectSettings).AsSingle();
+            Container.Bind<FlyingHealthViewStaticData>().FromInstance(FlyingHealthViewStaticData).AsSingle();
         }
     }
 }

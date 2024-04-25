@@ -22,6 +22,7 @@ namespace Runtime.Infrastructure.Game
 
         public int Health => _health;
         public int CurrentScore => _currentScore;
+        public int MaxHealth => _initialHealthCount;
         public bool CurrentHealthIsMax => _health == _initialHealthCount;
 
         public void ChangeScore(int addScore)

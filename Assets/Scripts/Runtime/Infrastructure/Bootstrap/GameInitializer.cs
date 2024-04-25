@@ -2,6 +2,7 @@
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -16,10 +17,12 @@ namespace Runtime.Infrastructure.Bootstrap
         
         private readonly Canvas _gameCanvas;
         private readonly Canvas _overlayCanvas;
+        private readonly Transform _healthParent;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly GameScreenManager _gameScreenManager;
         private readonly TrailMoveService _trailMoveService;
         private readonly IWorldFactory _worldFactory;
+        private readonly IHealthFlyingService _healthFlyingService;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -29,6 +32,7 @@ namespace Runtime.Infrastructure.Bootstrap
         public GameInitializer(
             Canvas gameCanvas,
             Canvas overlayCanvas,
+            Transform healthParent,
             SlicableVisualContainer slicableVisualContainer,
             GameScreenManager gameScreenManager,
             TrailMoveService trailMoveService,
@@ -36,11 +40,13 @@ namespace Runtime.Infrastructure.Bootstrap
             DiContainer diContainer,
             IEntryPoint entryPoint,
             IUIFactory uiFactory,
-            IWorldFactory worldFactory
+            IWorldFactory worldFactory,
+            IHealthFlyingService healthFlyingService
         )
         {
             _gameCanvas = gameCanvas;
             _overlayCanvas = overlayCanvas;
+            _healthParent = healthParent;
             _slicableVisualContainer = slicableVisualContainer;
             _gameScreenManager = gameScreenManager;
             _trailMoveService = trailMoveService;
@@ -49,6 +55,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _entryPoint = entryPoint;
             _uiFactory = uiFactory;
             _worldFactory = worldFactory;
+            _healthFlyingService = healthFlyingService;
         }
 
         public async void Initialize()
@@ -66,6 +73,9 @@ namespace Runtime.Infrastructure.Bootstrap
             _uiFactory.LoadScreen<MonoBehaviour>(ScreenType.GameBackground, _gameCanvas.transform, _diContainer);
             GameScreen gameScreen = _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _overlayCanvas.transform, _diContainer);
             await gameScreen.AsyncInitialize();
+            _healthParent.SetAsLastSibling();
+
+            _healthFlyingService.AsyncInitialize(gameScreen);
 
             await _gameScreenManager.AsyncInitialize(camera);
             

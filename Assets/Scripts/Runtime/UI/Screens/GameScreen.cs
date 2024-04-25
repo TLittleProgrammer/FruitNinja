@@ -27,6 +27,16 @@ namespace Runtime.UI.Screens
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
         }
 
+        public Vector2 GetLastLostHealthPosition(int index)
+        {
+            return _heartsView.GetLastLostHealthPosition(index);
+        }
+
+        public void AddHealthWithoutAnimation()
+        {
+            _heartsView.AddHealthWithoutAnimation();
+        }
+
         public async UniTask AsyncInitialize()
         {
             await _heartsView.AsyncInitialize(_uiFactory);
