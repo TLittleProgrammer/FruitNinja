@@ -30,6 +30,8 @@ namespace Runtime.UI.Game
             _canAnimate = true;
             _healthChangeQueue = new();
         }
+
+        public List<HeartView> HeartViews => _heartViews;
         
         public async UniTask AsyncInitialize(IUIFactory uiFactory)
         {
@@ -43,11 +45,6 @@ namespace Runtime.UI.Game
 
                 _heartViews.Add(heartView);
             }
-        }
-
-        public Vector2 GetLastLostHealthPosition(int index)
-        {
-            return _heartViews[^(_lastHealth + 1 + index)].RectTransform.position;
         }
 
         public void AddHealthWithoutAnimation()
@@ -86,19 +83,19 @@ namespace Runtime.UI.Game
             {
                 if (offset == -1)
                 {
-                    await _heartViews[^_lastHealth].AnimateGetDamage();
+                    await _heartViews[_lastHealth - 1].AnimateGetDamage();
                 }
                 else
                 {
                     if (_addHealthWithoutAnimation)
                     {
                         _addHealthWithoutAnimation = false;
-                        _heartViews[^(_lastHealth + 1)].HeartTransform.localScale = Vector3.one;
+                        _heartViews[_lastHealth].HeartTransform.localScale = Vector3.one;
                         _lastHealth++;
                         continue;
                     }
 
-                    await _heartViews[^(_lastHealth + 1)].AnimateGetHealth();
+                    await _heartViews[_lastHealth].AnimateGetHealth();
                 }
 
                 _lastHealth += offset;

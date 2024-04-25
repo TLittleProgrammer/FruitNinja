@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: FlyingHealthSettings
   m_EditorClassIdentifier: 
   TimeDelayAfterAnimation: 0.15
-  FlyDuration: 2
+  FlyDuration: 1
   Ease: 2
   DestroyDuration: 0.25

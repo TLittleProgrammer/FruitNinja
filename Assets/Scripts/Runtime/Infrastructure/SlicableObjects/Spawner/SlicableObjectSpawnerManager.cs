@@ -94,7 +94,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                 await UniTask.Delay(delay);
             }
 
-            if (_spawnerPackResize[spawnerDataIndex] < 5)
+            if (_spawnerPackResize[spawnerDataIndex] < 2)
             {
                 _spawnerPackResize[spawnerDataIndex]++;
             }

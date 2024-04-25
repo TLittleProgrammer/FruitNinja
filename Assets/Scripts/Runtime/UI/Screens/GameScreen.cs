@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.StateMachine;
@@ -27,10 +28,7 @@ namespace Runtime.UI.Screens
             _pauseButton.onClick.AddListener(OnPauseButtonClicked);
         }
 
-        public Vector2 GetLastLostHealthPosition(int index)
-        {
-            return _heartsView.GetLastLostHealthPosition(index);
-        }
+        public List<HeartView> HeartViews => _heartsView.HeartViews;
 
         public void AddHealthWithoutAnimation()
         {

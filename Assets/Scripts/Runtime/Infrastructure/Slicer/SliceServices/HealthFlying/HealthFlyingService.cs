@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Game;
@@ -17,6 +19,8 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
         private GameScreen _gameScreen;
         private List<FlyingHealth> _healthList;
         private int _previousHealth;
+        
+        public int HealthCounter => _healthList.Count;
 
         public HealthFlyingService(
             FlyingHealthView.Pool healthViewPool,
@@ -47,8 +51,20 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
                 return;
             }
 
+            Vector2 targetPosition = Vector2.zero;
+
+            for (int i = _gameParameters.MaxHealth - _healthList.Count - 1; i < _gameScreen.HeartViews.Count; i++)
+            {
+                Vector2 position = _gameScreen.HeartViews[i].RectTransform.position;
+
+                if (_healthList.All(x => x.TargetPosition != position))
+                {
+                    targetPosition = position;
+                    break;
+                }
+            }
+
             FlyingHealthView flyingHealthView = _healthViewPool.InactiveItems.GetInactiveObject();
-            Vector2 targetPosition = _gameScreen.GetLastLostHealthPosition(_healthList.Count);
 
             flyingHealthView.RectTransform.position = slicedPosition;
             
@@ -68,21 +84,24 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
         private void OnHealthChanged(int health)
         {
             if (_healthList.Count == 0)
-                return;
-
-            if (health + _healthList.Count == 0)
             {
-                foreach (FlyingHealth flyingHealth in _healthList)
-                {
-                    flyingHealth.DestroyView();
-                }
+                _previousHealth = health;
+                return;
+            }
 
+            if (_previousHealth == 0 && health == 0)
+            {
+                _healthList[0].DestroyView(() =>
+                {
+                    _healthList.RemoveAt(0);
+                });
                 return;
             }
             
             if (_previousHealth > health)
             {
-                Vector2 targetPosition = _gameScreen.GetLastLostHealthPosition(0);
+                int index = _gameScreen.HeartViews.Count -  Math.Clamp(_healthList.Count, 0, _gameParameters.MaxHealth) - 1;
+                Vector2 targetPosition = _gameScreen.HeartViews[index].RectTransform.position;
 
                 for (int i = _healthList.Count - 1; i >= 0; i--)
                 {
@@ -92,10 +111,8 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
                     targetPosition = previousTargetPosition;
                 }
             }
-            else
-            {
-                _previousHealth = health;
-            }
+            
+            _previousHealth = health;
         }
     }
 }

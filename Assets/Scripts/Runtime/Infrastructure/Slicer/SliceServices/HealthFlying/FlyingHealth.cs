@@ -54,7 +54,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             FlyTo(targetPosition, _flyEnded);
         }
 
-        public void DestroyView()
+        public void DestroyView(Action destroyEnded)
         {
             _sequence.Kill();
             _sequence = DOTween.Sequence();
@@ -63,6 +63,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             _sequence.OnComplete(() =>
             {
                 FlyingHealthView.gameObject.SetActive(false);
+                destroyEnded.Invoke();
                 _sequence.Kill();
             });
         }
