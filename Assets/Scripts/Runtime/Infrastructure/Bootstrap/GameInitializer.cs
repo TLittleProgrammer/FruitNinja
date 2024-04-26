@@ -73,7 +73,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _uiFactory.LoadScreen<MonoBehaviour>(ScreenType.GameBackground, _gameCanvas.transform, _diContainer);
             GameScreen gameScreen = _uiFactory.LoadScreen<GameScreen>(ScreenType.Game, _overlayCanvas.transform, _diContainer);
             await gameScreen.AsyncInitialize();
-            _healthParent.SetAsLastSibling();
+            _healthParent.transform.parent.SetAsLastSibling();
 
             _healthFlyingService.AsyncInitialize(gameScreen);
 

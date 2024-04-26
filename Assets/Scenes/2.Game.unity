@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnerData:
-    Weight: 5
+    Weight: 15
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
       Weight: 1
