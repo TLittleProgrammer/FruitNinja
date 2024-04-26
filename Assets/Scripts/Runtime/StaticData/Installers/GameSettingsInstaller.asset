@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f8cf2f47a144e3b79a5fb7ddff9fe5, type: 3}
   m_Name: GameSettingsInstaller
   m_EditorClassIdentifier: 
+  BombSettings: {fileID: 11400000, guid: 4f1ce36a178f4a648b4581c11d6281fd, type: 2}
   SlicableSpriteProvider: {fileID: 11400000, guid: cf2e08e73937c174e8c536af6b72fa06, type: 2}
   LevelStaticData: {fileID: 11400000, guid: b33f7e73dd1ae2c4d83c9a1ee5fb518d, type: 2}
   PoolSettings:

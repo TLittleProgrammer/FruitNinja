@@ -16,6 +16,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         }
 
         public int MovementObjectsCount => _slicableMapping.Count;
+        public IEnumerable<SlicableModel> SlicableModels => _slicableMapping.Values;
 
         public void Tick()
         {

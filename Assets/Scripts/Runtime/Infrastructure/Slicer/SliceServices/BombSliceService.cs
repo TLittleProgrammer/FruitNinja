@@ -1,42 +1,39 @@
 ﻿using Runtime.Infrastructure.Effects;
-using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.Movement;
-using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
-using UnityEngine;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices
 {
-    public sealed class HealthSliceService : SliceService
+    public sealed class BombSliceService : SliceService
     {
         private readonly ICreateDummiesService _createDummiesService;
-        private readonly IHealthFlyingService _healthFlyingService;
-        private readonly MouseManager _manager;
         private readonly IShowEffectsService _showEffectsService;
+        private readonly GameParameters _gameParameters;
+        private readonly ISplashBombService _splashBombService;
 
-        public HealthSliceService(
+        public BombSliceService(
             SlicableMovementService slicableMovementService,
             ICreateDummiesService createDummiesService,
-            IHealthFlyingService healthFlyingService,
-            MouseManager manager,
-            IShowEffectsService showEffectsService) : base(slicableMovementService)
+            IShowEffectsService showEffectsService,
+            GameParameters gameParameters,
+            ISplashBombService splashBombService) : base(slicableMovementService)
         {
             _createDummiesService = createDummiesService;
-            _healthFlyingService = healthFlyingService;
-            _manager = manager;
             _showEffectsService = showEffectsService;
+            _gameParameters = gameParameters;
+            _splashBombService = splashBombService;
         }
         
         public override bool TrySlice(SlicableObjectView slicableObjectView)
         {
             _createDummiesService.AddDummies(slicableObjectView);
             RemoveSlicableObjectFromMapping(slicableObjectView);
+            _gameParameters.ChangeHealth(-1);
+            _splashBombService.Boom(slicableObjectView.transform.position);
 
-            Vector2 screenPosition = _manager.GetScreenPosition(slicableObjectView.transform.position);
-            
-            _healthFlyingService.Fly(screenPosition);
-            _showEffectsService.PlayHeartSplash(screenPosition);
+            _showEffectsService.PlayBombEffect(slicableObjectView.transform.position);
             return true;
         }
     }
