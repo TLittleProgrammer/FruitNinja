@@ -50,7 +50,10 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [SerializeField] private FlyingHealthView _healthFlyingViewPrefab;
         [SerializeField] private Transform _healthFlyingPoolParent;
-
+        
+        [SerializeField] private HeartSplash _heartSplashPrefab;
+        [SerializeField] private Transform _heartPoolParent;
+        
         [Inject] private PoolSettings _poolSettings;
         [Inject] private LevelStaticData _levelStaticData;
         
@@ -87,6 +90,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<BlotEffect, BlotEffect.Pool>(_poolSettings.PoolInitialSize * 2, _blotEffectPrefab, _blotPoolParent);
             Container.BindPool<ComboView, ComboView.Pool>(_poolSettings.PoolInitialSize, _comboViewPrefab, _comboPoolParent);
             Container.BindPool<FlyingHealthView, FlyingHealthView.Pool>(_levelStaticData.HealthCount, _healthFlyingViewPrefab, _healthFlyingPoolParent);
+            Container.BindPool<HeartSplash, HeartSplash.Pool>(_levelStaticData.HealthCount, _heartSplashPrefab, _heartPoolParent);
             
             Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices();
             
