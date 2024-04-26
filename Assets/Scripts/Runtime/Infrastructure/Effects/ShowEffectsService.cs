@@ -10,9 +10,10 @@ namespace Runtime.Infrastructure.Effects
 {
     public interface IShowEffectsService
     {
-        void ShowSplash(Vector2 position, Sprite sprite);
-        void ShowBlots(Vector2 position, Sprite sprite);
+        void ShowSplash(Vector2 position, string spriteName);
+        void ShowBlots(Vector2 position, string spriteName);
         void ShowScore(Vector2 position, int score);
+        void PlayHeartSplash(Vector2 position);
     }
 
     public sealed class ShowEffectsService : IShowEffectsService
@@ -27,18 +28,21 @@ namespace Runtime.Infrastructure.Effects
 
         private Vector2 _lastSlicedPosition;
         private int _lastScore;
+        private HeartSplash.Pool _heartSplashPool;
 
         public ShowEffectsService(
                 BlotEffect.Pool blotEffectPool,
                 SplashEffect.Pool splashEffectPool,
                 ScoreEffect.Pool scoreEffectPool,
                 ComboView.Pool comboViewPool,
+                HeartSplash.Pool heartSplashPool,
                 SlicableVisualContainer slicableVisualContainer,
                 MouseManager mouseManager,
                 IComboService comboService,
                 IComboViewPositionCorrecter comboViewPositionCorrecter
             )
         {
+            _heartSplashPool = heartSplashPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
             _scoreEffectPool = scoreEffectPool;
@@ -50,29 +54,20 @@ namespace Runtime.Infrastructure.Effects
             comboService.ComboEnded += OnComboEnded;
         }
 
-        public void ShowSplash(Vector2 position, Sprite sprite)
+        public void ShowSplash(Vector2 position, string spriteName)
         {
             _lastSlicedPosition = position;
-            SplashEffect splashEffect;
+            SplashEffect splashEffect = _splashEffectPool.InactiveItems.GetInactiveObject();
 
-            try
-            {
-                splashEffect = _splashEffectPool.InactiveItems.GetInactiveObject();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
 
-            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(sprite.name);
+            Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
             splashEffect.PlayEffect(position, color);
         }
 
-        public void ShowBlots(Vector2 position, Sprite sprite)
+        public void ShowBlots(Vector2 position, string spriteName)
         {
             _lastSlicedPosition = position;
-            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(sprite.name);
+            Sprite blotSprite = _slicableVisualContainer.GetRandomBlot(spriteName);
 
             if (blotSprite is not null)
             {
@@ -92,6 +87,13 @@ namespace Runtime.Infrastructure.Effects
             Vector2 screenPosition = _mouseManager.GetScreenPosition(slicableObjectViewPosition);
 
             scoreEffect.PlayEffect(screenPosition, score);
+        }
+
+        public void PlayHeartSplash(Vector2 position)
+        {
+            HeartSplash heartSplash = _heartSplashPool.InactiveItems.GetInactiveObject();
+            
+            heartSplash.Play(position);
         }
 
         private void OnComboEnded(int comboCounter)

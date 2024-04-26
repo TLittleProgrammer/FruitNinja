@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
 using Runtime.Infrastructure.Factories;
@@ -16,6 +18,7 @@ namespace Runtime.UI.Game
         private int _initialHealthCount;
         private int _lastHealth;
         private bool _canAnimate;
+        private bool _addHealthWithoutAnimation = false;
         private Queue<int> _healthChangeQueue;
 
         [Inject]
@@ -27,6 +30,8 @@ namespace Runtime.UI.Game
             _canAnimate = true;
             _healthChangeQueue = new();
         }
+
+        public List<HeartView> HeartViews => _heartViews;
         
         public async UniTask AsyncInitialize(IUIFactory uiFactory)
         {
@@ -40,6 +45,11 @@ namespace Runtime.UI.Game
 
                 _heartViews.Add(heartView);
             }
+        }
+
+        public void AddHealthWithoutAnimation()
+        {
+            _addHealthWithoutAnimation = true;
         }
 
         private void OnChangedHealth(int health)
@@ -61,21 +71,35 @@ namespace Runtime.UI.Game
                 int targetHealth = _healthChangeQueue.Dequeue();
                 int offset = _lastHealth > targetHealth ? -1 : 1;
             
-                while (_lastHealth != targetHealth)
-                {
-                    if (offset == -1)
-                    {
-                        await _heartViews[^_lastHealth].AnimateGetDamage();
-                    }
-                    else
-                    {
-                        await _heartViews[^(_lastHealth + 1)].AnimateGetHealth();
-                    }
-                    _lastHealth += offset;
-                }
+                await ChangeCurrentHealthToTargetHealth(targetHealth, offset);
             }
 
             _canAnimate = true;
+        }
+
+        private async UniTask ChangeCurrentHealthToTargetHealth(int targetHealth, int offset)
+        {
+            while (_lastHealth != targetHealth)
+            {
+                if (offset == -1)
+                {
+                    await _heartViews[_lastHealth - 1].AnimateGetDamage();
+                }
+                else
+                {
+                    if (_addHealthWithoutAnimation)
+                    {
+                        _addHealthWithoutAnimation = false;
+                        _heartViews[_lastHealth].HeartTransform.localScale = Vector3.one;
+                        _lastHealth++;
+                        continue;
+                    }
+
+                    await _heartViews[_lastHealth].AnimateGetHealth();
+                }
+
+                _lastHealth += offset;
+            }
         }
 
         private void CorrectView(HeartView heartView)

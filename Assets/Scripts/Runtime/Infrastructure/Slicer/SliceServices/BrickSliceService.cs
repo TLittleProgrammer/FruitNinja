@@ -22,7 +22,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         {
             _trailMoveService.SetCannotMove();
             _mouseManager.SetCannotMouseCheckPosition();
-            _showEffectsService.ShowSplash(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite);
+            _showEffectsService.ShowSplash(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
             
             return false;
         }

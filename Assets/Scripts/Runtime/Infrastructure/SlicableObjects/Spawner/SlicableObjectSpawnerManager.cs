@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
 using Runtime.StaticData.Level;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     public class SlicableObjectSpawnerManager : ITickable, IInitializable
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
+        private readonly ISpawnCriteriaService _spawnCriteriaService;
         private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
         private readonly List<int> _spawnerPackResize;
@@ -25,10 +27,13 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private float _spawnTime;
         private float _currentTime;
 
-        public SlicableObjectSpawnerManager(LevelStaticData levelStaticData, SlicableModelViewMapper slicableModelViewMapper, ISlicableObjectCounterOnMap slicableObjectCounterOnMap)
+        public SlicableObjectSpawnerManager(
+            LevelStaticData levelStaticData,
+            SlicableModelViewMapper slicableModelViewMapper,
+            ISpawnCriteriaService spawnCriteriaService)
         {
             _slicableModelViewMapper = slicableModelViewMapper;
-            _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
+            _spawnCriteriaService = spawnCriteriaService;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
             _spawnTime = levelStaticData.BeginPackOffset;
             _targetSpawnTime = levelStaticData.EndPackOffset;
@@ -89,7 +94,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                 await UniTask.Delay(delay);
             }
 
-            if (_spawnerPackResize[spawnerDataIndex] < 5)
+            if (_spawnerPackResize[spawnerDataIndex] < 2)
             {
                 _spawnerPackResize[spawnerDataIndex]++;
             }
@@ -104,12 +109,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
         private SlicableObjectType ChooseSlicableObjectType(List<SliceableObjectSpawnerData> slicableObjectSpawnerDatas)
         {
-            List<SliceableObjectSpawnerData> spawnerDatas =
-                _slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Brick) >= 1 ? 
-                slicableObjectSpawnerDatas.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList() :
-                slicableObjectSpawnerDatas;
+            List<SliceableObjectSpawnerData> spawnerDatas = _spawnCriteriaService.Resolve(slicableObjectSpawnerDatas);
 
-            
             float weightLine = spawnerDatas.Sum(x => x.Weight);
 
             float targetWeight  = Random.Range(0f, weightLine);
