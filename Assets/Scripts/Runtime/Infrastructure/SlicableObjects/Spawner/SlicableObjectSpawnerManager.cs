@@ -79,16 +79,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
             int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
 
-            for (int i = 0; i < packSize; i++)
+            List<SlicableObjectType> type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas, packSize);
+
+            foreach (SlicableObjectType objectType in type)
             {
                 if (_stop)
                 {
                     _canCalculateTime = true;
                     return;
                 }
-
-                SlicableObjectType type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas);
-                _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], type);
+                _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], objectType);
 
                 int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
                 await UniTask.Delay(delay);
@@ -107,14 +107,46 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             }
         }
 
-        private SlicableObjectType ChooseSlicableObjectType(List<SliceableObjectSpawnerData> slicableObjectSpawnerDatas)
+        private List<SlicableObjectType> ChooseSlicableObjectType(List<SliceableObjectSpawnerData> slicableObjectSpawnerDatas, int packSize)
         {
             List<SliceableObjectSpawnerData> spawnerDatas = _spawnCriteriaService.Resolve(slicableObjectSpawnerDatas);
-
             float weightLine = spawnerDatas.Sum(x => x.Weight);
 
-            float targetWeight  = Random.Range(0f, weightLine);
+            List<SlicableObjectType> result = new();
+            
+            for (int i = 0; i < packSize; i++)
+            {
+                if (_stop)
+                {
+                    _canCalculateTime = true;
+                    break;
+                }
+                
+                result.Add(CalculateSpawnType(spawnerDatas, weightLine));
+            }
+
+            int maxBombSize = packSize / 2;
+            int bombCounter = result.Count(x => x is SlicableObjectType.Bomb);
+            if (bombCounter > maxBombSize)
+            {
+                int needToChange = bombCounter - maxBombSize;
+                for (int i = 0; needToChange > 0; i++)
+                {
+                    if (result[i] == SlicableObjectType.Bomb)
+                    {
+                        result[i] = SlicableObjectType.Simple;
+                        needToChange--;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private SlicableObjectType CalculateSpawnType(List<SliceableObjectSpawnerData> spawnerDatas, float weightLine)
+        {
             float currentWeight = 0f;
+            float targetWeight  = Random.Range(0f, weightLine);
 
             for (int i = 0; i < spawnerDatas.Count; i++)
             {
