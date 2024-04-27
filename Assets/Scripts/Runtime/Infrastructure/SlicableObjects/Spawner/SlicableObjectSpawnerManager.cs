@@ -88,6 +88,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                     _canCalculateTime = true;
                     return;
                 }
+                
                 _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], objectType);
 
                 int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);

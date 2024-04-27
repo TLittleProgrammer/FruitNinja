@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Combo;
+using Runtime.Infrastructure.Containers;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Game;
@@ -12,6 +14,7 @@ using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
+using Runtime.Infrastructure.Slicer;
 using Runtime.Infrastructure.Slicer.SliceServices;
 using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
@@ -64,6 +67,7 @@ namespace Runtime.Infrastructure.Bootstrap
         {
             Container.BindInterfacesTo<GameInstaller>().FromInstance(this).AsSingle();
 
+            Container.Bind<SpriteProviderContainer>().AsSingle();
             Container.Bind<GameParameters>().AsSingle();
             Container.Bind<SlicableVisualContainer>().AsSingle();
             Container.Bind<GameScreenManager>().AsSingle();
@@ -78,14 +82,18 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
-
+            
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
+
+            ISlicer slicer = Container.Instantiate<Slicer.Slicer>();
+            ICollisionDetector<Collider2D, SlicableObjectView> collisionDetector = Container.Instantiate<CollisionDetector>(new[] { slicer });
+
+            Container.BindInterfacesAndSelfTo<CollisionDetector>().FromInstance(collisionDetector).AsSingle();
 
             Container.BindPool<BombEffect, BombEffect.Pool>(_poolSettings.PoolInitialSize / 2, _bombEffectPrefab, _bombEffectPoolParent);
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);
@@ -98,9 +106,9 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<HeartSplash, HeartSplash.Pool>(_levelStaticData.HealthCount, _heartSplashPrefab, _heartPoolParent);
             
             Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices();
-            
-            Container.Bind<Dictionary<SlicableObjectType, ISliceService>>().FromInstance(sliceServices).AsSingle();
-            Container.BindInterfacesAndSelfTo<Slicer.Slicer>().AsSingle();
+
+            slicer.AsyncInitialize(sliceServices);
+            Container.BindInterfacesAndSelfTo<Slicer.Slicer>().FromInstance(slicer).AsSingle();
 
             InstallGameStateMachine();
             InstallAndBindLooseService();
@@ -114,7 +122,8 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Brick, Container.Instantiate<BrickSliceService>());
             sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSliceService>());
             sliceServices.Add(SlicableObjectType.Bomb, Container.Instantiate<BombSliceService>());
-            
+            sliceServices.Add(SlicableObjectType.Avosjka, Container.Instantiate<AvosjkaSliceService>());
+
             return sliceServices;
         }
 

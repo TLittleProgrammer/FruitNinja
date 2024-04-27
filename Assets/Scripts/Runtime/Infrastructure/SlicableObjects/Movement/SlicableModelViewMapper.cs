@@ -1,6 +1,7 @@
 ﻿using System;
 using Runtime.Constants;
 using Runtime.Extensions;
+using Runtime.Infrastructure.Common;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
@@ -59,6 +60,33 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
 
+        public SlicableObjectView AddMappingWithoutCollisonDetector(SlicableObjectType type, Vector2 position, MinMaxValue angle, MinMaxValue minMaxValocityX, MinMaxValue minMaxValocityY)
+        {
+            SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
+            Transform slicableViewTransform       = slicableObjectView.transform;
+
+            slicableObjectView.SlicableObjectType = type;
+            
+            _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
+            _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
+
+            UpdateViewSprites(slicableObjectView, type);
+            ChangePositionAndActivate(position, slicableObjectView);
+
+            float angleInRadians = GetDirectionAngleInRadians(angle);
+            float velocityX      = minMaxValocityX.GetRandomValue();
+            float velocityY      = minMaxValocityY.GetRandomValue();
+            
+            velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
+
+            IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
+            SlicableModel slicableModel    = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            
+            _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
+
+            return slicableObjectView;
+        }
+
         private IModelAnimation GetModelAnimation(Transform slicableViewTransform, Transform shadowSpriteTransform, float angle)
         {
             return Random.Range(0, 3) switch
@@ -83,14 +111,14 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             
             return velocity;
         }
+        
+        private float GetDirectionAngleInRadians(MinMaxValue angle)
+        {
+            return angle.GetRandomValue().ConvertToRadians();
+        }
 
         private float GetDirectionAngleInRadians(SlicableObjectSpawnerData spawnerData)
         {
-            if (spawnerData.FirstOffset > spawnerData.SecondOffset)
-            {
-                (spawnerData.FirstOffset, spawnerData.SecondOffset) = (spawnerData.SecondOffset, spawnerData.FirstOffset);
-            }
-            
             float randomAngle = Random.Range(spawnerData.FirstOffset, spawnerData.SecondOffset);
             return (spawnerData.MainDirectionOffset + 90f + randomAngle).ConvertToRadians();
         }
@@ -99,6 +127,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         {
             Vector3 spawnPosition = _gameScreenManager.GetRandomPositionBetweenTwoPercents(spawnerData);
 
+            slicableObjectView.transform.position = spawnPosition;
+            slicableObjectView.gameObject.SetActive(true);
+        }
+        
+        private void ChangePositionAndActivate(Vector2 spawnPosition, SlicableObjectView slicableObjectView)
+        {
             slicableObjectView.transform.position = spawnPosition;
             slicableObjectView.gameObject.SetActive(true);
         }

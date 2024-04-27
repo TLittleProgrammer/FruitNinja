@@ -1,4 +1,5 @@
 ﻿using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.HideCondition;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using UnityEngine;
@@ -16,14 +17,17 @@ namespace Runtime.Infrastructure.SlicableObjects
         private IConditionObjectHideService _conditionObjectHideService;
         private GameScreenManager _gameScreenManager;
         private ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
+        private ICollisionDetector<Collider2D, SlicableObjectView> _collisionDetector;
 
         [Inject]
         private void Construct(
             SlicableMovementService slicableMovementService,
             GameScreenManager gameScreenManager,
             GameParameters gameParameters,
-            ISlicableObjectCounterOnMap slicableObjectCounterOnMap)
+            ISlicableObjectCounterOnMap slicableObjectCounterOnMap,
+            ICollisionDetector<Collider2D, SlicableObjectView> collisionDetector)
         {
+            _collisionDetector = collisionDetector;
             _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
             _gameScreenManager = gameScreenManager;
             _gameParameters = gameParameters;
@@ -43,6 +47,7 @@ namespace Runtime.Infrastructure.SlicableObjects
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
                 _slicableObjectCounterOnMap.RemoveType(_slicableObjectView.SlicableObjectType);
+                _collisionDetector.RemoveCollider(_slicableObjectView.Collider2D);
 
                 if (_isSlicableObject && _slicableObjectView.SlicableObjectType is SlicableObjectType.Simple)
                 {
