@@ -36,11 +36,11 @@ MonoBehaviour:
     FirstOffset: -18.2
     SecondOffset: 12.64
     PackSize: 1
-  - Weight: 5
+  - Weight: 10
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
       Weight: 5
-    - SlicableObjectType: 4
+    - SlicableObjectType: 3
       Weight: 25
     FirstSpawnPoint:
       Min: 0.45
@@ -61,7 +61,7 @@ MonoBehaviour:
     FirstOffset: -34.11
     SecondOffset: 34.5
     PackSize: 1
-  - Weight: 25
+  - Weight: 5
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
       Weight: 1

@@ -11,10 +11,8 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices
 {
-    public sealed class SimpleSliceService : ISliceService
+    public sealed class SimpleSliceService : SliceService
     {
-        private readonly SlicableVisualContainer _slicableVisualContainer;
-        private readonly SlicableMovementService _slicableMovementService;
         private readonly IShowEffectsService _showEffectsService;
         private readonly IAddScoreService _addScoreService;
         private readonly IComboService _comboService;
@@ -22,17 +20,12 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
 
         private Vector2 _lastSlicedPosition;
         
-        public SimpleSliceService(
-            SlicableVisualContainer slicableVisualContainer,
-            SlicableMovementService slicableMovementService,
+        public SimpleSliceService(SlicableMovementService slicableMovementService,
             IShowEffectsService showEffectsService,
             IAddScoreService addScoreService,
             IComboService comboService,
-            ICreateDummiesService createDummiesService
-        )
+            ICreateDummiesService createDummiesService) : base(slicableMovementService)
         {
-            _slicableVisualContainer = slicableVisualContainer;
-            _slicableMovementService = slicableMovementService;
             _showEffectsService = showEffectsService;
             _addScoreService = addScoreService;
             _comboService = comboService;
@@ -41,7 +34,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _addScoreService.AddedScore += OnAddedScore;
         }
         
-        public bool TrySlice(SlicableObjectView slicableObjectView)
+        public override bool TrySlice(SlicableObjectView slicableObjectView)
         {
             string mainSpriteName = slicableObjectView.MainSprite.sprite.name;
             _lastSlicedPosition = slicableObjectView.transform.position;
@@ -61,12 +54,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private void OnAddedScore(int score)
         {
             _showEffectsService.ShowScore(_lastSlicedPosition, score);
-        }
-
-        private void RemoveSlicableObjectFromMapping(SlicableObjectView slicableObjectView)
-        {
-            _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
-            slicableObjectView.gameObject.SetActive(false);
         }
     }
 }

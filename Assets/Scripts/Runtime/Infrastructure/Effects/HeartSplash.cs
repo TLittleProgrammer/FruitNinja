@@ -36,7 +36,6 @@ namespace Runtime.Infrastructure.Effects
             });
         }
         
-        
         public class Pool : MonoMemoryPool<HeartSplash>
         {
         }

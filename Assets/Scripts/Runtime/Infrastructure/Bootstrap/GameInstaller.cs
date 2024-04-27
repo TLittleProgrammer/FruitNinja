@@ -54,6 +54,9 @@ namespace Runtime.Infrastructure.Bootstrap
         [SerializeField] private HeartSplash _heartSplashPrefab;
         [SerializeField] private Transform _heartPoolParent;
         
+        [SerializeField] private BombEffect _bombEffectPrefab;
+        [SerializeField] private Transform _bombEffectPoolParent;
+        
         [Inject] private PoolSettings _poolSettings;
         [Inject] private LevelStaticData _levelStaticData;
         
@@ -74,6 +77,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<ISpawnCriteriaService>().To<SpawnCriteriaService>().AsSingle();
             Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
+            Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
@@ -83,6 +87,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<CollisionDetector>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
 
+            Container.BindPool<BombEffect, BombEffect.Pool>(_poolSettings.PoolInitialSize / 2, _bombEffectPrefab, _bombEffectPoolParent);
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);
             Container.BindPool<ScoreEffect, ScoreEffect.Pool>(_poolSettings.PoolInitialSize, _scoreEffectPrefab, _scorePoolParent);
             Container.BindPool<SplashEffect, SplashEffect.Pool>(_poolSettings.PoolInitialSize, _splashEffectPrefab, _splashPoolParent);
@@ -108,6 +113,7 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Simple, Container.Instantiate<SimpleSliceService>());
             sliceServices.Add(SlicableObjectType.Brick, Container.Instantiate<BrickSliceService>());
             sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSliceService>());
+            sliceServices.Add(SlicableObjectType.Bomb, Container.Instantiate<BombSliceService>());
             
             return sliceServices;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DG.Tweening;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Mouse;
@@ -14,6 +15,7 @@ namespace Runtime.Infrastructure.Effects
         void ShowBlots(Vector2 position, string spriteName);
         void ShowScore(Vector2 position, int score);
         void PlayHeartSplash(Vector2 position);
+        void PlayBombEffect(Vector2 position);
     }
 
     public sealed class ShowEffectsService : IShowEffectsService
@@ -25,12 +27,14 @@ namespace Runtime.Infrastructure.Effects
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly MouseManager _mouseManager;
         private readonly IComboViewPositionCorrecter _comboViewPositionCorrecter;
+        private readonly BombEffect.Pool _bombEffectPool;
 
         private Vector2 _lastSlicedPosition;
         private int _lastScore;
         private HeartSplash.Pool _heartSplashPool;
 
         public ShowEffectsService(
+                BombEffect.Pool bombEffectPool,
                 BlotEffect.Pool blotEffectPool,
                 SplashEffect.Pool splashEffectPool,
                 ScoreEffect.Pool scoreEffectPool,
@@ -42,6 +46,7 @@ namespace Runtime.Infrastructure.Effects
                 IComboViewPositionCorrecter comboViewPositionCorrecter
             )
         {
+            _bombEffectPool = bombEffectPool;
             _heartSplashPool = heartSplashPool;
             _blotEffectPool = blotEffectPool;
             _splashEffectPool = splashEffectPool;
@@ -94,6 +99,13 @@ namespace Runtime.Infrastructure.Effects
             HeartSplash heartSplash = _heartSplashPool.InactiveItems.GetInactiveObject();
             
             heartSplash.Play(position);
+        }
+
+        public void PlayBombEffect(Vector2 position)
+        {
+            BombEffect bombEffect = _bombEffectPool.InactiveItems.GetInactiveObject();
+            bombEffect.SetPosition(position);
+            bombEffect.Play();
         }
 
         private void OnComboEnded(int comboCounter)
