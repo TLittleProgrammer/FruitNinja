@@ -65,7 +65,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
         {
             Vector2 targetPosition = Vector2.zero;
 
-            for (int i = _gameParameters.MaxHealth - _healthList.Count - 1; i < _gameScreen.HeartViews.Count; i++)
+            for (int i = _gameParameters.Health; i < _gameParameters.MaxHealth; i++)
             {
                 Vector2 position = _gameScreen.HeartViews[i].RectTransform.position;
 
