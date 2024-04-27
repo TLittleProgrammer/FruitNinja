@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using Runtime.Extensions;
+using Runtime.Infrastructure.Containers;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.StaticData.UI;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
@@ -14,20 +16,24 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
         private readonly SlicableMovementService _slicableMovementService;
         private readonly SlicableVisualContainer _slicableVisualContainer;
+        private readonly SpriteProviderContainer _spriteProviderContainer;
+        private readonly SpriteProvider _spriteProvider;
 
         public CreateDummiesService(
             MouseManager mouseManager,
             SliceableObjectDummy.Pool dummyPool,
             SliceableObjectSpriteRendererOrderService orderService,
             SlicableMovementService slicableMovementService,
-            SlicableVisualContainer slicableVisualContainer
-            )
+            SlicableVisualContainer slicableVisualContainer,
+            SpriteProviderContainer spriteProviderContainer
+        )
         {
             _mouseManager = mouseManager;
             _dummyPool = dummyPool;
             _orderService = orderService;
             _slicableMovementService = slicableMovementService;
             _slicableVisualContainer = slicableVisualContainer;
+            _spriteProviderContainer = spriteProviderContainer;
         }
         
         public void AddDummies(SlicableObjectView slicableObjectView)
@@ -39,6 +45,25 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
 
             dummyArray[0].ChangeSprite(slicedSprite);
             dummyArray[1].ChangeSprite(slicedSprite);
+
+            UpdateSortingInLayerIndex(dummyArray);
+
+            SlicableModel slicableModel = _slicableMovementService.GetSliceableModel(slicableObjectView.transform);
+
+            ChangeDummiesPosition(slicableModel, dummyArray, slicableObjectSprite);
+            AddMappingToMovementService(slicableModel, dummyArray);
+        }
+        
+        public void AddDummies(SlicableObjectView slicableObjectView, string firstSpriteName, string secondSpriteName)
+        {
+            Sprite slicableObjectSprite = slicableObjectView.MainSprite.sprite;
+            Sprite firstSprite = _spriteProviderContainer.GetSprite(firstSpriteName);
+            Sprite secondSprite = _spriteProviderContainer.GetSprite(secondSpriteName);
+            
+            SliceableObjectDummy[] dummyArray = TakeDummies();
+
+            dummyArray[0].ChangeSprite(firstSprite);
+            dummyArray[1].ChangeSprite(secondSprite);
 
             UpdateSortingInLayerIndex(dummyArray);
 

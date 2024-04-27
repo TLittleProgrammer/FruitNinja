@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Factories;
+﻿using Runtime.Infrastructure.Containers;
+using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
@@ -23,6 +24,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly TrailMoveService _trailMoveService;
         private readonly IWorldFactory _worldFactory;
         private readonly IHealthFlyingService _healthFlyingService;
+        private readonly SpriteProviderContainer _spriteProviderContainer;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -41,7 +43,8 @@ namespace Runtime.Infrastructure.Bootstrap
             IEntryPoint entryPoint,
             IUIFactory uiFactory,
             IWorldFactory worldFactory,
-            IHealthFlyingService healthFlyingService
+            IHealthFlyingService healthFlyingService,
+            SpriteProviderContainer spriteProviderContainer
         )
         {
             _gameCanvas = gameCanvas;
@@ -56,11 +59,13 @@ namespace Runtime.Infrastructure.Bootstrap
             _uiFactory = uiFactory;
             _worldFactory = worldFactory;
             _healthFlyingService = healthFlyingService;
+            _spriteProviderContainer = spriteProviderContainer;
         }
 
         public async void Initialize()
         {
             await _slicableVisualContainer.AsyncInitialize();
+            await _spriteProviderContainer.AsyncInitialize();
             
             TrailView trailView = await _worldFactory.CreateObject<TrailView>(PathToTrail, null);
 

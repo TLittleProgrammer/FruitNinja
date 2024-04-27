@@ -12,11 +12,13 @@ namespace Runtime.StaticData.Installers
     public sealed class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
     {
         public BombSettings BombSettings;
+        public AvosjkaSettings AvosjkaSettings;
         public SlicableSpriteProvider SlicableSpriteProvider;
         public LevelStaticData LevelStaticData;
         public PoolSettings PoolSettings;
         public BlotEffectSettings BlotEffectSettings;
         public FlyingHealthViewStaticData FlyingHealthViewStaticData;
+        public SpriteProvider SpriteProvider;
         
         public override void InstallBindings()
         {
@@ -27,6 +29,8 @@ namespace Runtime.StaticData.Installers
             Container.Bind<BlotEffectSettings>().FromInstance(BlotEffectSettings).AsSingle();
             Container.Bind<FlyingHealthViewStaticData>().FromInstance(FlyingHealthViewStaticData).AsSingle();
             Container.Bind<BombSettings>().FromInstance(BombSettings).AsSingle();
+            Container.Bind<AvosjkaSettings>().FromInstance(AvosjkaSettings).AsSingle();
+            Container.Bind<SpriteProvider>().FromInstance(SpriteProvider).AsSingle();
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System.Linq;
-using Runtime.Extensions;
-using Runtime.Infrastructure.Combo;
+﻿using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Effects;
-using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.Score;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.Movement;

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: GameSettingsInstaller
   m_EditorClassIdentifier: 
   BombSettings: {fileID: 11400000, guid: 4f1ce36a178f4a648b4581c11d6281fd, type: 2}
+  AvosjkaSettings: {fileID: 11400000, guid: 987c6ab32e9837d488d9570d3e5a0869, type: 2}
   SlicableSpriteProvider: {fileID: 11400000, guid: cf2e08e73937c174e8c536af6b72fa06, type: 2}
   LevelStaticData: {fileID: 11400000, guid: b33f7e73dd1ae2c4d83c9a1ee5fb518d, type: 2}
   PoolSettings:
     PoolInitialSize: 50
   BlotEffectSettings: {fileID: 11400000, guid: 257af1da498354d458478fb16b40c3b2, type: 2}
   FlyingHealthViewStaticData: {fileID: 11400000, guid: 2882ac95038d9b9458d6dfcec0138018, type: 2}
+  SpriteProvider: {fileID: 11400000, guid: 0a0a6a9ee2d393d44b2649138d12c89d, type: 2}

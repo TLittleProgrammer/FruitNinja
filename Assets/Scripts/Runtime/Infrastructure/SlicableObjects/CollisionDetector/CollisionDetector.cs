@@ -66,8 +66,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             if (_slicer.TrySliceObject(turpleArray[i].Item2))
             {
                 _slicableObjectCounterOnMap.RemoveType(turpleArray[i].Item2.SlicableObjectType);
-                _colliders.Remove(turpleArray[i]);
-                i--;
+                _colliders.RemoveItemWithCollider(turpleArray[i].Item1);
 
                 return true;
             }
@@ -91,11 +90,14 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
     {
         public void RemoveItemWithCollider(Collider2D collider2D)
         {
-            foreach ((Collider2D, SlicableObjectView) turple in this)
+            (Collider2D, SlicableObjectView)[] arr = ToArray();
+            
+            foreach ((Collider2D, SlicableObjectView) turple in arr)
             {
                 if (collider2D.Equals(turple.Item1))
                 {
                     Remove(turple);
+                    break;
                 }
             }
         }
