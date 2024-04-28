@@ -34,6 +34,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _collisionDetector = collisionDetector;
         }
         
+        //TODO выделить в один метод
         public void AddMapping(SlicableObjectSpawnerData spawnerData, SlicableObjectType slicableObjectType)
         {
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();

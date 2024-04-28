@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks.Triggers;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Runtime.Infrastructure.Effects

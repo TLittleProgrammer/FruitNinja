@@ -2,8 +2,6 @@
 using System.Linq;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Game;
-using Runtime.Infrastructure.StateMachine.States;
-using Unity.VisualScripting;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias
 {

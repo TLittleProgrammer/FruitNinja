@@ -4,7 +4,6 @@ using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.UI.Buttons;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
