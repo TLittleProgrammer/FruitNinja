@@ -1,5 +1,5 @@
-﻿using Runtime.Infrastructure.Factories;
-using Runtime.Infrastructure.NotStateMachine;
+﻿using Runtime.Infrastructure.EntryPoint;
+using Runtime.Infrastructure.Factories;
 using Runtime.UI.Screens;
 using UnityEngine;
 using Zenject;
