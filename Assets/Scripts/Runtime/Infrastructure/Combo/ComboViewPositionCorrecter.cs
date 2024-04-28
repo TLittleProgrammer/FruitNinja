@@ -1,5 +1,4 @@
-﻿using Runtime.Extensions;
-using Runtime.Infrastructure.Mouse;
+﻿using Runtime.Infrastructure.Mouse;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.Combo

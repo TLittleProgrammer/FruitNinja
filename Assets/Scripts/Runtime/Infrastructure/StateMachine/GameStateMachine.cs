@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.StateMachine.States;
 using IState = Runtime.Infrastructure.StateMachine.States.IState;
 
@@ -8,7 +9,7 @@ namespace Runtime.Infrastructure.StateMachine
 {
     public sealed class GameStateMachine : IGameStateMachine
     {
-        private readonly Dictionary<Type, IExitableState> _states;
+        private Dictionary<Type, IExitableState> _states;
 
         private IExitableState _activeState;
         
@@ -16,6 +17,14 @@ namespace Runtime.Infrastructure.StateMachine
         {
             _states = states
                 .ToDictionary(x => x.GetType(), x => x);
+        }
+
+        public async UniTask AsyncInitialize(IEnumerable<IExitableState> payload)
+        {
+            _states = payload
+                .ToDictionary(x => x.GetType(), x => x);
+
+            await UniTask.CompletedTask;
         }
 
         public IState CurrentState => _activeState as IState;

@@ -1,9 +1,10 @@
 ﻿using Runtime.Infrastructure.Containers;
+using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
-using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
+using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly IWorldFactory _worldFactory;
         private readonly IHealthFlyingService _healthFlyingService;
         private readonly SpriteProviderContainer _spriteProviderContainer;
+        private readonly SlicableObjectView.Pool _slicableObjectViewPool;
+        private readonly IGameStateMachine _gameStateMachine;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -44,7 +47,9 @@ namespace Runtime.Infrastructure.Bootstrap
             IUIFactory uiFactory,
             IWorldFactory worldFactory,
             IHealthFlyingService healthFlyingService,
-            SpriteProviderContainer spriteProviderContainer
+            SpriteProviderContainer spriteProviderContainer,
+            SlicableObjectView.Pool slicableObjectViewPool,
+            IGameStateMachine gameStateMachine
         )
         {
             _gameCanvas = gameCanvas;
@@ -60,12 +65,19 @@ namespace Runtime.Infrastructure.Bootstrap
             _worldFactory = worldFactory;
             _healthFlyingService = healthFlyingService;
             _spriteProviderContainer = spriteProviderContainer;
+            _slicableObjectViewPool = slicableObjectViewPool;
+            _gameStateMachine = gameStateMachine;
         }
 
         public async void Initialize()
         {
             await _slicableVisualContainer.AsyncInitialize();
             await _spriteProviderContainer.AsyncInitialize();
+
+            foreach (SlicableObjectView view in _slicableObjectViewPool.InactiveItems)
+            {
+                view.GetComponent<HideObjectAfterExitingScreen>()?.AsyncInitialize(_gameStateMachine);
+            }
             
             TrailView trailView = await _worldFactory.CreateObject<TrailView>(PathToTrail, null);
 

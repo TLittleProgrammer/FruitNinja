@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Runtime.Infrastructure.NotStateMachine
+namespace Runtime.Infrastructure.EntryPoint
 {
     public sealed class AsyncSceneLoader : ISceneLoader
     {

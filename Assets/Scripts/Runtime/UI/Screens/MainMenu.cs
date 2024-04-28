@@ -1,5 +1,4 @@
-﻿using Runtime.Infrastructure.Game;
-using Runtime.Infrastructure.NotStateMachine;
+﻿using Runtime.Infrastructure.EntryPoint;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

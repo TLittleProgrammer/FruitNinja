@@ -10,5 +10,6 @@
         Loose    = 4,
         GameBackground = 5,
         Pause    = 6,
+        Samurai  = 7,
     }
 }

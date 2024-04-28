@@ -9,5 +9,6 @@
         Bomb    = 3,
         Brick   = 4,
         Avosjka = 5,
+        Samurai = 6,
     }
 }

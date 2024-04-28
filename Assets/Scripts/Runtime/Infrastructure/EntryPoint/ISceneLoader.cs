@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Runtime.Infrastructure.NotStateMachine
+namespace Runtime.Infrastructure.EntryPoint
 {
     public interface ISceneLoader
     {

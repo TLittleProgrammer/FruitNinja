@@ -1,4 +1,4 @@
-﻿namespace Runtime.Infrastructure.NotStateMachine
+﻿namespace Runtime.Infrastructure.EntryPoint
 {
     public interface IEntryPoint : IAsyncInitializable
     {

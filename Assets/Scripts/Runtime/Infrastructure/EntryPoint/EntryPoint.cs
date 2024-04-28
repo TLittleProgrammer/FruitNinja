@@ -3,7 +3,7 @@ using Runtime.Infrastructure.Factories;
 using Runtime.UI.Screens;
 using Zenject;
 
-namespace Runtime.Infrastructure.NotStateMachine
+namespace Runtime.Infrastructure.EntryPoint
 {
     public sealed class EntryPoint : IEntryPoint
     {

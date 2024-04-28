@@ -6,5 +6,6 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
     {
         void AddCollider(TCollider collider, TType obj);
         void RemoveCollider(TCollider collider);
+        void RemoveAllBoostColliders();
     }
 }
