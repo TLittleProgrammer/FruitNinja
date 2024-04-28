@@ -50,7 +50,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             //TODO Подумать над тем, чтобы перенести
             if (_conditionObjectHideService is null)
             {
-                _conditionObjectHideService = new SimpleConditionHideObjectService(transform, _gameScreenManager.GetHorizontalSizeWithStep(), -_gameScreenManager.GetOrthographicSize() - 1.5f);
+                _conditionObjectHideService = new SimpleConditionHideObjectService(transform, _gameScreenManager.GetHorizontalSizeWithStep() + 1f, -_gameScreenManager.GetOrthographicSize() - 1f - 1.5f);
             }
             
             if (_conditionObjectHideService.IsNeedHideObject())
