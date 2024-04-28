@@ -11,6 +11,7 @@ namespace Runtime.StaticData.Installers
     [CreateAssetMenu(fileName = "GameSpritesInstaller", menuName = "Installers/GameSpritesInstaller")]
     public sealed class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
     {
+        public SamuraiSettings SamuraiSettings;
         public BombSettings BombSettings;
         public AvosjkaSettings AvosjkaSettings;
         public SlicableSpriteProvider SlicableSpriteProvider;
@@ -30,6 +31,7 @@ namespace Runtime.StaticData.Installers
             Container.Bind<FlyingHealthViewStaticData>().FromInstance(FlyingHealthViewStaticData).AsSingle();
             Container.Bind<BombSettings>().FromInstance(BombSettings).AsSingle();
             Container.Bind<AvosjkaSettings>().FromInstance(AvosjkaSettings).AsSingle();
+            Container.Bind<SamuraiSettings>().FromInstance(SamuraiSettings).AsSingle();
             Container.Bind<SpriteProvider>().FromInstance(SpriteProvider).AsSingle();
         }
     }

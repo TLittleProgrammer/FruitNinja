@@ -84,6 +84,18 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
         {
             _colliders.RemoveItemWithCollider(collider);
         }
+
+        public void RemoveAllBoostColliders()
+        {
+            for (int i = 0; i < _colliders.Count; i++)
+            {
+                if (_colliders[i].Item2.SlicableObjectType is not SlicableObjectType.Simple)
+                {
+                    _colliders.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
     }
 
     public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectView)>

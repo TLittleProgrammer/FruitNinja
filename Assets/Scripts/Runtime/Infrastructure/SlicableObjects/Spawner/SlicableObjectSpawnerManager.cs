@@ -3,6 +3,9 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
+using Runtime.Infrastructure.Slicer.SliceServices;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using Runtime.StaticData.Level;
 using UnityEngine;
 using IInitializable = Zenject.IInitializable;
@@ -14,6 +17,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
     {
         private readonly SlicableModelViewMapper _slicableModelViewMapper;
         private readonly ISpawnCriteriaService _spawnCriteriaService;
+        private readonly IGameStateMachine _gameStateMachine;
         private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private readonly List<SlicableObjectSpawnerData> _spawnersData;
         private readonly List<int> _spawnerPackResize;
@@ -24,14 +28,18 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private bool _stop = false;
         private float _spawnTime;
         private float _currentTime;
+        private int _packMultiplier = 1;
+        private float _spawnOffsetDivider = 1;
 
         public SlicableObjectSpawnerManager(
             LevelStaticData levelStaticData,
             SlicableModelViewMapper slicableModelViewMapper,
-            ISpawnCriteriaService spawnCriteriaService)
+            ISpawnCriteriaService spawnCriteriaService,
+            IGameStateMachine gameStateMachine)
         {
             _slicableModelViewMapper = slicableModelViewMapper;
             _spawnCriteriaService = spawnCriteriaService;
+            _gameStateMachine = gameStateMachine;
             _spawnersData = levelStaticData.SlicableObjectSpawnerDataList;
             _spawnTime = levelStaticData.BeginPackOffset;
             _targetSpawnTime = levelStaticData.EndPackOffset;
@@ -57,6 +65,21 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _stop = value;
         }
 
+        public async void UpdateSpawnSettings(int countMultiplier, float duration, float timeDivider, float spawnOffsetDivider)
+        {
+            float originalSpawnTime = _spawnTime;
+            _packMultiplier = countMultiplier;
+            _spawnOffsetDivider = spawnOffsetDivider;
+
+            _spawnTime /= timeDivider;
+
+            await UniTask.Delay((int)(duration * 1000));
+
+            _spawnTime = originalSpawnTime;
+            _packMultiplier = 1;
+            _spawnOffsetDivider = 1;
+        }
+
         private async UniTask CalculateTime()
         {
             _currentTime += Time.deltaTime;
@@ -75,21 +98,28 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _currentTime = 0f;
             _canCalculateTime = false;
 
-            int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
+            int packSize = (_spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize) * _packMultiplier;
 
             List<SlicableObjectType> type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas, packSize);
 
             foreach (SlicableObjectType objectType in type)
             {
+                SlicableObjectType targetType = objectType;
+                
                 if (_stop)
                 {
                     _canCalculateTime = true;
                     return;
                 }
-                
-                _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], objectType);
 
-                int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000);
+                if (_gameStateMachine.CurrentState is SamuraiState)
+                {
+                    targetType = SlicableObjectType.Simple;
+                }
+                
+                _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], targetType);
+
+                int delay = (int)(spawnerData.SpawnOffset.GetRandomValue() * 1000 / _spawnOffsetDivider);
                 await UniTask.Delay(delay);
             }
 

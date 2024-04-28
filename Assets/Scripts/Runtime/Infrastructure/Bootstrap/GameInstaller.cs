@@ -19,6 +19,7 @@ using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
+using Runtime.Infrastructure.Timer;
 using Runtime.Infrastructure.Trail;
 using Runtime.StaticData.Installers;
 using Runtime.StaticData.Level;
@@ -81,10 +82,10 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
+            Container.Bind<IStopwatchable>().To<Stopwatch>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
@@ -103,17 +104,22 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<ComboView, ComboView.Pool>(_poolSettings.PoolInitialSize, _comboViewPrefab, _comboPoolParent);
             Container.BindPool<FlyingHealthView, FlyingHealthView.Pool>(_levelStaticData.HealthCount, _healthFlyingViewPrefab, _healthFlyingPoolParent);
             Container.BindPool<HeartSplash, HeartSplash.Pool>(_levelStaticData.HealthCount, _heartSplashPrefab, _heartPoolParent);
+
+            IGameStateMachine gameStateMachine = Container.Instantiate<GameStateMachine>();
+            SlicableObjectSpawnerManager slicableObjectSpawnerManager = Container.Instantiate<SlicableObjectSpawnerManager>(new[] { gameStateMachine });
             
-            Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices();
+            Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices(gameStateMachine);
 
             slicer.AsyncInitialize(sliceServices);
             Container.BindInterfacesAndSelfTo<Slicer.Slicer>().FromInstance(slicer).AsSingle();
 
-            InstallGameStateMachine();
+            InstallGameStateMachine(gameStateMachine, slicableObjectSpawnerManager);
             InstallAndBindLooseService();
+            
+            Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().FromInstance(slicableObjectSpawnerManager).AsSingle();
         }
 
-        private Dictionary<SlicableObjectType, ISliceService> GetSliceServices()
+        private Dictionary<SlicableObjectType, ISliceService> GetSliceServices(IGameStateMachine gameStateMachine)
         {
             Dictionary<SlicableObjectType, ISliceService> sliceServices = new();
 
@@ -122,37 +128,40 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Health, Container.Instantiate<HealthSliceService>());
             sliceServices.Add(SlicableObjectType.Bomb, Container.Instantiate<BombSliceService>());
             sliceServices.Add(SlicableObjectType.Avosjka, Container.Instantiate<AvosjkaSliceService>());
+            sliceServices.Add(SlicableObjectType.Samurai, Container.Instantiate<SamuraiSliceService>(new object[] { gameStateMachine }));
 
             return sliceServices;
         }
 
-        private void InstallGameStateMachine()
+        private void InstallGameStateMachine(IGameStateMachine stateMachine, SlicableObjectSpawnerManager slicableObjectSpawnerManager)
         {
-            IGameStateMachine gameStateMachine;
+            IEnumerable<IState> states = GetGameStates(slicableObjectSpawnerManager, stateMachine);
             
-            IEnumerable<IState> states = GetGameStates();
-            
-            gameStateMachine = new GameStateMachine(states);
+            stateMachine.AsyncInitialize(states);
 
-            Container.Bind<IGameStateMachine>().FromInstance(gameStateMachine).AsSingle();
+            Container.Bind<IGameStateMachine>().FromInstance(stateMachine).AsSingle();
         }
 
         
         //TODO Шаблонный код. Вынести в методы
-        private IEnumerable<IState> GetGameStates()
+        private IEnumerable<IState> GetGameStates(SlicableObjectSpawnerManager slicableObjectSpawnerManager, IGameStateMachine gameStateMachine)
         {
             List<IState> states = new();
 
-            LooseState looseState = Container.Instantiate<LooseState>(new[] { _overlayCanvas });
+            LooseState looseState = Container.Instantiate<LooseState>(new object[] { _overlayCanvas, slicableObjectSpawnerManager });
             Container.BindInterfacesTo<LooseState>().FromInstance(looseState).AsSingle();
             
-            PauseState pauseState = Container.Instantiate<PauseState>(new[] { _overlayCanvas });
+            PauseState pauseState = Container.Instantiate<PauseState>(new object[] { _overlayCanvas, slicableObjectSpawnerManager });
             Container.Bind<PauseState>().FromInstance(pauseState).AsSingle();
+            
+            SamuraiState samuraiState = Container.Instantiate<SamuraiState>(new object[] { _gameCanvas.transform, gameStateMachine, slicableObjectSpawnerManager });
+            Container.Bind<SamuraiState>().FromInstance(samuraiState).AsSingle();
             
             states.Add(Container.Instantiate<GameState>());
             states.Add(Container.Instantiate<RestartState>());
             states.Add(looseState);
             states.Add(pauseState);
+            states.Add(samuraiState);
 
             return states;
         }
