@@ -112,10 +112,10 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             
             if (_previousHealth > health)
             {
-                int index = _gameScreen.HeartViews.Count -  Math.Clamp(_healthList.Count, 0, _gameParameters.MaxHealth) - 1;
+                int index = _gameParameters.Health;
                 Vector2 targetPosition = _gameScreen.HeartViews[index].RectTransform.position;
 
-                for (int i = _healthList.Count - 1; i >= 0; i--)
+                for (int i = 0; i < _healthList.Count; i++)
                 {
                     Vector2 previousTargetPosition = _healthList[i].TargetPosition;
                     _healthList[i].ChangeTargetPosition(targetPosition);

@@ -43,7 +43,7 @@ MonoBehaviour:
     - SlicableObjectType: 3
       Weight: 50
     - SlicableObjectType: 2
-      Weight: 15
+      Weight: 50
     - SlicableObjectType: 5
       Weight: 10
     FirstSpawnPoint:
