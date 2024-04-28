@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Runtime.Infrastructure.DOTweenAnimationServices.Score;
+﻿using Runtime.Infrastructure.DOTweenAnimationServices.Score;
 using Runtime.Infrastructure.UserData;
 using TMPro;
 using UnityEngine;

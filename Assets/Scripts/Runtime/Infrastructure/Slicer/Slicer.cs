@@ -2,7 +2,6 @@
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.Slicer.SliceServices;
-using UnityEngine;
 
 namespace Runtime.Infrastructure.Slicer
 {

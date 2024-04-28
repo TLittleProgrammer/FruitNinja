@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using DG.Tweening;
+﻿using System.Linq;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Mouse;

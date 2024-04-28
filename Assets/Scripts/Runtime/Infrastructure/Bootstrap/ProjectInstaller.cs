@@ -1,7 +1,7 @@
 using Runtime.Infrastructure.AssetProvider;
 using Runtime.Infrastructure.DOTweenAnimationServices.Score;
+using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
-using Runtime.Infrastructure.NotStateMachine;
 using Runtime.Infrastructure.UserData;
 using Runtime.UI.Screens;
 using Zenject;
@@ -21,7 +21,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<UserDataSaveLoadService>().AsSingle();
             Container.BindInterfacesAndSelfTo<ResourcesAssetProvider>().AsSingle();
             Container.BindInterfacesAndSelfTo<AsyncSceneLoader>().AsSingle();
-            Container.BindInterfacesAndSelfTo<EntryPoint>().AsSingle();
+            Container.BindInterfacesAndSelfTo<EntryPoint.EntryPoint>().AsSingle();
             Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle();
         }
 

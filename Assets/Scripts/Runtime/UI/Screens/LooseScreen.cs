@@ -1,5 +1,5 @@
 ﻿using Runtime.Constants;
-using Runtime.Infrastructure.NotStateMachine;
+using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.UI.Buttons;
