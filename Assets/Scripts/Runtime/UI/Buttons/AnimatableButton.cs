@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace Runtime.UI.Buttons
 {
-    [RequireComponent(typeof(Button))]
     public class AnimatableButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] private ButtonAnimationSettings _buttonAnimationSettings;

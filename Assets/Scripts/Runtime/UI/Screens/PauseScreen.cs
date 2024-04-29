@@ -65,6 +65,9 @@ namespace Runtime.UI.Screens
             _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
             _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
 
+            Destroy(_menuButton);
+            Destroy(_continueButton);
+            
             foreach (AnimatableButton button in _animatableButtons)
             {
                 button.enabled = false;
