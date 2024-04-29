@@ -84,9 +84,9 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
-            Container.Bind<IStopwatchable>().To<Stopwatch>().AsSingle();
             Container.Bind<IMimikService>().To<MimikService>().AsSingle();
-            
+
+            Container.BindInterfacesAndSelfTo<Stopwatch>().AsSingle();
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();

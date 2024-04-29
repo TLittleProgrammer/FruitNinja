@@ -46,7 +46,7 @@ namespace Runtime.UI.Screens
         {
             DisableButtons();
             
-            _gameStateMachine.Enter<GameState>();
+            _gameStateMachine.ReturnPreviousState();
         }
 
         private void OnMenuButtonClicked()

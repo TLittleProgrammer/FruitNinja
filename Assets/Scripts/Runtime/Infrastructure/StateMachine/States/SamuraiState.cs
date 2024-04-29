@@ -57,11 +57,15 @@ namespace Runtime.Infrastructure.StateMachine.States
 
         public void Exit()
         {
-            Object.Destroy(_samuraiScreen.gameObject);
         }
 
         private void OnTickEnded()
         {
+            if (_samuraiScreen is not null)
+            {
+                Object.Destroy(_samuraiScreen.gameObject);
+                _samuraiScreen = null;
+            }
             _gameStateMachine.Enter<GameState>();
         }
     }
