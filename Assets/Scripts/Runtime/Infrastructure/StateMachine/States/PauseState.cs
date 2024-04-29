@@ -3,6 +3,7 @@ using DG.Tweening;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
@@ -19,6 +20,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly DiContainer _diContainer;
         private readonly SlicableMovementService _movementService;
         private readonly MouseManager _mouseManager;
+        private readonly IMimikService _mimikService;
         private readonly TrailMoveService _trailMoveService;
         
         private PauseScreen _pauseScreen;
@@ -30,7 +32,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableObjectSpawnerManager spawnerManager,
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
-            MouseManager mouseManager
+            MouseManager mouseManager,
+            IMimikService mimikService
         )
         {
             _pauseScreenParent = pauseScreenParent;
@@ -40,6 +43,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _movementService = movementService;
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
+            _mimikService = mimikService;
         }
         
         public void Enter()
@@ -48,6 +52,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _mouseManager.SetStopValue(true);
             _trailMoveService.SetCanTrail(false);
             _movementService.SetCanMove(false);
+            _mimikService.SetSimulateSpeedToParticles(0f);
 
             CreatePauseWindow();
         }
@@ -56,6 +61,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         {
             await AnimatePauseScreen(Vector3.one, Vector3.zero, _pauseScreen.Background.color, Color.clear, false);
             
+            _mimikService.SetSimulateSpeedToParticles(1f);
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
             _trailMoveService.SetCanTrail(true);
