@@ -63,6 +63,9 @@ namespace Runtime.UI.Screens
         {
             _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
             _restartButton.onClick.RemoveListener(OnRestartButtonClicked);
+            
+            Destroy(_menuButton);
+            Destroy(_restartButton);
 
             foreach (AnimatableButton button in _animatableButtons)
             {
