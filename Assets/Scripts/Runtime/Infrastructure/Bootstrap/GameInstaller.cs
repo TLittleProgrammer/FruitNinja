@@ -10,7 +10,9 @@ using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.Score;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
 using Runtime.Infrastructure.Slicer;
@@ -83,12 +85,14 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
             Container.Bind<IStopwatchable>().To<Stopwatch>().AsSingle();
+            Container.Bind<IMimikService>().To<MimikService>().AsSingle();
             
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
             Container.BindInterfacesAndSelfTo<WorldFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<SlicableMovementService>().AsSingle();
             Container.BindInterfacesAndSelfTo<MouseManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<Timer.Timer>().AsSingle();
 
             ISlicer slicer = Container.Instantiate<Slicer.Slicer>();
             ICollisionDetector<Collider2D, SlicableObjectView> collisionDetector = Container.Instantiate<CollisionDetector>(new[] { slicer });

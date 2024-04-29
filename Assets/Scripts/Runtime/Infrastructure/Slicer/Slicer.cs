@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.Slicer.SliceServices;
 
 namespace Runtime.Infrastructure.Slicer

@@ -2,6 +2,7 @@
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Score;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
 using UnityEngine;

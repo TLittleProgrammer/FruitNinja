@@ -1,6 +1,7 @@
 ﻿using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.Trail;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices

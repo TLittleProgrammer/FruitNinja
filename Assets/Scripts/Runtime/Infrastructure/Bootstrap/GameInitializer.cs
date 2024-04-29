@@ -3,6 +3,8 @@ using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.Trail;
@@ -28,6 +30,8 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly SpriteProviderContainer _spriteProviderContainer;
         private readonly SlicableObjectView.Pool _slicableObjectViewPool;
         private readonly IGameStateMachine _gameStateMachine;
+        private readonly IMimikService _mimikService;
+        private readonly SliceableObjectDummy.Pool _dummies;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -49,7 +53,9 @@ namespace Runtime.Infrastructure.Bootstrap
             IHealthFlyingService healthFlyingService,
             SpriteProviderContainer spriteProviderContainer,
             SlicableObjectView.Pool slicableObjectViewPool,
-            IGameStateMachine gameStateMachine
+            IGameStateMachine gameStateMachine,
+            IMimikService mimikService,
+            SliceableObjectDummy.Pool dummies
         )
         {
             _gameCanvas = gameCanvas;
@@ -67,6 +73,8 @@ namespace Runtime.Infrastructure.Bootstrap
             _spriteProviderContainer = spriteProviderContainer;
             _slicableObjectViewPool = slicableObjectViewPool;
             _gameStateMachine = gameStateMachine;
+            _mimikService = mimikService;
+            _dummies = dummies;
         }
 
         public async void Initialize()
@@ -76,7 +84,12 @@ namespace Runtime.Infrastructure.Bootstrap
 
             foreach (SlicableObjectView view in _slicableObjectViewPool.InactiveItems)
             {
-                view.GetComponent<HideObjectAfterExitingScreen>()?.AsyncInitialize(_gameStateMachine);
+                view.GetComponent<HideObjectAfterExitingScreen>()?.AsyncInitialize(_gameStateMachine, _mimikService);
+            }
+            
+            foreach (SliceableObjectDummy view in _dummies.InactiveItems)
+            {
+                view.GetComponent<HideObjectAfterExitingScreen>()?.AsyncInitialize(_gameStateMachine, _mimikService);
             }
             
             TrailView trailView = await _worldFactory.CreateObject<TrailView>(PathToTrail, null);

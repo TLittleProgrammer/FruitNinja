@@ -3,6 +3,7 @@ using Runtime.Extensions;
 using Runtime.Infrastructure.Containers;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.StaticData.UI;
 using UnityEngine;

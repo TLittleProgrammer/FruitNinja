@@ -1,4 +1,5 @@
 ﻿using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 
 namespace Runtime.Infrastructure.Slicer.SliceServices
