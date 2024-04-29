@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: MimikStaticData
   m_EditorClassIdentifier: 
   Offset: 1.25
+  SpecialIntervalBeforeShit: 0.25
+  Scale: 0.5
   AvailableTypes: 010000000200000003000000040000000500000006000000
