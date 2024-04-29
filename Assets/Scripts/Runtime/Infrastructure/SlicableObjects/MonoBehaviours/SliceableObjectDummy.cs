@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Runtime.Infrastructure.SlicableObjects
+namespace Runtime.Infrastructure.SlicableObjects.MonoBehaviours
 {
     public class SliceableObjectDummy : MonoBehaviour
     {

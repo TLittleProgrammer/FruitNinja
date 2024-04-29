@@ -3,7 +3,6 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias;
-using Runtime.Infrastructure.Slicer.SliceServices;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.StaticData.Level;

@@ -2,7 +2,9 @@
 using Runtime.Constants;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Common;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -17,6 +19,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private readonly SlicableMovementService _slicableMovementService;
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
         private readonly CollisionDetector.CollisionDetector _collisionDetector;
+        private readonly IMimikService _mimikService;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
@@ -24,7 +27,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             GameScreenManager gameScreenManager,
             SlicableMovementService slicableMovementService,
             SliceableObjectSpriteRendererOrderService orderService,
-            CollisionDetector.CollisionDetector collisionDetector)
+            CollisionDetector.CollisionDetector collisionDetector,
+            IMimikService mimikService)
         {
             _objectPool = objectPool;
             _slicableVisualContainer = slicableVisualContainer;
@@ -32,6 +36,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _slicableMovementService = slicableMovementService;
             _orderService = orderService;
             _collisionDetector = collisionDetector;
+            _mimikService = mimikService;
         }
         
         //TODO выделить в один метод
@@ -40,6 +45,17 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
             Transform slicableViewTransform       = slicableObjectView.transform;
 
+            if (slicableObjectType is SlicableObjectType.Mimik)
+            {
+                slicableObjectType = _mimikService.GetRandomType();
+                slicableObjectView.IsMimik = true;
+                _mimikService.AddMimik(slicableObjectView);
+            }
+            else
+            {
+                slicableObjectView.IsMimik = false;
+            }
+            
             slicableObjectView.SlicableObjectType = slicableObjectType;
             
             _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);

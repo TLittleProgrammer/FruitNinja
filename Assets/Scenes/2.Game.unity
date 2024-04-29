@@ -430,15 +430,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnerData:
-    Weight: 45
+    Weight: 90
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
       Weight: 0
     - SlicableObjectType: 3
       Weight: 50
     - SlicableObjectType: 2
-      Weight: 15
+      Weight: 5
     - SlicableObjectType: 5
+      Weight: 5
+    - SlicableObjectType: 7
       Weight: 25
     FirstSpawnPoint:
       Min: 0.45

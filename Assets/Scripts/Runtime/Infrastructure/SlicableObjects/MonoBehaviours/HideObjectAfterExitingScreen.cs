@@ -3,14 +3,15 @@ using Runtime.Infrastructure.Game;
 using Runtime.Infrastructure.SlicableObjects.CollisionDetector;
 using Runtime.Infrastructure.SlicableObjects.HideCondition;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using UnityEngine;
 using Zenject;
 
-namespace Runtime.Infrastructure.SlicableObjects
+namespace Runtime.Infrastructure.SlicableObjects.MonoBehaviours
 {
-    public class HideObjectAfterExitingScreen : MonoBehaviour, IAsyncInitializable<IGameStateMachine>
+    public class HideObjectAfterExitingScreen : MonoBehaviour, IAsyncInitializable<IGameStateMachine, IMimikService>
     {
         [SerializeField] private bool _isSlicableObject = true;
         [SerializeField] private SlicableObjectView _slicableObjectView;
@@ -22,6 +23,7 @@ namespace Runtime.Infrastructure.SlicableObjects
         private ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private ICollisionDetector<Collider2D, SlicableObjectView> _collisionDetector;
         private IGameStateMachine _gameStateMachine;
+        private IMimikService _mimikService;
 
         [Inject]
         private void Construct(
@@ -38,9 +40,10 @@ namespace Runtime.Infrastructure.SlicableObjects
             _slicableMovementService = slicableMovementService;
         }
 
-        public async UniTask AsyncInitialize(IGameStateMachine payload)
+        public async UniTask AsyncInitialize(IGameStateMachine gameStateMachine, IMimikService mimikService)
         {
-            _gameStateMachine = payload;
+            _gameStateMachine = gameStateMachine;
+            _mimikService = mimikService;
 
             await UniTask.CompletedTask;
         }
@@ -55,6 +58,7 @@ namespace Runtime.Infrastructure.SlicableObjects
             
             if (_conditionObjectHideService.IsNeedHideObject())
             {
+                _mimikService.RemoveMimik(_slicableObjectView);
                 gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
                 _slicableObjectCounterOnMap.RemoveType(_slicableObjectView.SlicableObjectType);

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
+using Runtime.Infrastructure.SlicableObjects.Services;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
@@ -10,6 +12,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
         private readonly IIntermediateMousePositionsService _intermediateMousePositionsService;
         private readonly Slicer.Slicer _slicer;
         private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
+        private readonly IMimikService _mimikService;
 
         private MappingColliderAndViewToList _colliders;
 
@@ -17,13 +20,15 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             MouseManager mouseManager,
             IIntermediateMousePositionsService intermediateMousePositionsService,
             Slicer.Slicer slicer,
-            ISlicableObjectCounterOnMap slicableObjectCounterOnMap
-            )
+            ISlicableObjectCounterOnMap slicableObjectCounterOnMap,
+            IMimikService mimikService
+        )
         {
             _mouseManager = mouseManager;
             _intermediateMousePositionsService = intermediateMousePositionsService;
             _slicer = slicer;
             _slicableObjectCounterOnMap = slicableObjectCounterOnMap;
+            _mimikService = mimikService;
             _colliders = new();
         }
 
@@ -67,6 +72,7 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             {
                 _slicableObjectCounterOnMap.RemoveType(turpleArray[i].Item2.SlicableObjectType);
                 _colliders.RemoveItemWithCollider(turpleArray[i].Item1);
+                _mimikService.RemoveMimik(turpleArray[i].Item2);
 
                 return true;
             }

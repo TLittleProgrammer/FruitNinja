@@ -11,6 +11,7 @@ namespace Runtime.StaticData.Installers
     [CreateAssetMenu(fileName = "GameSpritesInstaller", menuName = "Installers/GameSpritesInstaller")]
     public sealed class GameDataInstaller : ScriptableObjectInstaller<GameDataInstaller>
     {
+        public MimikSettings MimikSettings;
         public SamuraiSettings SamuraiSettings;
         public BombSettings BombSettings;
         public AvosjkaSettings AvosjkaSettings;
@@ -32,6 +33,7 @@ namespace Runtime.StaticData.Installers
             Container.Bind<BombSettings>().FromInstance(BombSettings).AsSingle();
             Container.Bind<AvosjkaSettings>().FromInstance(AvosjkaSettings).AsSingle();
             Container.Bind<SamuraiSettings>().FromInstance(SamuraiSettings).AsSingle();
+            Container.Bind<MimikSettings>().FromInstance(MimikSettings).AsSingle();
             Container.Bind<SpriteProvider>().FromInstance(SpriteProvider).AsSingle();
         }
     }
