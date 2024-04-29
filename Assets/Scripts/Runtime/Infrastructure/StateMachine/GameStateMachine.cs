@@ -12,6 +12,7 @@ namespace Runtime.Infrastructure.StateMachine
         private Dictionary<Type, IExitableState> _states;
 
         private IExitableState _activeState;
+        private IExitableState _previousState;
         
         public GameStateMachine(IEnumerable<IExitableState> states)
         {
@@ -28,6 +29,7 @@ namespace Runtime.Infrastructure.StateMachine
         }
 
         public IState CurrentState => _activeState as IState;
+        public IState PreviousState => _activeState as IState;
 
         public void Enter<TState>() where TState : class, IState
         {
@@ -36,8 +38,15 @@ namespace Runtime.Infrastructure.StateMachine
             state.Enter();
         }
 
+        public void ReturnPreviousState()
+        {
+            _activeState.Exit();
+            _activeState = _previousState;
+        }
+
         private TState ChangeState<TState>() where TState : class, IExitableState
         {
+            _previousState = _activeState;
             _activeState?.Exit();
 
             TState state = GetState<TState>();

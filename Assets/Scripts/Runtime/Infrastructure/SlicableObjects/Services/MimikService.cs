@@ -12,7 +12,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
         void AddMimik(SlicableObjectView slicableObjectView);
         void RemoveMimik(SlicableObjectView slicableObjectView);
         SlicableObjectType GetRandomType();
-
+        void SetSimulateSpeedToParticles(float simulateSpeed);
     }
 
     public class MimikService : IMimikService
@@ -67,6 +67,15 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
 
         public SlicableObjectType GetRandomType() =>
             _mimikSettings.AvailableTypes[Random.Range(0, _mimikSettings.AvailableTypes.Count)];
+
+        public void SetSimulateSpeedToParticles(float simulateSpeed)
+        {
+            foreach (SlicableObjectView view in _viewTimerMapping.Keys)
+            {
+                ParticleSystem.MainModule main = view.MimikParticles.main;
+                main.simulationSpeed = simulateSpeed;
+            }
+        }
 
         private void ChangeMimik(SlicableObjectView slicableObjectView)
         {

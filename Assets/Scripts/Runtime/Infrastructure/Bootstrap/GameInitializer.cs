@@ -7,6 +7,7 @@ using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
 using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.Timer;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -32,6 +33,8 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly IGameStateMachine _gameStateMachine;
         private readonly IMimikService _mimikService;
         private readonly SliceableObjectDummy.Pool _dummies;
+        private readonly Timer.Timer _timer;
+        private readonly IStopwatchable _stopwatchable;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -55,7 +58,9 @@ namespace Runtime.Infrastructure.Bootstrap
             SlicableObjectView.Pool slicableObjectViewPool,
             IGameStateMachine gameStateMachine,
             IMimikService mimikService,
-            SliceableObjectDummy.Pool dummies
+            SliceableObjectDummy.Pool dummies,
+            Timer.Timer timer,
+            IStopwatchable stopwatchable
         )
         {
             _gameCanvas = gameCanvas;
@@ -75,12 +80,16 @@ namespace Runtime.Infrastructure.Bootstrap
             _gameStateMachine = gameStateMachine;
             _mimikService = mimikService;
             _dummies = dummies;
+            _timer = timer;
+            _stopwatchable = stopwatchable;
         }
 
         public async void Initialize()
         {
             await _slicableVisualContainer.AsyncInitialize();
             await _spriteProviderContainer.AsyncInitialize();
+            await _timer.AsyncInitialize(_gameStateMachine);
+            await _stopwatchable.AsyncInitialize(_gameStateMachine);
 
             foreach (SlicableObjectView view in _slicableObjectViewPool.InactiveItems)
             {

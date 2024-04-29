@@ -46,7 +46,7 @@ namespace Runtime.UI.Screens
         {
             DisableButtons();
             
-            _gameStateMachine.Enter<GameState>();
+            _gameStateMachine.ReturnPreviousState();
         }
 
         private void OnMenuButtonClicked()
@@ -65,6 +65,9 @@ namespace Runtime.UI.Screens
             _menuButton.onClick.RemoveListener(OnMenuButtonClicked);
             _continueButton.onClick.RemoveListener(OnContinueButtonClicked);
 
+            Destroy(_menuButton);
+            Destroy(_continueButton);
+            
             foreach (AnimatableButton button in _animatableButtons)
             {
                 button.enabled = false;

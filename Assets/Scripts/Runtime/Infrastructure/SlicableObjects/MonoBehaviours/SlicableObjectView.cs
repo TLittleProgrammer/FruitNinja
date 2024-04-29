@@ -20,6 +20,7 @@ namespace Runtime.Infrastructure.SlicableObjects.MonoBehaviours
         public SpriteRenderer MainSprite   => _mainSprite;
         public SpriteRenderer ShadowSprite => _shadowSprite;
         public Collider2D Collider2D => _collider2D;
+        public ParticleSystem MimikParticles => _mimikParticles;
         
         public bool IsMimik
         {

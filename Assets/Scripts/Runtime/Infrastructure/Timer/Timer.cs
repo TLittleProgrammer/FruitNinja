@@ -1,17 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using UnityEngine;
 using Zenject;
 
 namespace Runtime.Infrastructure.Timer
 {
     //TODO Подумать над именем класса
-    public class Timer : ITickable
+    public class Timer : ITickable, IAsyncInitializable<IGameStateMachine>
     {
+        private IGameStateMachine _gameStateMachine;
         private List<TimerData> _timers = new();
+        
+        public async UniTask AsyncInitialize(IGameStateMachine payload)
+        {
+            _gameStateMachine = payload;
+            await UniTask.CompletedTask;
+        }
 
         public void Tick()
         {
+            if (_gameStateMachine.CurrentState is not GameState)
+            {
+                return;
+            }
+            
             for (int i = 0; i < _timers.Count; i++)
             {
                 TimerData timerData = _timers[i];

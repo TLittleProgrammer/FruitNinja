@@ -6,6 +6,8 @@ namespace Runtime.Infrastructure.StateMachine
     public interface IGameStateMachine : IAsyncInitializable<IEnumerable<IExitableState>>
     {
         IState CurrentState { get; } 
+        IState PreviousState { get; }
         void Enter<TState>() where TState : class, IState;
+        void ReturnPreviousState();
     }
 }

@@ -1,25 +1,43 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
+using UnityEngine;
+using Zenject;
 
 namespace Runtime.Infrastructure.Timer
 {
-    public sealed class Stopwatch : IStopwatchable
+    public sealed class Stopwatch : IStopwatchable, ITickable
     {
+        private IGameStateMachine _gameStateMachine;
         public event Action<int> Ticked;
         public event Action TickEnded;
 
-        public async void Notch(int time)
+        private float _time = 0f;
+
+        public async UniTask AsyncInitialize(IGameStateMachine payload)
         {
-            Ticked?.Invoke(time);
-            
-            while (time > 0)
+            _gameStateMachine = payload;
+            await UniTask.CompletedTask;
+        }
+
+        public void Tick()
+        {
+            if (_time == 0f || _gameStateMachine.CurrentState is PauseState)
+                return;
+
+            _time -= Time.deltaTime;
+            Ticked?.Invoke((int)_time);
+
+            if (_time <= 0f)
             {
-                await UniTask.Delay(1000);
-                time--;
-                Ticked?.Invoke(time);
+                TickEnded?.Invoke();
             }
-            
-            TickEnded?.Invoke();
+        }
+
+        public void Notch(int time)
+        {
+            _time = time;
         }
     }
 }
