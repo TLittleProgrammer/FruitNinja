@@ -8,6 +8,8 @@ namespace Runtime.StaticData.Boosts
     public sealed class MimikSettings : ScriptableObject
     {
         public float Offset;
+        public float SpecialIntervalBeforeShit;
+        public float Scale;
         public List<SlicableObjectType> AvailableTypes;
     }
 }

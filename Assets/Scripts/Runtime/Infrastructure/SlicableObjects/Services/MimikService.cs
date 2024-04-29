@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DG.Tweening;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.Boosts;
@@ -35,9 +36,20 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
             TimerData timerData = new();
 
             timerData.CurrentTime = timerData.InitialTime = _mimikSettings.Offset;
+            timerData.SpecialIntervalBeforeShit = _mimikSettings.SpecialIntervalBeforeShit;
             timerData.TimeEnded = () =>
             {
                 ChangeMimik(slicableObjectView);
+            };
+            timerData.ChangeScale = () =>
+            {
+                slicableObjectView
+                    .transform
+                    .DOScale(
+                        new Vector3(_mimikSettings.Scale, _mimikSettings.Scale, _mimikSettings.Scale),
+                        timerData.CurrentTime
+                        )
+                    .SetLoops(2, LoopType.Yoyo);
             };
             
             _timer.AddTimerData(timerData);

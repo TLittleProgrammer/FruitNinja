@@ -18,6 +18,12 @@ namespace Runtime.Infrastructure.Timer
 
                 timerData.CurrentTime -= Time.deltaTime;
 
+                if (timerData.IsAnimated is false && timerData.CurrentTime <= timerData.SpecialIntervalBeforeShit)
+                {
+                    timerData.ChangeScale.Invoke();
+                    timerData.IsAnimated = true;
+                }
+                
                 if (timerData.CurrentTime <= 0f)
                 {
                     timerData.CurrentTime = timerData.InitialTime;
@@ -41,6 +47,9 @@ namespace Runtime.Infrastructure.Timer
     {
         public float InitialTime;
         public float CurrentTime;
+        public float SpecialIntervalBeforeShit;
         public Action TimeEnded;
+        public Action ChangeScale;
+        public bool IsAnimated = false;
     }
 }
