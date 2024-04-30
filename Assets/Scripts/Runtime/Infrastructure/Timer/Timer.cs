@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
+using Runtime.Infrastructure.UserData;
 using UnityEngine;
 using Zenject;
 
@@ -22,7 +23,7 @@ namespace Runtime.Infrastructure.Timer
 
         public void Tick()
         {
-            if (_gameStateMachine.CurrentState is not GameState)
+            if (_gameStateMachine.CurrentState is PauseState or LooseState)
             {
                 return;
             }
