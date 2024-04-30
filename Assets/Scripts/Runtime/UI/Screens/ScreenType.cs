@@ -11,5 +11,6 @@
         GameBackground = 5,
         Pause    = 6,
         Samurai  = 7,
+        Ice      = 8,
     }
 }

@@ -11,5 +11,6 @@
         Avosjka = 5,
         Samurai = 6,
         Mimik   = 7,
+        Ice     = 8,
     }
 }

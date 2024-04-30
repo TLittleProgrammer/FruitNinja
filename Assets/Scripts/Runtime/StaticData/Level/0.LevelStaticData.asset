@@ -40,13 +40,13 @@ MonoBehaviour:
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
       Weight: 0
-    - SlicableObjectType: 7
+    - SlicableObjectType: 3
       Weight: 50
     - SlicableObjectType: 2
       Weight: 5
     - SlicableObjectType: 5
       Weight: 5
-    - SlicableObjectType: 7
+    - SlicableObjectType: 8
       Weight: 25
     FirstSpawnPoint:
       Min: 0.45

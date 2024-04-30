@@ -133,6 +133,7 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Bomb, Container.Instantiate<BombSliceService>());
             sliceServices.Add(SlicableObjectType.Avosjka, Container.Instantiate<AvosjkaSliceService>());
             sliceServices.Add(SlicableObjectType.Samurai, Container.Instantiate<SamuraiSliceService>(new object[] { gameStateMachine }));
+            sliceServices.Add(SlicableObjectType.Ice, Container.Instantiate<IceSliceService>(new object[] { _gameCanvas.transform }));
 
             return sliceServices;
         }
