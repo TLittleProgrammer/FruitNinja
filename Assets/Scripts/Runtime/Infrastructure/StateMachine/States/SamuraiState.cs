@@ -52,7 +52,7 @@ namespace Runtime.Infrastructure.StateMachine.States
 
             _stopwatchable.Notch(_samuraiSettings.Duration);
             _collisionDetector.RemoveAllBoostColliders();
-            _slicableObjectSpawnerManager.UpdateSpawnSettings(_samuraiSettings.FruitsMultiplier, _samuraiSettings.Duration, _samuraiSettings.TimeDivide, _samuraiSettings.SpawnOffsetDivide);
+            _slicableObjectSpawnerManager.UpdateSpawnSettings(_samuraiSettings.Duration, _samuraiSettings.SpawnOffsetDivide, _samuraiSettings.TimeDivide);
         }
 
         public void Exit()
@@ -61,6 +61,7 @@ namespace Runtime.Infrastructure.StateMachine.States
 
         private void OnTickEnded()
         {
+            _collisionDetector.SetNotDamagable();
             if (_samuraiScreen is not null)
             {
                 Object.Destroy(_samuraiScreen.gameObject);

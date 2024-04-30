@@ -102,6 +102,14 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
                 }
             }
         }
+
+        public void SetNotDamagable()
+        {
+            for (int i = 0; i < _colliders.Count; i++)
+            {
+                _colliders[i].Item2.IsDamagable = false;
+            }
+        }
     }
 
     public sealed class MappingColliderAndViewToList : List<(Collider2D, SlicableObjectView)>

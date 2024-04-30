@@ -29,6 +29,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private float _currentTime;
         private int _packMultiplier = 1;
         private float _spawnOffsetDivider = 1;
+        private bool _isSamurai = false;
 
         public SlicableObjectSpawnerManager(
             LevelStaticData levelStaticData,
@@ -64,19 +65,24 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _stop = value;
         }
 
-        public async void UpdateSpawnSettings(int countMultiplier, float duration, float timeDivider, float spawnOffsetDivider)
+        public async void UpdateSpawnSettings(float duration, float spawnOffsetDivider, float spawnDivider)
         {
             float originalSpawnTime = _spawnTime;
-            _packMultiplier = countMultiplier;
+            _isSamurai = true;
             _spawnOffsetDivider = spawnOffsetDivider;
-
-            _spawnTime /= timeDivider;
+            _spawnTime /= spawnDivider;
 
             await UniTask.Delay((int)(duration * 1000));
 
             _spawnTime = originalSpawnTime;
-            _packMultiplier = 1;
+            _isSamurai = false;
             _spawnOffsetDivider = 1;
+
+            _stop = true;
+
+            await UniTask.Delay(2000);
+
+            _stop = false;
         }
 
         private async UniTask CalculateTime()
@@ -97,7 +103,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _currentTime = 0f;
             _canCalculateTime = false;
 
-            int packSize = (_spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize) * _packMultiplier;
+            int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
 
             List<SlicableObjectType> type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas, packSize);
 
@@ -114,6 +120,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                 if (_gameStateMachine.CurrentState is SamuraiState)
                 {
                     targetType = SlicableObjectType.Simple;
+                    foreach (SlicableObjectSpawnerData spawner in _spawnersData)
+                    {
+                        _slicableModelViewMapper.AddMapping(spawner, targetType);
+                    }
+
+                    break;
                 }
                 
                 _slicableModelViewMapper.AddMapping(_spawnersData[spawnerDataIndex], targetType);

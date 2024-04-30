@@ -59,17 +59,19 @@ namespace Runtime.Infrastructure.SlicableObjects.MonoBehaviours
             if (_conditionObjectHideService.IsNeedHideObject())
             {
                 _mimikService.RemoveMimik(_slicableObjectView);
-                gameObject.SetActive(false);
                 _slicableMovementService.RemoveFromMapping(transform);
                 _slicableObjectCounterOnMap.RemoveType(_slicableObjectView.SlicableObjectType);
                 _collisionDetector.RemoveCollider(_slicableObjectView.Collider2D);
 
                 if (_isSlicableObject &&
-                    _slicableObjectView.SlicableObjectType is SlicableObjectType.Simple && 
+                    _slicableObjectView.SlicableObjectType is SlicableObjectType.Simple &&
+                    _slicableObjectView.IsDamagable &&
                     _gameStateMachine.CurrentState is not SamuraiState)
                 {
                     _gameParameters.ChangeHealth(-1);
                 }
+                
+                gameObject.SetActive(false);
             }
         }
     }
