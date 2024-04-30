@@ -29,7 +29,7 @@ namespace Runtime.Infrastructure.StateMachine
         }
 
         public IState CurrentState => _activeState as IState;
-        public IState PreviousState => _activeState as IState;
+        public IState PreviousState => _previousState as IState;
 
         public void Enter<TState>() where TState : class, IState
         {
@@ -42,6 +42,8 @@ namespace Runtime.Infrastructure.StateMachine
         {
             _activeState.Exit();
             _activeState = _previousState;
+            
+            (_previousState as IState)?.Enter();
         }
 
         private TState ChangeState<TState>() where TState : class, IExitableState

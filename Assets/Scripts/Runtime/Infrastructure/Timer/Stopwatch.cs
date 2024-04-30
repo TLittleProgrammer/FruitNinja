@@ -23,7 +23,7 @@ namespace Runtime.Infrastructure.Timer
 
         public void Tick()
         {
-            if (_time == 0f || _gameStateMachine.CurrentState is PauseState)
+            if (_time <= 0f || _gameStateMachine.CurrentState is PauseState)
                 return;
 
             _time -= Time.deltaTime;
