@@ -3,6 +3,7 @@ using DG.Tweening;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.Boosts;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Services
@@ -49,7 +50,11 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
                         new Vector3(_mimikSettings.Scale, _mimikSettings.Scale, _mimikSettings.Scale),
                         timerData.CurrentTime
                         )
-                    .SetLoops(2, LoopType.Yoyo);
+                    .SetLoops(2, LoopType.Yoyo)
+                    .OnComplete(() =>
+                    {
+                        timerData.IsAnimated = false;
+                    });
             };
             
             _timer.AddTimerData(timerData);
@@ -79,7 +84,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
 
         private void ChangeMimik(SlicableObjectView slicableObjectView)
         {
-           
             slicableObjectView.SlicableObjectType = GetRandomType();
             
             Sprite sprite = _slicableVisualContainer.GetRandomSprite(slicableObjectView.SlicableObjectType);
