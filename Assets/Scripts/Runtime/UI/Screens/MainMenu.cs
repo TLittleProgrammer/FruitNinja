@@ -1,4 +1,6 @@
-﻿using Runtime.Infrastructure.EntryPoint;
+﻿using Runtime.Infrastructure.Effects;
+using Runtime.Infrastructure.EntryPoint;
+using Runtime.StaticData.Blur;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -9,6 +11,8 @@ namespace Runtime.UI.Screens
     {
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _quitButton;
+        [SerializeField] private BlurEffect _blurEffect;
+        [SerializeField] private BlurSettings _blurSettings;
         
         private IEntryPoint _entryPoint;
 
@@ -16,6 +20,7 @@ namespace Runtime.UI.Screens
         private void Construct(IEntryPoint entryPoint)
         {
             _entryPoint = entryPoint;
+            _blurEffect.Initialize(_blurSettings.InitialSize);
         }
 
         private void OnEnable()
@@ -30,8 +35,13 @@ namespace Runtime.UI.Screens
             _quitButton.onClick.RemoveListener(OnQuitButtonClicked);
         }
 
-        private void OnPlayButtonClicked()
+        private async void OnPlayButtonClicked()
         {
+            Destroy(_playButton);
+            Destroy(_quitButton);
+            
+            await _blurEffect.UpdateBlur(_blurSettings.Target, _blurSettings.Duration);
+            
             _entryPoint.AsyncLoadScene(Constants.SceneNames.Game);
         }
 

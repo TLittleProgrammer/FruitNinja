@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
@@ -21,6 +22,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private readonly IceSettings _iceSettings;
         private readonly IUIFactory _uiFactory;
         private readonly DiContainer _diContainer;
+        private readonly BlurEffect _blurEffect;
 
         private GameObject _iceScreen;
         private bool _animated = false;
@@ -31,13 +33,15 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             ICreateDummiesService createDummiesService,
             IceSettings iceSettings,
             IUIFactory uiFactory,
-            DiContainer diContainer) : base(slicableMovementService)
+            DiContainer diContainer,
+            BlurEffect blurEffect) : base(slicableMovementService)
         {
             _iceBackgroundParent = iceBackgroundParent;
             _createDummiesService = createDummiesService;
             _iceSettings = iceSettings;
             _uiFactory = uiFactory;
             _diContainer = diContainer;
+            _blurEffect = blurEffect;
         }
 
         public override bool TrySlice(SlicableObjectView slicableObjectView)
@@ -55,10 +59,13 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
 
         private async void TryAnimate()
         {
+            _blurEffect.UpdateBlur(1f, 0.5f);
             _iceScreen = _uiFactory.LoadScreen<RectTransform>(ScreenType.Ice, _iceBackgroundParent, _diContainer).gameObject;
             _animated = true;
             
             await Animate();
+            
+            _blurEffect.UpdateBlur(0f, 0.5f);
             
             _animated = false;
             Object.Destroy(_iceScreen);

@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
@@ -23,6 +24,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly MouseManager _mouseManager;
         private readonly IMimikService _mimikService;
         private readonly MagnetSliceService _magnetSliceService;
+        private readonly BlurEffect _blurEffect;
         private readonly TrailMoveService _trailMoveService;
         
         private PauseScreen _pauseScreen;
@@ -36,7 +38,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
             IMimikService mimikService,
-            MagnetSliceService magnetSliceService
+            MagnetSliceService magnetSliceService,
+            BlurEffect blurEffect
         )
         {
             _pauseScreenParent = pauseScreenParent;
@@ -48,6 +51,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _mouseManager = mouseManager;
             _mimikService = mimikService;
             _magnetSliceService = magnetSliceService;
+            _blurEffect = blurEffect;
         }
         
         public void Enter()
@@ -93,6 +97,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             if (animateBackBeforeTransform)
             {
                 sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+                _blurEffect.UpdateBlur(2f, 0.9f);
             }
             
             foreach (Transform transform in _pauseScreen.Transforms)
@@ -104,6 +109,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             if (!animateBackBeforeTransform)
             {
                 sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+                _blurEffect.UpdateBlur(0f, 0.9f);
             }
 
             sequence.OnComplete(() =>

@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
@@ -22,6 +23,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly TrailMoveService _trailMoveService;
         private readonly MouseManager _mouseManager;
         private readonly MagnetSliceService _magnetSliceService;
+        private readonly BlurEffect _blurEffect;
 
         private bool _isEntered;
         private LooseScreen _looseScreen;
@@ -34,7 +36,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
-            MagnetSliceService magnetSliceService
+            MagnetSliceService magnetSliceService,
+            BlurEffect blurEffect
             )
         {
             _looseScreenParent = looseScreenParent;
@@ -45,6 +48,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _magnetSliceService = magnetSliceService;
+            _blurEffect = blurEffect;
             _isEntered = false;
         }
 
@@ -84,14 +88,14 @@ namespace Runtime.Infrastructure.StateMachine.States
             _isEntered = false;
         }
 
-        private async void CreateLooseWindow()
+        private void CreateLooseWindow()
         {
             _looseScreen = _uiFactory.LoadScreen<LooseScreen>(ScreenType.Loose, _looseScreenParent.transform, _diContainer);
 
-            await ShowLooseScreen();
+            ShowLooseScreen();
         }
 
-        private async UniTask ShowLooseScreen()
+        private void ShowLooseScreen()
         {
             Sequence sequence = DOTween.Sequence();
 
@@ -108,10 +112,12 @@ namespace Runtime.Infrastructure.StateMachine.States
                 sequence.Kill();
             });
 
-            await sequence.Play().ToUniTask();
+            _blurEffect.UpdateBlur(2f, 0.75f);
+
+            sequence.Play();
         }
         
-        private async UniTask HideLooseScreen()
+        private UniTask HideLooseScreen()
         {
             Sequence sequence = DOTween.Sequence();
             
@@ -119,13 +125,14 @@ namespace Runtime.Infrastructure.StateMachine.States
             sequence.Append(_looseScreen.AllInfo.DOScale(Vector3.zero, 0.15f).SetEase(Ease.InCubic));
             
             sequence.Append(_looseScreen.Background.DOColor(Color.clear, 0.5f));
-
             sequence.OnComplete(() =>
             {
                 sequence.Kill();
             });
+            
+            _blurEffect.UpdateBlur(0f, 0.75f);
 
-            await sequence.Play().ToUniTask();
+            return sequence.Play().ToUniTask();
         }
     }
 }

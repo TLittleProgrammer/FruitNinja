@@ -23,6 +23,7 @@ using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Timer;
 using Runtime.Infrastructure.Trail;
+using Runtime.StaticData.Blur;
 using Runtime.StaticData.Installers;
 using Runtime.StaticData.Level;
 using UnityEngine;
@@ -62,6 +63,10 @@ namespace Runtime.Infrastructure.Bootstrap
         [SerializeField] private BombEffect _bombEffectPrefab;
         [SerializeField] private Transform _bombEffectPoolParent;
         
+        [SerializeField] private BlurEffect _blurEffect;
+        [SerializeField] private Transform _blurParent;
+        [SerializeField] private BlurSettings _blurSettings;
+        
         [Inject] private PoolSettings _poolSettings;
         [Inject] private LevelStaticData _levelStaticData;
         
@@ -94,6 +99,8 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
             Container.BindInterfacesAndSelfTo<Timer.Timer>().AsSingle();
 
+            CreateBlurEffect();
+
             ISlicer slicer = Container.Instantiate<Slicer.Slicer>();
             ICollisionDetector<Collider2D, SlicableObjectView> collisionDetector = Container.Instantiate<CollisionDetector>(new[] { slicer });
 
@@ -121,6 +128,20 @@ namespace Runtime.Infrastructure.Bootstrap
             InstallAndBindLooseService();
             
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().FromInstance(slicableObjectSpawnerManager).AsSingle();
+        }
+
+        private void CreateBlurEffect()
+        {
+            BlurEffect blurEffect = Container.InstantiatePrefab(_blurEffect, Vector3.zero, Quaternion.identity, _blurParent).GetComponent<BlurEffect>();
+            Container.Bind<BlurEffect>().FromInstance(blurEffect).AsSingle();
+            
+            blurEffect.Initialize(_blurSettings.InitialSize);
+            
+            RectTransform screenRectTransform = blurEffect.GetComponent<RectTransform>();
+            screenRectTransform.offsetMin = Vector2.zero;
+            screenRectTransform.offsetMax = Vector2.zero;
+            screenRectTransform.localScale = Vector3.one;
+            screenRectTransform.anchoredPosition3D = Vector3.zero;
         }
 
         private Dictionary<SlicableObjectType, ISliceService> GetSliceServices(IGameStateMachine gameStateMachine)

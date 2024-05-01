@@ -12,5 +12,6 @@
         Pause    = 6,
         Samurai  = 7,
         Ice      = 8,
+        Blur     = 9,
     }
 }
