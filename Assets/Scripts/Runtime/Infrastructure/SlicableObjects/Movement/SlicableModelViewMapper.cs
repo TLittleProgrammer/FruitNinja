@@ -72,7 +72,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel    = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
@@ -97,7 +97,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel    = new(slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
 

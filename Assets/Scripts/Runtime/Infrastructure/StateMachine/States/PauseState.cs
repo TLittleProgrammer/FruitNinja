@@ -5,6 +5,7 @@ using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.Slicer.SliceServices;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly SlicableMovementService _movementService;
         private readonly MouseManager _mouseManager;
         private readonly IMimikService _mimikService;
+        private readonly MagnetSliceService _magnetSliceService;
         private readonly TrailMoveService _trailMoveService;
         
         private PauseScreen _pauseScreen;
@@ -33,7 +35,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
-            IMimikService mimikService
+            IMimikService mimikService,
+            MagnetSliceService magnetSliceService
         )
         {
             _pauseScreenParent = pauseScreenParent;
@@ -44,6 +47,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _mimikService = mimikService;
+            _magnetSliceService = magnetSliceService;
         }
         
         public void Enter()
@@ -53,6 +57,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService.SetCanTrail(false);
             _movementService.SetCanMove(false);
             _mimikService.SetSimulateSpeedToParticles(0f);
+            _magnetSliceService.StopSequences();
 
             CreatePauseWindow();
         }
@@ -66,6 +71,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _mouseManager.SetStopValue(false);
             _trailMoveService.SetCanTrail(true);
             _movementService.SetCanMove(true);
+            _magnetSliceService.PlaySequences();
             
             Object.Destroy(_pauseScreen.gameObject);
         }

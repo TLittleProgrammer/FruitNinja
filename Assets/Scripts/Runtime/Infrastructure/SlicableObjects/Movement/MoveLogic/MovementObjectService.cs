@@ -36,6 +36,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             _offsetX = _velocityX * Mathf.Cos(_angle);
             _offsetY = _velocityY * Mathf.Sin(_angle);
             _accelerationOfGravity = World.Gravity;
+            _position = Vector2.zero;
         }
 
         public float PositionY => _offsetY * _allTime + _accelerationOfGravity * Mathf.Pow(_allTime, 2);

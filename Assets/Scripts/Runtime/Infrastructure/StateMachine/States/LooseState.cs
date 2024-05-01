@@ -4,6 +4,7 @@ using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.Slicer.SliceServices;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly SlicableMovementService _movementService;
         private readonly TrailMoveService _trailMoveService;
         private readonly MouseManager _mouseManager;
+        private readonly MagnetSliceService _magnetSliceService;
 
         private bool _isEntered;
         private LooseScreen _looseScreen;
@@ -31,7 +33,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableObjectSpawnerManager spawnerManager,
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
-            MouseManager mouseManager
+            MouseManager mouseManager,
+            MagnetSliceService magnetSliceService
             )
         {
             _looseScreenParent = looseScreenParent;
@@ -41,6 +44,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _movementService = movementService;
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
+            _magnetSliceService = magnetSliceService;
             _isEntered = false;
         }
 
@@ -60,6 +64,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _spawnerManager.SetStop(true);
             _mouseManager.SetStopValue(true);
             _trailMoveService.SetCanTrail(false);
+            _magnetSliceService.StopSequences();
             
             _isEntered = true;
         }
@@ -71,6 +76,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
             _trailMoveService.SetCanTrail(true);
+            _magnetSliceService.PlaySequences();
             
             Object.Destroy(_looseScreen.gameObject);
 

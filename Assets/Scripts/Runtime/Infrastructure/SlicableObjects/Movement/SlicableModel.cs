@@ -6,6 +6,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
     public class SlicableModel
     {
+        public readonly SlicableObjectType Type;
         private float _velocityX;
         private float _velocityY;
         private float _angle;
@@ -13,9 +14,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private IMovementObjectService _movementObjectService;
         private IModelAnimation _modelAnimation;
 
-        public SlicableModel(Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
+        public SlicableModel(SlicableObjectType type,Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
         {
             _movementObjectService = new MovementObjectService(movementTransform, velocityX, velocityY, angle);
+            Type = type;
             _velocityX = velocityX;
             _velocityY = velocityY;
             _angle = angle;
@@ -47,19 +49,21 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public SlicableModelParams GetParams()
         {
-            return new(_velocityX, _velocityY, _angle, _modelAnimation);
+            return new(Type, _velocityX, _velocityY, _angle, _modelAnimation);
         }
     }
 
     public record SlicableModelParams
     {
+        public SlicableObjectType Type;
         public float VelocityX;
         public float VelocityY;
         public float Angle;
         public IModelAnimation ModelAnimation;
 
-        public SlicableModelParams(float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
+        public SlicableModelParams(SlicableObjectType type, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
         {
+            Type = type;
             VelocityX = velocityX;
             VelocityY = velocityY;
             Angle = angle;

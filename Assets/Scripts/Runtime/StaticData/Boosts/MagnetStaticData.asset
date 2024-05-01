@@ -15,3 +15,4 @@ MonoBehaviour:
   Force: 0.25
   Duration: 10
   Distance: 5
+  AvailableMagnetTypes: 01000000020000000500000006000000070000000800000009000000

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Runtime.Infrastructure.SlicableObjects;
+using UnityEngine;
 
 namespace Runtime.StaticData.Boosts
 {
@@ -8,5 +10,6 @@ namespace Runtime.StaticData.Boosts
         public float Force;
         public float Duration;
         public float Distance;
+        public List<SlicableObjectType> AvailableMagnetTypes;
     }
 }
