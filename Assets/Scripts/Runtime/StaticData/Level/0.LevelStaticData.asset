@@ -48,6 +48,8 @@ MonoBehaviour:
       Weight: 5
     - SlicableObjectType: 8
       Weight: 25
+    - SlicableObjectType: 9
+      Weight: 45
     FirstSpawnPoint:
       Min: 0.45
       Max: 1.45

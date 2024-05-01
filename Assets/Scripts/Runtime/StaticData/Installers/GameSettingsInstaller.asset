@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f8cf2f47a144e3b79a5fb7ddff9fe5, type: 3}
   m_Name: GameSettingsInstaller
   m_EditorClassIdentifier: 
+  MagnetSettings: {fileID: 11400000, guid: 8277c33b63528e14488ca978b26d7f41, type: 2}
   IceSettings: {fileID: 11400000, guid: 7d153275e07086e4e87a7f4432970836, type: 2}
   MimikSettings: {fileID: 11400000, guid: d0fbdf04001cb6f4b8719340766c0b53, type: 2}
   SamuraiSettings: {fileID: 11400000, guid: 48258e5fa60146648bc2583e72041dad, type: 2}

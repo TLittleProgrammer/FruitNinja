@@ -8,5 +8,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 
         void SimulateMovement();
         void Reset(float velocityX, float velocityY, float angle, Vector3 startPosition);
+        void AddSpeed(Vector2 speed);
     }
 }

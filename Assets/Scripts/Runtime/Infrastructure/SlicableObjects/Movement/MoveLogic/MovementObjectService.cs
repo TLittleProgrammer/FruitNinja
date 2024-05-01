@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
-    public sealed class MovementObjectServiceService : IMovementObjectService
+    public sealed class MovementObjectService : IMovementObjectService
     {
         private float _offsetX;
         private float _offsetY;
@@ -17,8 +17,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         private float _constantValueInSpeedYFormula;
         private float _allTime;
         private Vector2 _startPosition;
-        
-        public MovementObjectServiceService(Transform movementTransform, float velocityX, float velocityY, float angle)
+
+        public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle)
         {
             _startPosition = movementTransform.position;
             _movementTransform = movementTransform;
@@ -35,18 +35,18 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 
             _offsetX = _velocityX * Mathf.Cos(_angle);
             _offsetY = _velocityY * Mathf.Sin(_angle);
-            _accelerationOfGravity = 0.5f * World.Gravity;
+            _accelerationOfGravity = World.Gravity;
         }
 
-        public float PositionX => _offsetX * _allTime;
         public float PositionY => _offsetY * _allTime + _accelerationOfGravity * Mathf.Pow(_allTime, 2);
         public Vector2 Position => _position + _startPosition;
 
         public void SimulateMovement()
         {
             _allTime += Time.deltaTime;
+            _offsetY += _accelerationOfGravity * Time.deltaTime;
             
-            _position = new Vector2(PositionX, PositionY);
+            _position = new Vector2(_position.x + _offsetX * Time.deltaTime, _position.y + Time.deltaTime * _offsetY);
             _movementTransform.position = Position;
         }
 
@@ -55,6 +55,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             _allTime = 0f;
             _startPosition = startPosition;
             Initialize(velocityX, velocityY, angle);
+        }
+
+        public void AddSpeed(Vector2 speed)
+        {
+            _offsetX += speed.x;
+            _offsetY += speed.y;
         }
     }
 }

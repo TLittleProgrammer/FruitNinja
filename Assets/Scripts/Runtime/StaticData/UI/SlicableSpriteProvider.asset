@@ -94,3 +94,10 @@ MonoBehaviour:
         SplashColor: {r: 0, g: 1, b: 0.89369106, a: 1}
         Blots:
         - {fileID: 0}
+  - SlicableObjectType: 9
+    SlicableItem:
+      Params:
+      - Sprite: {fileID: 21300000, guid: 35788223f9812aa47a75403c201aafd3, type: 3}
+        SplashColor: {r: 0, g: 1, b: 0.89369106, a: 1}
+        Blots:
+        - {fileID: 0}

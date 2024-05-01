@@ -12,5 +12,6 @@
         Samurai = 6,
         Mimik   = 7,
         Ice     = 8,
+        Magnet  = 9,
     }
 }

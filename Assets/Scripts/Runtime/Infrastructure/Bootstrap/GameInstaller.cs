@@ -135,6 +135,11 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Samurai, Container.Instantiate<SamuraiSliceService>(new object[] { gameStateMachine }));
             sliceServices.Add(SlicableObjectType.Ice, Container.Instantiate<IceSliceService>(new object[] { _gameCanvas.transform }));
 
+            MagnetSliceService magnetSliceService = Container.Instantiate<MagnetSliceService>();
+            Container.BindInterfacesAndSelfTo<MagnetSliceService>().FromInstance(magnetSliceService).AsSingle();
+            
+            sliceServices.Add(SlicableObjectType.Magnet, magnetSliceService);
+
             return sliceServices;
         }
 

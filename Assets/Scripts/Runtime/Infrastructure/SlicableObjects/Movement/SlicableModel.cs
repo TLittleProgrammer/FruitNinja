@@ -15,7 +15,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public SlicableModel(Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
         {
-            _movementObjectService = new MovementObjectServiceService(movementTransform, velocityX, velocityY, angle);
+            _movementObjectService = new MovementObjectService(movementTransform, velocityX, velocityY, angle);
             _velocityX = velocityX;
             _velocityY = velocityY;
             _angle = angle;
@@ -38,6 +38,11 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _angle = angle;
 
             _movementObjectService.Reset(velocityX, velocityX, angle, startPosition);
+        }
+
+        public void AddMagnetOffset(Vector2 x)
+        {
+            _movementObjectService.AddSpeed(x);
         }
 
         public SlicableModelParams GetParams()
