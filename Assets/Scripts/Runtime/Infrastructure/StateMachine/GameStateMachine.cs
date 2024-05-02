@@ -44,11 +44,11 @@ namespace Runtime.Infrastructure.StateMachine
         public void ReturnPreviousState()
         {
             _activeState.Exit();
-            _activeState = _previousState;
+            (_activeState, _previousState) = (_previousState, _activeState);
             
             UpdatedState?.Invoke(_activeState);
             
-            (_previousState as IState)?.Enter();
+            (_activeState as IState)?.Enter();
         }
 
         private TState ChangeState<TState>() where TState : class, IExitableState

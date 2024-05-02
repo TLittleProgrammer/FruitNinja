@@ -48,6 +48,9 @@ namespace Runtime.Infrastructure.StateMachine.States
 
         public void Enter()
         {
+            if (_gameStateMachine.PreviousState is PauseState)
+                return;
+            
             _samuraiScreen = _uiFactory.LoadScreen<SamuraiScreen>(ScreenType.Samurai, _screenParent, _diContainer);
 
             _stopwatchable.Notch(_samuraiSettings.Duration);
