@@ -4,13 +4,14 @@ using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.UserData;
 using Runtime.UI.Screens;
-using UnityEngine;
 using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
 {
     public sealed class ProjectInstaller : MonoInstaller, IInitializable
     {
+        private ProjectInitializer _projectInitializer;
+
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<ProjectInstaller>().FromInstance(this).AsSingle();
@@ -24,14 +25,13 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<AsyncSceneLoader>().AsSingle();
             Container.BindInterfacesAndSelfTo<EntryPoint.EntryPoint>().AsSingle();
             Container.BindInterfacesAndSelfTo<UIFactory>().AsSingle();
+            
+            Container.Bind<ProjectInitializer>().AsSingle();
         }
 
         public void Initialize()
         {
-            ProjectInitializer projectInitializer = Container.Instantiate<ProjectInitializer>();
-            Container.Bind<ProjectInitializer>().FromInstance(projectInitializer).AsSingle();
-            
-            projectInitializer.Initialize();
+            Container.Resolve<ProjectInitializer>().Initialize();
         }
     }
 }

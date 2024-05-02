@@ -69,7 +69,7 @@ namespace Runtime.Infrastructure.Bootstrap
         
         [Inject] private PoolSettings _poolSettings;
         [Inject] private LevelStaticData _levelStaticData;
-        
+
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<GameInstaller>().FromInstance(this).AsSingle();
@@ -128,6 +128,8 @@ namespace Runtime.Infrastructure.Bootstrap
             InstallAndBindLooseService();
             
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().FromInstance(slicableObjectSpawnerManager).AsSingle();
+            
+            Container.Bind<GameInitializer>().AsSingle().WithArguments(_gameCanvas, _overlayCanvas, _healthFlyingPoolParent.transform);
         }
 
         private void CreateBlurEffect()
@@ -206,9 +208,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
         public void Initialize()
         {
-            GameInitializer gameInitializer = Container.Instantiate<GameInitializer>(new Component[] { _gameCanvas, _overlayCanvas, _healthFlyingPoolParent.transform });
-            
-            gameInitializer.Initialize();
+            Container.Resolve<GameInitializer>().Initialize();
         }
     }
 }
