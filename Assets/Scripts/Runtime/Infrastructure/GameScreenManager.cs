@@ -11,17 +11,13 @@ namespace Runtime.Infrastructure
         private float _orthographicSize;
         private float _horizontalSize;
         private float _horizontalPlusOneStepSize;
-        private Rect _cameraRect;
-        private Camera _camera;
 
         public async UniTask AsyncInitialize(Camera camera)
         {
-            _camera                     = camera;
             _orthographicSize           = camera.orthographicSize;
             _resolution                 = (float)Screen.width / Screen.height;
             _horizontalSize             = _resolution * _orthographicSize;
             _horizontalPlusOneStepSize  = _resolution * (_orthographicSize + 1);
-            _cameraRect                 = camera.rect;
 
             await UniTask.CompletedTask;
         }
