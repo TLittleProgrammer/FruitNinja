@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -16,7 +15,6 @@ namespace Runtime.Infrastructure.Effects
     public sealed class ScoreEffect : PopupEffect, IScoreEffect
     {
         [SerializeField] private TMP_Text _scoreText;
-        [SerializeField] private Animator _animator;
 
         private RectTransform _rectTransform;
         private float _animationTime;
@@ -40,7 +38,7 @@ namespace Runtime.Infrastructure.Effects
 
             Sequence = DOTween.Sequence();
             Sequence.Append(transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad)).ToUniTask().Forget();
-            Sequence.Append(_rectTransform.DOAnchorPosY(_rectTransform.anchoredPosition.y + 50f, 1f)).ToUniTask().Forget();
+            Sequence.Append(_rectTransform.DOAnchorPosY(_rectTransform.anchoredPosition.y + 150f, 1f)).ToUniTask().Forget();
             Sequence.Append(transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuint)).ToUniTask().Forget();
             Sequence.OnComplete(() =>
             {
