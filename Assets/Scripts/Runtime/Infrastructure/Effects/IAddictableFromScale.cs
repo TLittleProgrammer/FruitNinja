@@ -1,6 +1,4 @@
-﻿using System;
-using Runtime.Infrastructure.Timer;
-using Unity.VisualScripting;
+﻿using Runtime.Infrastructure.Timer;
 using UnityEngine;
 using Zenject;
 using Sequence = DG.Tweening.Sequence;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
-using Runtime.Infrastructure.UserData;
 using UnityEngine;
 using Zenject;
 

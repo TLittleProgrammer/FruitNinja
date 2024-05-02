@@ -1,5 +1,4 @@
-﻿using System;
-using Runtime.Infrastructure.Timer;
+﻿using Runtime.Infrastructure.Timer;
 using TMPro;
 using UnityEngine;
 using Zenject;

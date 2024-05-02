@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
-using UnityEngine;
 
 namespace Runtime.Infrastructure.Effects
 {

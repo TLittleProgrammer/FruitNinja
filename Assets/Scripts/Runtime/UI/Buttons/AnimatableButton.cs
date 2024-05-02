@@ -2,7 +2,6 @@
 using Runtime.StaticData.Animations;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace Runtime.UI.Buttons
 {

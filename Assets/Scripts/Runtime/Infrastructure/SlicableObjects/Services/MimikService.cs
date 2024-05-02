@@ -3,7 +3,6 @@ using DG.Tweening;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.Boosts;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Services
