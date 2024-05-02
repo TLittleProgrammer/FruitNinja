@@ -78,14 +78,14 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
                 _magnets.Add(slicableObjectView.transform);
                 _sequenceMapping.Add(slicableObjectView.transform, sequence);
                 
-                sequence.Append(
+                await sequence.Append(
                         slicableObjectView
                             .transform
                             .DOScale(slicableObjectView.transform.localScale + Vector3.one * 0.25f, 0.5f)
                             .SetLoops((int)_magnetSettings.Duration * 2, LoopType.Yoyo)
                 );
                 
-                sequence.Append(
+                await sequence.Append(
                     slicableObjectView
                         .transform
                         .DOScale(0f, 0.25f)

@@ -27,9 +27,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
         private bool _stop = false;
         private float _spawnTime;
         private float _currentTime;
-        private int _packMultiplier = 1;
         private float _spawnOffsetDivider = 1;
-        private bool _isSamurai = false;
 
         public SlicableObjectSpawnerManager(
             LevelStaticData levelStaticData,
@@ -65,17 +63,16 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
             _stop = value;
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public async void UpdateSpawnSettings(float duration, float spawnOffsetDivider, float spawnDivider)
         {
             float originalSpawnTime = _spawnTime;
-            _isSamurai = true;
             _spawnOffsetDivider = spawnOffsetDivider;
             _spawnTime /= spawnDivider;
 
             await UniTask.Delay((int)(duration * 1000));
 
             _spawnTime = originalSpawnTime;
-            _isSamurai = false;
             _spawnOffsetDivider = 1;
 
             _stop = true;

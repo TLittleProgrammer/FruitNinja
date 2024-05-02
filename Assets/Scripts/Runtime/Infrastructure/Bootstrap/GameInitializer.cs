@@ -123,8 +123,7 @@ namespace Runtime.Infrastructure.Bootstrap
             await gameScreen.AsyncInitialize();
             _healthParent.transform.parent.SetAsLastSibling();
 
-            _healthFlyingService.AsyncInitialize(gameScreen);
-
+            await _healthFlyingService.AsyncInitialize(gameScreen);
             await _gameScreenManager.AsyncInitialize(camera);
             
             _entryPoint.HideLoadingScreen();

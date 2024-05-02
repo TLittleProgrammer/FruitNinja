@@ -59,13 +59,13 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
 
         private async void TryAnimate()
         {
-            _blurEffect.UpdateBlur(1f, 0.5f);
+            await _blurEffect.UpdateBlur(1f, 0.5f);
             _iceScreen = _uiFactory.LoadScreen<RectTransform>(ScreenType.Ice, _iceBackgroundParent, _diContainer).gameObject;
             _animated = true;
             
             await Animate();
             
-            _blurEffect.UpdateBlur(0f, 0.5f);
+            _blurEffect.UpdateBlur(0f, 0.5f).Forget();
             
             _animated = false;
             Object.Destroy(_iceScreen);
