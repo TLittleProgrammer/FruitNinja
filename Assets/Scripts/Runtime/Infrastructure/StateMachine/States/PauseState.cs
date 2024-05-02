@@ -89,7 +89,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
-        private async UniTask AnimatePauseScreen(Vector3 initialScale, Vector3 targetScale, Color initialColor, Color targetColor, bool animateBackBeforeTransform)
+        private UniTask AnimatePauseScreen(Vector3 initialScale, Vector3 targetScale, Color initialColor, Color targetColor, bool animateBackBeforeTransform)
         {
             Sequence sequence = DOTween.Sequence();
             
@@ -97,28 +97,28 @@ namespace Runtime.Infrastructure.StateMachine.States
 
             if (animateBackBeforeTransform)
             {
-                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
-                _blurEffect.UpdateBlur(2f, 0.9f);
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f)).ToUniTask().Forget();
+                _blurEffect.UpdateBlur(2f, 0.9f).Forget();
             }
             
             foreach (Transform transform in _pauseScreen.Transforms)
             {
                 transform.localScale = initialScale;
-                sequence.Append(transform.DOScale(targetScale, 0.15f).SetEase(Ease.InCubic));
+                sequence.Append(transform.DOScale(targetScale, 0.15f).SetEase(Ease.InCubic)).ToUniTask().Forget();
             }
 
             if (!animateBackBeforeTransform)
             {
-                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
-                _blurEffect.UpdateBlur(0f, 0.9f);
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f)).ToUniTask().Forget();
+                _blurEffect.UpdateBlur(0f, 0.9f).Forget();
             }
 
             sequence.OnComplete(() =>
             {
                 sequence.Kill();
-            });
+            }).ToUniTask().Forget();
 
-            await sequence.Play().ToUniTask();
+            return sequence.Play().ToUniTask();
         }
     }
 }

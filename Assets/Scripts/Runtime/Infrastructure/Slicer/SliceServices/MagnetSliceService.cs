@@ -69,7 +69,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             return true;
         }
 
-        private async void AddMagnet(SlicableObjectView slicableObjectView)
+        private void AddMagnet(SlicableObjectView slicableObjectView)
         {
             if (!_magnets.Contains(slicableObjectView.transform))
             {
