@@ -23,12 +23,23 @@ namespace Runtime.Infrastructure.SlicableObjects.Services
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly Dictionary<SlicableObjectView, TimerData> _viewTimerMapping;
 
-        public MimikService(Timer.Timer timer, MimikSettings mimikSettings, SlicableVisualContainer slicableVisualContainer)
+        public MimikService(Timer.Timer timer, MimikSettings mimikSettings, SlicableVisualContainer slicableVisualContainer, ITimeProvider timeProvider)
         {
             _timer = timer;
             _mimikSettings = mimikSettings;
             _slicableVisualContainer = slicableVisualContainer;
             _viewTimerMapping = new();
+
+            timeProvider.TimeScaleChanged += OnTimeScaleChanged;
+        }
+
+        private void OnTimeScaleChanged(float timeScale)
+        {
+            foreach (var pair in _viewTimerMapping)
+            {
+                ParticleSystem.MainModule main = pair.Key.MagnetParticles.main;
+                main.simulationSpeed = timeScale;
+            }
         }
 
         public void AddMimik(SlicableObjectView slicableObjectView)

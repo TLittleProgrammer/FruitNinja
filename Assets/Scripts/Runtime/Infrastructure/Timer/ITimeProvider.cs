@@ -7,6 +7,7 @@ namespace Runtime.Infrastructure.Timer
     {
         event Action<float> TimeScaleChanged;
         float DeltaTime { get; }
+        float TimeScale { get; }
 
         void SetScale(float scale);
     }
@@ -18,6 +19,8 @@ namespace Runtime.Infrastructure.Timer
         public event Action<float> TimeScaleChanged;
         
         public float DeltaTime => Time.deltaTime * _timeScale;
+        public float TimeScale => _timeScale;
+
         public void SetScale(float scale)
         {
             _timeScale = scale;
