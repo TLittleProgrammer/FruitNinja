@@ -51,7 +51,6 @@ namespace Runtime.Infrastructure.Combo
                 }
             }
             
-            
             comboView.SetPosition(targetPosition);
         }
     }

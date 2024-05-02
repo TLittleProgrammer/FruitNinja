@@ -106,6 +106,8 @@ namespace Runtime.Infrastructure.Bootstrap
 
             Container.BindInterfacesAndSelfTo<CollisionDetector>().FromInstance(collisionDetector).AsSingle();
 
+            IGameStateMachine gameStateMachine = Container.Instantiate<GameStateMachine>();
+            
             Container.BindPool<BombEffect, BombEffect.Pool>(_poolSettings.PoolInitialSize / 2, _bombEffectPrefab, _bombEffectPoolParent);
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);
             Container.BindPool<ScoreEffect, ScoreEffect.Pool>(_poolSettings.PoolInitialSize, _scoreEffectPrefab, _scorePoolParent);
@@ -115,8 +117,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindPool<ComboView, ComboView.Pool>(_poolSettings.PoolInitialSize, _comboViewPrefab, _comboPoolParent);
             Container.BindPool<FlyingHealthView, FlyingHealthView.Pool>(_levelStaticData.HealthCount, _healthFlyingViewPrefab, _healthFlyingPoolParent);
             Container.BindPool<HeartSplash, HeartSplash.Pool>(_levelStaticData.HealthCount, _heartSplashPrefab, _heartPoolParent);
-
-            IGameStateMachine gameStateMachine = Container.Instantiate<GameStateMachine>();
+            
             SlicableObjectSpawnerManager slicableObjectSpawnerManager = Container.Instantiate<SlicableObjectSpawnerManager>(new[] { gameStateMachine });
             
             Dictionary<SlicableObjectType, ISliceService> sliceServices = GetSliceServices(gameStateMachine);
@@ -128,7 +129,8 @@ namespace Runtime.Infrastructure.Bootstrap
             InstallAndBindLooseService();
             
             Container.BindInterfacesAndSelfTo<SlicableObjectSpawnerManager>().FromInstance(slicableObjectSpawnerManager).AsSingle();
-            
+
+            Container.Bind<ComboSequenceResolver>().AsSingle();
             Container.Bind<GameInitializer>().AsSingle().WithArguments(_gameCanvas, _overlayCanvas, _healthFlyingPoolParent.transform);
         }
 

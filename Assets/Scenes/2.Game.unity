@@ -469,7 +469,7 @@ MonoBehaviour:
     Weight: 90
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
-      Weight: 0
+      Weight: 999
     - SlicableObjectType: 3
       Weight: 50
     - SlicableObjectType: 2

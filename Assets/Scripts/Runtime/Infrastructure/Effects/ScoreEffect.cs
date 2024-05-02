@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -11,13 +13,11 @@ namespace Runtime.Infrastructure.Effects
     }
     
     [RequireComponent(typeof(RectTransform))]
-    public sealed class ScoreEffect : MonoBehaviour, IScoreEffect
+    public sealed class ScoreEffect : PopupEffect, IScoreEffect
     {
         [SerializeField] private TMP_Text _scoreText;
         [SerializeField] private Animator _animator;
 
-        private readonly int ScoreFly = Animator.StringToHash("ScoreFly");
-        
         private RectTransform _rectTransform;
         private float _animationTime;
 
@@ -31,17 +31,21 @@ namespace Runtime.Infrastructure.Effects
             _scoreText.text = score.ToString();
             _rectTransform.position = screenPosition;
             
-            gameObject.SetActive(true);
-            StartCoroutine(PlayAnimation());
+            PlayAnimation();
         }
 
-        private IEnumerator PlayAnimation()
+        private void PlayAnimation()
         {
-            _animator.Play(ScoreFly);
+            gameObject.SetActive(true);
 
-            yield return new WaitForSeconds(1f);
-            
-            gameObject.SetActive(false);
+            Sequence = DOTween.Sequence();
+            Sequence.Append(transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad)).ToUniTask().Forget();
+            Sequence.Append(_rectTransform.DOAnchorPosY(_rectTransform.anchoredPosition.y + 50f, 1f)).ToUniTask().Forget();
+            Sequence.Append(transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuint)).ToUniTask().Forget();
+            Sequence.OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+            }).ToUniTask().Forget();
         }
 
         public class Pool : MonoMemoryPool<ScoreEffect>

@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Containers;
 using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
@@ -63,7 +64,8 @@ namespace Runtime.Infrastructure.Bootstrap
             SliceableObjectDummy.Pool dummies,
             Timer.Timer timer,
             IStopwatchable stopwatchable,
-            ProjectInitializer projectInitializer
+            ProjectInitializer projectInitializer,
+            ComboSequenceResolver comboSequenceResolver
         )
         {
             _gameCanvas = gameCanvas;

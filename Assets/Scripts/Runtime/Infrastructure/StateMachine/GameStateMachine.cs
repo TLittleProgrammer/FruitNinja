@@ -28,12 +28,15 @@ namespace Runtime.Infrastructure.StateMachine
             await UniTask.CompletedTask;
         }
 
+        public event Action<IExitableState> UpdatedState;
         public IState CurrentState => _activeState as IState;
         public IState PreviousState => _previousState as IState;
 
         public void Enter<TState>() where TState : class, IState
         {
             TState state = ChangeState<TState>();
+            
+            UpdatedState?.Invoke(state);
             
             state.Enter();
         }
@@ -42,6 +45,8 @@ namespace Runtime.Infrastructure.StateMachine
         {
             _activeState.Exit();
             _activeState = _previousState;
+            
+            UpdatedState?.Invoke(_activeState);
             
             (_previousState as IState)?.Enter();
         }

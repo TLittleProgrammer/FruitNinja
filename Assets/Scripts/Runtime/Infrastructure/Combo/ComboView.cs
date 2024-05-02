@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using Runtime.Infrastructure.Effects;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -7,19 +9,16 @@ using Zenject;
 namespace Runtime.Infrastructure.Combo
 {
     [RequireComponent(typeof(RectTransform))]
-    public class ComboView : MonoBehaviour
+    public class ComboView : PopupEffect
     {
         [SerializeField] private TMP_Text _fruitsCounter;
         [SerializeField] private TMP_Text _xCounterText;
-        [SerializeField] private Animator _animator;
 
-        private readonly int _showCombo = Animator.StringToHash("ComboShow");
         private RectTransform _rectTransform;
         private string _fruitsCounterInitialText;
         private string _xCounterInitialText;
         private Vector2 _rectSize;
 
-        public RectTransform RectTransform => _rectTransform;
         public Vector2 RectSize => _rectSize;
 
         private void Awake()
@@ -30,11 +29,11 @@ namespace Runtime.Infrastructure.Combo
 
             _rectSize = new Vector2(_rectTransform.rect.width / 2f, _rectTransform.rect.height / 2f);
         }
-        
+
+
         public void ShowCombo(int fruits)
         {
-            gameObject.SetActive(true);
-            StartCoroutine(PlayAnimation(fruits));
+            PlayAnimation(fruits);
         }
 
         public void SetPosition(Vector2 position)
@@ -42,21 +41,27 @@ namespace Runtime.Infrastructure.Combo
             _rectTransform.position = position;
         }
 
-        private IEnumerator PlayAnimation(int fruits)
+        private void PlayAnimation(int fruits)
         {
             _fruitsCounter.text = String.Format(_fruitsCounter.text, fruits);
             _xCounterText.text = String.Format(_xCounterText.text, fruits);
+            gameObject.SetActive(true);
+            transform.localScale = Vector3.zero;
 
-            _animator.Play(_showCombo);
+            Sequence = DOTween.Sequence();
 
-            yield return new WaitForSeconds(1f);
-            
-            gameObject.SetActive(false);
-
-            _fruitsCounter.text = _fruitsCounterInitialText;
-            _xCounterText.text  = _xCounterInitialText;
+            Sequence.Append(transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.InQuad)).ToUniTask().Forget();
+            Sequence.AppendInterval(1f).ToUniTask().Forget();
+            Sequence.Append(transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuint)).ToUniTask().Forget();
+            Sequence.OnComplete(() =>
+            {
+                _fruitsCounter.text = _fruitsCounterInitialText;
+                _xCounterText.text  = _xCounterInitialText;
+                
+                gameObject.SetActive(false);
+            }).ToUniTask().Forget();
         }
-        
+
         public class Pool : MonoMemoryPool<ComboView>
         {
         }
