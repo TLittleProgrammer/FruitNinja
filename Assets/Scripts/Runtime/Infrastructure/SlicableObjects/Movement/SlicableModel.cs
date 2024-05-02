@@ -1,5 +1,6 @@
 ﻿using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic;
+using Runtime.Infrastructure.Timer;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement
@@ -14,9 +15,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private IMovementObjectService _movementObjectService;
         private IModelAnimation _modelAnimation;
 
-        public SlicableModel(SlicableObjectType type,Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation)
+        public SlicableModel(SlicableObjectType type,Transform movementTransform, float velocityX, float velocityY, float angle, IModelAnimation modelAnimation, ITimeProvider timeProvider)
         {
-            _movementObjectService = new MovementObjectService(movementTransform, velocityX, velocityY, angle);
+            _movementObjectService = new MovementObjectService(movementTransform, velocityX, velocityY, angle, timeProvider);
             Type = type;
             _velocityX = velocityX;
             _velocityY = velocityY;

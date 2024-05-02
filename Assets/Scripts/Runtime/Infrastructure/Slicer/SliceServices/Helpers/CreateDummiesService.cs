@@ -5,6 +5,7 @@ using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
+using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.UI;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
         private readonly SlicableMovementService _slicableMovementService;
         private readonly SlicableVisualContainer _slicableVisualContainer;
         private readonly SpriteProviderContainer _spriteProviderContainer;
+        private readonly ITimeProvider _timeProvider;
         private readonly SpriteProvider _spriteProvider;
 
         public CreateDummiesService(
@@ -26,7 +28,8 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
             SliceableObjectSpriteRendererOrderService orderService,
             SlicableMovementService slicableMovementService,
             SlicableVisualContainer slicableVisualContainer,
-            SpriteProviderContainer spriteProviderContainer
+            SpriteProviderContainer spriteProviderContainer,
+            ITimeProvider timeProvider
         )
         {
             _mouseManager = mouseManager;
@@ -35,6 +38,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
             _slicableMovementService = slicableMovementService;
             _slicableVisualContainer = slicableVisualContainer;
             _spriteProviderContainer = spriteProviderContainer;
+            _timeProvider = timeProvider;
         }
         
         public void AddDummies(SlicableObjectView slicableObjectView)
@@ -84,8 +88,8 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.Helpers
         
         private void AddMappingToMovementService(SlicableModel slicableModel, SliceableObjectDummy[] dummyArray)
         {
-            SlicableModel modelFirstDummy  = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform);
-            SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform);
+            SlicableModel modelFirstDummy  = slicableModel.CreateCopy(dummyArray[0].transform, dummyArray[0].SlicableObjectView.ShadowSprite.transform, _timeProvider);
+            SlicableModel modelSecondDummy = slicableModel.CreateCopy(dummyArray[1].transform, dummyArray[1].SlicableObjectView.ShadowSprite.transform, _timeProvider);
 
             SlicableModelParams firstParams  = modelFirstDummy.GetParams();
             SlicableModelParams secondParams = modelSecondDummy.GetParams();

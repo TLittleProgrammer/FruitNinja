@@ -1,14 +1,17 @@
 ﻿using Runtime.Constants;
+using Runtime.Infrastructure.Timer;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 {
     public sealed class MovementObjectService : IMovementObjectService
     {
+        private readonly ITimeProvider _timeProvider;
+        
         private float _offsetX;
         private float _offsetY;
         private float _accelerationOfGravity;
-        
+
         private Transform _movementTransform;
         private Vector2 _position;
         private float _velocityX;
@@ -18,11 +21,12 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         private float _allTime;
         private Vector2 _startPosition;
 
-        public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle)
+        public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle, ITimeProvider timeProvider)
         {
             _startPosition = movementTransform.position;
             _movementTransform = movementTransform;
-            
+            _timeProvider = timeProvider;
+
             Initialize(velocityX, velocityY, angle);
         }
 
@@ -39,15 +43,14 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             _position = Vector2.zero;
         }
 
-        public float PositionY => _offsetY * _allTime + _accelerationOfGravity * Mathf.Pow(_allTime, 2);
         public Vector2 Position => _position + _startPosition;
 
         public void SimulateMovement()
         {
-            _allTime += Time.deltaTime;
-            _offsetY += _accelerationOfGravity * Time.deltaTime;
+            _allTime += _timeProvider.DeltaTime;
+            _offsetY += _accelerationOfGravity * _timeProvider.DeltaTime;
             
-            _position = new Vector2(_position.x + _offsetX * Time.deltaTime, _position.y + Time.deltaTime * _offsetY);
+            _position = new Vector2(_position.x + _offsetX * _timeProvider.DeltaTime, _position.y + _timeProvider.DeltaTime * _offsetY);
             _movementTransform.position = Position;
         }
 

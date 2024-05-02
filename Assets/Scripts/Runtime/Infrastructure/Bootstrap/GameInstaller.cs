@@ -90,6 +90,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
             Container.Bind<IMimikService>().To<MimikService>().AsSingle();
+            Container.Bind<ITimeProvider>().To<TimeProvider>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<Stopwatch>().AsSingle();
             Container.BindInterfacesAndSelfTo<TrailMoveService>().AsSingle();
@@ -158,7 +159,7 @@ namespace Runtime.Infrastructure.Bootstrap
             sliceServices.Add(SlicableObjectType.Bomb, Container.Instantiate<BombSliceService>());
             sliceServices.Add(SlicableObjectType.Avosjka, Container.Instantiate<AvosjkaSliceService>());
             sliceServices.Add(SlicableObjectType.Samurai, Container.Instantiate<SamuraiSliceService>(new object[] { gameStateMachine }));
-            sliceServices.Add(SlicableObjectType.Ice, Container.Instantiate<IceSliceService>(new object[] { _gameCanvas.transform }));
+            sliceServices.Add(SlicableObjectType.Ice, Container.Instantiate<IceSliceService>(new object[] { _gameCanvas.transform, gameStateMachine }));
 
             MagnetSliceService magnetSliceService = Container.Instantiate<MagnetSliceService>(new[] { gameStateMachine });
             Container.BindInterfacesAndSelfTo<MagnetSliceService>().FromInstance(magnetSliceService).AsSingle();

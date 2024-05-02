@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Runtime.Infrastructure.Timer;
+using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 {
@@ -6,15 +7,17 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
     {
         private readonly Transform _mainTransform;
         private readonly Transform _shadowTransform;
+        private readonly ITimeProvider _timeProvider;
         private readonly Vector2 _shadowDirection = new(1, -0.5f);
 
         private const float _mainScaleSpeed = 0.1f;
         private const float _shadowOffsetSpeed = 0.15f;
 
-        public ScaleAnimation(Transform mainTransform, Transform shadowTransform)
+        public ScaleAnimation(Transform mainTransform, Transform shadowTransform, ITimeProvider timeProvider)
         {
             _mainTransform = mainTransform;
             _shadowTransform = shadowTransform;
+            _timeProvider = timeProvider;
 
             //TODO потом исправить настройку позиции тени
             shadowTransform.localPosition = new(0.1f, -0.035f, 0f);
@@ -25,8 +28,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 
         public void SimulateAnimation()
         {
-            float mainScaleDelta   = _mainScaleSpeed * Time.deltaTime;
-            float shadowOffsetDelta = _shadowOffsetSpeed * Time.deltaTime;
+            float mainScaleDelta   = _mainScaleSpeed * _timeProvider.DeltaTime;
+            float shadowOffsetDelta = _shadowOffsetSpeed * _timeProvider.DeltaTime;
 
             Vector3 mainScale   = _mainTransform.localScale;
             

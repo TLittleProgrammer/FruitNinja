@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Runtime.Infrastructure.Timer;
+using UnityEngine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 {
@@ -7,10 +8,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
         private SimpleRotateAnimation _simpleRotateAnimation;
         private ScaleAnimation _scaleAnimation;
         
-        public MixedAnimation(Transform movementTransform, Transform shadowTransform, float currentAngle)
+        public MixedAnimation(Transform movementTransform, Transform shadowTransform, float currentAngle, ITimeProvider timeProvider)
         {
-            _simpleRotateAnimation = new(movementTransform, currentAngle);
-            _scaleAnimation = new(movementTransform, shadowTransform);
+            _simpleRotateAnimation = new(movementTransform, currentAngle, timeProvider);
+            _scaleAnimation = new(movementTransform, shadowTransform, timeProvider);
         }
 
         public float Rotation => _simpleRotateAnimation.Rotation;

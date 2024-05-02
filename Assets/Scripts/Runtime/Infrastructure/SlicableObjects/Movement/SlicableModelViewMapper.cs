@@ -6,6 +6,7 @@ using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement.Animation;
 using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
+using Runtime.Infrastructure.Timer;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -20,6 +21,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         private readonly SliceableObjectSpriteRendererOrderService _orderService;
         private readonly CollisionDetector.CollisionDetector _collisionDetector;
         private readonly IMimikService _mimikService;
+        private readonly ITimeProvider _timeProvider;
 
         public SlicableModelViewMapper(
             SlicableObjectView.Pool objectPool,
@@ -28,7 +30,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             SlicableMovementService slicableMovementService,
             SliceableObjectSpriteRendererOrderService orderService,
             CollisionDetector.CollisionDetector collisionDetector,
-            IMimikService mimikService)
+            IMimikService mimikService,
+            ITimeProvider timeProvider)
         {
             _objectPool = objectPool;
             _slicableVisualContainer = slicableVisualContainer;
@@ -37,6 +40,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _orderService = orderService;
             _collisionDetector = collisionDetector;
             _mimikService = mimikService;
+            _timeProvider = timeProvider;
         }
         
         //TODO выделить в один метод
@@ -72,7 +76,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation, _timeProvider);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
         }
@@ -97,7 +101,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             velocityY = CalculateMaxSpeedY(velocityY, angleInRadians, slicableViewTransform.transform.position.y);
 
             IModelAnimation modelAnimation = GetModelAnimation(slicableViewTransform, slicableObjectView.ShadowSprite.transform, 0f);
-            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation);
+            SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation, _timeProvider);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
 
@@ -108,9 +112,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         {
             return Random.Range(0, 3) switch
             {
-                0 => new SimpleRotateAnimation(slicableViewTransform, angle),
-                1 => new ScaleAnimation(slicableViewTransform, shadowSpriteTransform),
-                2 => new MixedAnimation(slicableViewTransform, shadowSpriteTransform, angle),
+                0 => new SimpleRotateAnimation(slicableViewTransform, angle, _timeProvider),
+                1 => new ScaleAnimation(slicableViewTransform, shadowSpriteTransform, _timeProvider),
+                2 => new MixedAnimation(slicableViewTransform, shadowSpriteTransform, angle, _timeProvider),
                 
                 _ => throw new ArgumentException()
             };

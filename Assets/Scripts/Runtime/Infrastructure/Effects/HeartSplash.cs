@@ -5,10 +5,9 @@ using Zenject;
 namespace Runtime.Infrastructure.Effects
 {
     [RequireComponent(typeof(RectTransform))]
-    public sealed class HeartSplash : MonoBehaviour
+    public sealed class HeartSplash : AddictableFromScale
     {
         private RectTransform _rectTransform;
-        private Sequence _sequence;
 
         private void Awake()
         {
@@ -23,13 +22,13 @@ namespace Runtime.Infrastructure.Effects
             gameObject.SetActive(true);
             transform.localScale = Vector3.zero;
             
-            _sequence?.Kill();
-            _sequence = DOTween.Sequence();
+            Sequence?.Kill();
+            Sequence = DOTween.Sequence();
 
-            _sequence.Append(transform.DOScale(Vector3.one, 0.5f));
-            _sequence.Append(transform.DORotateQuaternion(Quaternion.Euler(0f, 0f, 25f), 0.25f).SetLoops(5, LoopType.Yoyo));
-            _sequence.Append(transform.DOScale(Vector3.zero, 0.5f));
-            _sequence.OnComplete(() =>
+            Sequence.Append(transform.DOScale(Vector3.one, 0.5f));
+            Sequence.Append(transform.DORotateQuaternion(Quaternion.Euler(0f, 0f, 25f), 0.25f).SetLoops(5, LoopType.Yoyo));
+            Sequence.Append(transform.DOScale(Vector3.zero, 0.5f));
+            Sequence.OnComplete(() =>
             {
                 gameObject.SetActive(false);
             });

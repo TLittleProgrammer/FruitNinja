@@ -5,9 +5,8 @@ using UnityEngine;
 
 namespace Runtime.Infrastructure.Effects
 {
-    public abstract class PopupEffect : MonoBehaviour
+    public abstract class PopupEffect : AddictableFromScale
     {
-        public Sequence Sequence;
         private IGameStateMachine _gameStateMachine;
         
         public void Initialize(IGameStateMachine gameStateMachine)
@@ -17,6 +16,8 @@ namespace Runtime.Infrastructure.Effects
 
         private void OnEnable()
         {
+            TimeProvider.TimeScaleChanged += OnTimeScaleChanged;
+            
             if (_gameStateMachine is null)
             {
                 return;
@@ -32,6 +33,8 @@ namespace Runtime.Infrastructure.Effects
 
         private void OnDisable()
         {
+            TimeProvider.TimeScaleChanged -= OnTimeScaleChanged;
+            
             if (_gameStateMachine is null)
             {
                 return;
