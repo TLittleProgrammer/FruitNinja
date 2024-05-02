@@ -23,7 +23,7 @@ namespace Runtime.Infrastructure.Timer
 
         public void Tick()
         {
-            if (_gameStateMachine.CurrentState is PauseState or LooseState)
+            if (_gameStateMachine is null || _gameStateMachine.CurrentState is PauseState or LooseState)
             {
                 return;
             }

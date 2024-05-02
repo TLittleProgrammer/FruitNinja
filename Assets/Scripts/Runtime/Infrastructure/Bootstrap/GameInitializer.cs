@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Containers;
+﻿using Cysharp.Threading.Tasks;
+using Runtime.Infrastructure.Containers;
 using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
@@ -35,6 +36,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly SliceableObjectDummy.Pool _dummies;
         private readonly Timer.Timer _timer;
         private readonly IStopwatchable _stopwatchable;
+        private readonly ProjectInitializer _projectInitializer;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -60,7 +62,8 @@ namespace Runtime.Infrastructure.Bootstrap
             IMimikService mimikService,
             SliceableObjectDummy.Pool dummies,
             Timer.Timer timer,
-            IStopwatchable stopwatchable
+            IStopwatchable stopwatchable,
+            ProjectInitializer projectInitializer
         )
         {
             _gameCanvas = gameCanvas;
@@ -82,10 +85,16 @@ namespace Runtime.Infrastructure.Bootstrap
             _dummies = dummies;
             _timer = timer;
             _stopwatchable = stopwatchable;
+            _projectInitializer = projectInitializer;
         }
 
         public async void Initialize()
         {
+            while (_projectInitializer.ProjectInitialized is false)
+            {
+                await UniTask.Delay(20);
+            }
+            
             await _slicableVisualContainer.AsyncInitialize();
             await _spriteProviderContainer.AsyncInitialize();
             await _timer.AsyncInitialize(_gameStateMachine);

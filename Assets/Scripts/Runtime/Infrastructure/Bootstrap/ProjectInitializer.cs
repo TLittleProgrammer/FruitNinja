@@ -1,8 +1,10 @@
-﻿using Runtime.Infrastructure.EntryPoint;
+﻿using Runtime.Constants;
+using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.UserData;
 using Runtime.StaticData.Installers;
 using Runtime.UI.Screens;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
@@ -13,6 +15,8 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly ScreenContainer _screenContainer;
         private readonly IEntryPoint _entryPoint;
         private readonly IUserDataSaveLoadService _userDataSaveLoadService;
+
+        public bool ProjectInitialized = false;
 
         public ProjectInitializer(
             ProjectSettings projectSettings,
@@ -35,7 +39,12 @@ namespace Runtime.Infrastructure.Bootstrap
             await _entryPoint.AsyncInitialize();
             _userDataSaveLoadService.Load();
 
-            _entryPoint.AsyncLoadScene(Constants.SceneNames.MainMenu);
+            ProjectInitialized = true;
+
+            if (SceneManager.GetActiveScene().name.Equals(SceneNames.Bootstrap))
+            {
+                _entryPoint.AsyncLoadScene(SceneNames.MainMenu);
+            }
         }
     }
 }

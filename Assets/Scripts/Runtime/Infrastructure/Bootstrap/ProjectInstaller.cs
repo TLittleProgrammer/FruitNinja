@@ -4,6 +4,7 @@ using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.UserData;
 using Runtime.UI.Screens;
+using UnityEngine;
 using Zenject;
 
 namespace Runtime.Infrastructure.Bootstrap
@@ -28,6 +29,7 @@ namespace Runtime.Infrastructure.Bootstrap
         public void Initialize()
         {
             ProjectInitializer projectInitializer = Container.Instantiate<ProjectInitializer>();
+            Container.Bind<ProjectInitializer>().FromInstance(projectInitializer).AsSingle();
             
             projectInitializer.Initialize();
         }
