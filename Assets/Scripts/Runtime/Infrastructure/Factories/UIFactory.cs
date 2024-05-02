@@ -55,5 +55,16 @@ namespace Runtime.Infrastructure.Factories
             
             return instance;
         }
+
+        public async UniTask<TResult> LoadUIObjectByPath<TResult>(string path, Transform parent, DiContainer diContainer, Vector3 position = default) where TResult : Object
+        {
+            TResult prefab = await _assetProvider.LoadObject<TResult>(path);
+
+            TResult instance = diContainer
+                .InstantiatePrefab(prefab, position, Quaternion.identity, parent)
+                .GetComponentInChildren<TResult>();
+            
+            return instance;
+        }
     }
 }

@@ -112,7 +112,7 @@ namespace Runtime.Infrastructure.Bootstrap
             
             TrailView trailView = await _worldFactory.CreateObject<TrailView>(PathToTrail, null);
 
-            Camera camera = await _uiFactory.LoadUIObjectByPath<Camera>(PathToGameCameraPrefab, null, Vector3.back * 10);
+            Camera camera = await _uiFactory.LoadUIObjectByPath<Camera>(PathToGameCameraPrefab, null, _diContainer, Vector3.back * 10);
             _gameCanvas.worldCamera = camera;
 
             await _mouseManager.AsyncInitialize(camera);

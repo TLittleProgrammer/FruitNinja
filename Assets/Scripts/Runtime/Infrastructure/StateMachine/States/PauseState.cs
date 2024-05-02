@@ -80,12 +80,12 @@ namespace Runtime.Infrastructure.StateMachine.States
             Object.Destroy(_pauseScreen.gameObject);
         }
 
-        private async void CreatePauseWindow()
+        private void CreatePauseWindow()
         {
             _pauseScreen = _uiFactory.LoadScreen<PauseScreen>(ScreenType.Pause, _pauseScreenParent.transform, _diContainer);
 
             Color targetColor = _pauseScreen.Background.color;
-            await AnimatePauseScreen(Vector3.zero, Vector3.one, new(targetColor.r, targetColor.g, targetColor.b, 0f), targetColor, true);
+            AnimatePauseScreen(Vector3.zero, Vector3.one, new(targetColor.r, targetColor.g, targetColor.b, 0f), targetColor, true).Forget();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -97,23 +97,23 @@ namespace Runtime.Infrastructure.StateMachine.States
 
             if (animateBackBeforeTransform)
             {
-                await sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
-                await _blurEffect.UpdateBlur(2f, 0.9f);
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+                _blurEffect.UpdateBlur(2f, 0.9f);
             }
             
             foreach (Transform transform in _pauseScreen.Transforms)
             {
                 transform.localScale = initialScale;
-                await sequence.Append(transform.DOScale(targetScale, 0.15f).SetEase(Ease.InCubic));
+                sequence.Append(transform.DOScale(targetScale, 0.15f).SetEase(Ease.InCubic));
             }
 
             if (!animateBackBeforeTransform)
             {
-                await sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
-                await _blurEffect.UpdateBlur(0f, 0.9f);
+                sequence.Append(_pauseScreen.Background.DOColor(targetColor, 0.5f));
+                _blurEffect.UpdateBlur(0f, 0.9f);
             }
 
-            await sequence.OnComplete(() =>
+            sequence.OnComplete(() =>
             {
                 sequence.Kill();
             });
