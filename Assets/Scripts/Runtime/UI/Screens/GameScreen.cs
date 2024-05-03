@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using Runtime.UI.Game;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +43,10 @@ namespace Runtime.UI.Screens
 
         private void OnPauseButtonClicked()
         {
-            _gameStateMachine.Enter<PauseState>();
+            if (_gameStateMachine.CurrentState is not LooseState)
+            {
+                _gameStateMachine.Enter<PauseState>();
+            }
         }
     }
 }

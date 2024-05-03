@@ -75,6 +75,9 @@ namespace Runtime.Infrastructure.StateMachine.States
 
         public async void Exit()
         {
+            if (_looseScreen is null)
+                return;
+            
             await HideLooseScreen();
             
             _spawnerManager.SetStop(false);
