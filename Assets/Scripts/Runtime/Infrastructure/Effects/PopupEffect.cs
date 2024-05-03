@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 
@@ -13,6 +14,18 @@ namespace Runtime.Infrastructure.Effects
             _gameStateMachine = gameStateMachine;
         }
 
+        private void Update()
+        {
+            if ((_gameStateMachine.CurrentState as IExitableState) is PauseState or LooseState)
+            {
+                Sequence.Pause();
+            }
+            else
+            {
+                Sequence.Play();
+            }
+        }
+
         private void OnEnable()
         {
             TimeProvider.TimeScaleChanged += OnTimeScaleChanged;
@@ -23,11 +36,6 @@ namespace Runtime.Infrastructure.Effects
             }
             
             _gameStateMachine.UpdatedState += OnUpdatedState;
-
-            if ((_gameStateMachine.CurrentState as IExitableState) is PauseState or LooseState)
-            {
-                Sequence.Pause();
-            }
         }
 
         private void OnDisable()
