@@ -12,7 +12,7 @@ namespace Runtime.Infrastructure.Mouse
             float deltaTime = time / _divide;
             float allTime = 0f;
 
-            List<Vector2> mousePositions = new();
+            List<Vector2> mousePositions = new(22);
             
             while (allTime <= time)
             {
