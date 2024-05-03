@@ -74,7 +74,7 @@ namespace Runtime.Infrastructure.Effects
 
             if (blotSprite is not null)
             {
-                BlotEffect blotEffect = _blotEffectPool.InactiveItems.First(_ => !_.gameObject.activeInHierarchy);
+                BlotEffect blotEffect = _blotEffectPool.InactiveItems.GetInactiveObject();
                 
                 blotEffect.Animate(position, blotSprite, () =>
                 {
