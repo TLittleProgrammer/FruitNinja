@@ -34,9 +34,9 @@ namespace Runtime.Infrastructure.SlicableObjects
             _splashColorDictionary   = new();
             _slicedSpritedDictionary = new();
 
-            foreach (SlicableDictionary slicableDictionary in _slicableSpriteProvider.SlicableDictionary)
+            foreach (SlicableDictionary slicableDictionary in _slicableSpriteProvider.SlicableDictionary.ToArray())
             {
-                foreach (SlicableItemParams slicableParams in slicableDictionary.SlicableItem.Params)
+                foreach (SlicableItemParams slicableParams in slicableDictionary.SlicableItem.Params.ToArray())
                 {
                     AddItemToSpritesDictionary(slicableDictionary, slicableParams);
                     AddSpritesToBlotsList(slicableParams);

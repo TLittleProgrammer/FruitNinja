@@ -10,7 +10,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         
         private float _offsetX;
         private float _offsetY;
-        private float _accelerationOfGravity;
 
         private Transform _movementTransform;
         private Vector2 _position;
@@ -18,7 +17,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         private float _velocityY;
         private float _angle;
         private float _constantValueInSpeedYFormula;
-        private float _allTime;
         private Vector2 _startPosition;
 
         public MovementObjectService(Transform movementTransform, float velocityX, float velocityY, float angle, ITimeProvider timeProvider)
@@ -35,11 +33,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
             _velocityX = velocityX;
             _velocityY = velocityY;
             _angle = angle;
-            _allTime = 0f;
 
             _offsetX = _velocityX * Mathf.Cos(_angle);
             _offsetY = _velocityY * Mathf.Sin(_angle);
-            _accelerationOfGravity = World.Gravity;
             _position = Vector2.zero;
         }
 
@@ -47,8 +43,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 
         public void SimulateMovement()
         {
-            _allTime += _timeProvider.DeltaTime;
-            _offsetY += _accelerationOfGravity * _timeProvider.DeltaTime;
+            _offsetY += World.Gravity * _timeProvider.DeltaTime;
             
             _position = new Vector2(_position.x + _offsetX * _timeProvider.DeltaTime, _position.y + _timeProvider.DeltaTime * _offsetY);
             _movementTransform.position = Position;
@@ -56,7 +51,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
 
         public void Reset(float velocityY, float velocityX, float angle, Vector3 startPosition)
         {
-            _allTime = 0f;
             _startPosition = startPosition;
             Initialize(velocityX, velocityY, angle);
         }

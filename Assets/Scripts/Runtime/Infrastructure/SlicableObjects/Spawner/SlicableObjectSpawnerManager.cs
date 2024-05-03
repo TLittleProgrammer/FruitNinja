@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.SlicableObjects.Movement;
@@ -9,6 +10,7 @@ using Runtime.StaticData.Level;
 using UnityEngine;
 using IInitializable = Zenject.IInitializable;
 using ITickable = Zenject.ITickable;
+using Random = UnityEngine.Random;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner
 {
@@ -102,7 +104,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
 
             int packSize = _spawnerPackResize[spawnerDataIndex] + spawnerData.PackSize;
 
-            List<SlicableObjectType> type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas, packSize);
+            Array type = ChooseSlicableObjectType(spawnerData.SlicableObjectSpawnerDatas, packSize).ToArray();
 
             foreach (SlicableObjectType objectType in type)
             {
