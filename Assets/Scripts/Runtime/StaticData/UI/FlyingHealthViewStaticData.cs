@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Runtime.StaticData.UI
 {
@@ -8,7 +7,6 @@ namespace Runtime.StaticData.UI
     {
         public float TimeDelayAfterAnimation;
         public float FlyDuration;
-        public Ease Ease;
 
         public float DestroyDuration;
     }

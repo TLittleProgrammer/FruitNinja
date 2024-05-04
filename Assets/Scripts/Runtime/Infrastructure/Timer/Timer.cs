@@ -9,13 +9,15 @@ using Zenject;
 namespace Runtime.Infrastructure.Timer
 {
     //TODO Подумать над именем класса
-    public class Timer : ITickable, IAsyncInitializable<IGameStateMachine>
+    public class Timer : ITickable, IAsyncInitializable<IGameStateMachine, ITimeProvider>
     {
         private IGameStateMachine _gameStateMachine;
         private List<TimerData> _timers = new();
-        
-        public async UniTask AsyncInitialize(IGameStateMachine payload)
+        private ITimeProvider _timeProvider;
+
+        public async UniTask AsyncInitialize(IGameStateMachine payload, ITimeProvider timeProvider)
         {
+            _timeProvider = timeProvider;
             _gameStateMachine = payload;
             await UniTask.CompletedTask;
         }
@@ -31,7 +33,7 @@ namespace Runtime.Infrastructure.Timer
             {
                 TimerData timerData = _timers[i];
 
-                timerData.CurrentTime -= Time.deltaTime;
+                timerData.CurrentTime -= _timeProvider.DeltaTime;
 
                 if (timerData.IsAnimated is false && timerData.CurrentTime <= timerData.SpecialIntervalBeforeShit)
                 {

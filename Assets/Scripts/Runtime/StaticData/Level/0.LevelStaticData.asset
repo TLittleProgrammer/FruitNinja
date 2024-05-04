@@ -13,10 +13,18 @@ MonoBehaviour:
   m_Name: 0.LevelStaticData
   m_EditorClassIdentifier: 
   SlicableObjectSpawnerDataList:
-  - Weight: 4
+  - Weight: 8
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
+      Weight: 8
+    - SlicableObjectType: 2
+      Weight: 7
+    - SlicableObjectType: 7
       Weight: 3
+    - SlicableObjectType: 8
+      Weight: 2
+    - SlicableObjectType: 9
+      Weight: 2
     FirstSpawnPoint:
       Min: -0.1
       Max: -0.1
@@ -36,20 +44,84 @@ MonoBehaviour:
     FirstOffset: 12.64
     SecondOffset: -18.2
     PackSize: 1
-  - Weight: 90
+  - Weight: 6
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 8
+      Weight: 2
+    - SlicableObjectType: 1
+      Weight: 1
+    - SlicableObjectType: 7
+      Weight: 3
+    - SlicableObjectType: 5
+      Weight: 2
+    FirstSpawnPoint:
+      Min: 2.2
+      Max: 2.2
+    SecondSpawnPoint:
+      Min: -0.16
+      Max: 0.3
+    XVelocity:
+      Min: 8
+      Max: 12
+    YVelocity:
+      Min: 6
+      Max: 15
+    SpawnOffset:
+      Min: 0.15
+      Max: 0.25
+    MainDirectionOffset: 53.9
+    FirstOffset: 5.45
+    SecondOffset: -21.08
+    PackSize: 1
+  - Weight: 6
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 4
+      Weight: 10
+    - SlicableObjectType: 1
+      Weight: 3
+    - SlicableObjectType: 3
+      Weight: 2
+    - SlicableObjectType: 7
+      Weight: 2
+    - SlicableObjectType: 8
+      Weight: 8
+    - SlicableObjectType: 9
+      Weight: 4
+    - SlicableObjectType: 2
+      Weight: 15
+    - SlicableObjectType: 2
+      Weight: 15
+    FirstSpawnPoint:
+      Min: 2.2
+      Max: 2.2
+    SecondSpawnPoint:
+      Min: 0.2
+      Max: 0.95
+    XVelocity:
+      Min: 10
+      Max: 17
+    YVelocity:
+      Min: 6
+      Max: 15
+    SpawnOffset:
+      Min: 0.15
+      Max: 0.25
+    MainDirectionOffset: 76.1
+    FirstOffset: 10.7
+    SecondOffset: -28
+    PackSize: 1
+  - Weight: 25
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
-      Weight: 999
-    - SlicableObjectType: 3
-      Weight: 50
+      Weight: 20
     - SlicableObjectType: 2
       Weight: 5
     - SlicableObjectType: 5
-      Weight: 5
+      Weight: 4
+    - SlicableObjectType: 8
+      Weight: 2
     - SlicableObjectType: 9
-      Weight: 750
-    - SlicableObjectType: 9
-      Weight: 45
+      Weight: 4
     FirstSpawnPoint:
       Min: 0.45
       Max: 1.45
@@ -69,14 +141,14 @@ MonoBehaviour:
     FirstOffset: -34.11
     SecondOffset: 34.5
     PackSize: 1
-  - Weight: 50
+  - Weight: 5
     SlicableObjectSpawnerDatas:
     - SlicableObjectType: 1
-      Weight: 1
-    - SlicableObjectType: 2
-      Weight: 1
-    - SlicableObjectType: 6
       Weight: 5
+    - SlicableObjectType: 2
+      Weight: 3
+    - SlicableObjectType: 6
+      Weight: 2
     FirstSpawnPoint:
       Min: 2.2
       Max: 2.2
@@ -95,6 +167,37 @@ MonoBehaviour:
     MainDirectionOffset: 44.7
     FirstOffset: 5.45
     SecondOffset: -21.08
+    PackSize: 1
+  - Weight: 3
+    SlicableObjectSpawnerDatas:
+    - SlicableObjectType: 1
+      Weight: 3
+    - SlicableObjectType: 3
+      Weight: 4
+    - SlicableObjectType: 4
+      Weight: 5
+    - SlicableObjectType: 6
+      Weight: 3
+    - SlicableObjectType: 9
+      Weight: 6
+    FirstSpawnPoint:
+      Min: -0.1
+      Max: -0.1
+    SecondSpawnPoint:
+      Min: 0.08
+      Max: -0.33
+    XVelocity:
+      Min: 9
+      Max: 17
+    YVelocity:
+      Min: 6
+      Max: 35
+    SpawnOffset:
+      Min: 0.12
+      Max: 0.57
+    MainDirectionOffset: -36.5
+    FirstOffset: 12.64
+    SecondOffset: -12.9
     PackSize: 1
   BeginPackOffset: 2
   EndPackOffset: 3

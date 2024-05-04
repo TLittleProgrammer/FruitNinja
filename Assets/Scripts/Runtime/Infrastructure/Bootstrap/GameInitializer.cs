@@ -38,6 +38,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly Timer.Timer _timer;
         private readonly IStopwatchable _stopwatchable;
         private readonly ProjectInitializer _projectInitializer;
+        private readonly ITimeProvider _timeProvider;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -65,7 +66,8 @@ namespace Runtime.Infrastructure.Bootstrap
             Timer.Timer timer,
             IStopwatchable stopwatchable,
             ProjectInitializer projectInitializer,
-            ComboSequenceResolver comboSequenceResolver
+            ComboSequenceResolver comboSequenceResolver,
+            ITimeProvider timeProvider
         )
         {
             _gameCanvas = gameCanvas;
@@ -88,6 +90,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _timer = timer;
             _stopwatchable = stopwatchable;
             _projectInitializer = projectInitializer;
+            _timeProvider = timeProvider;
         }
 
         public async void Initialize()
@@ -99,8 +102,8 @@ namespace Runtime.Infrastructure.Bootstrap
             
             await _slicableVisualContainer.AsyncInitialize();
             await _spriteProviderContainer.AsyncInitialize();
-            await _timer.AsyncInitialize(_gameStateMachine);
-            await _stopwatchable.AsyncInitialize(_gameStateMachine);
+            await _timer.AsyncInitialize(_gameStateMachine, _timeProvider);
+            await _stopwatchable.AsyncInitialize(_gameStateMachine, _timeProvider);
 
             foreach (SlicableObjectView view in _slicableObjectViewPool.InactiveItems)
             {

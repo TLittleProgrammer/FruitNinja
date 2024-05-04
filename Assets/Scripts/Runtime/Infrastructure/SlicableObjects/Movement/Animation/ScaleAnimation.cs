@@ -27,6 +27,9 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.Animation
 
         public void SimulateAnimation()
         {
+            if (_mainTransform.localScale.x >= 1.25f)
+                return;
+            
             float mainScaleDelta   = MainScaleSpeed * _timeProvider.DeltaTime;
             float shadowOffsetDelta = ShadowOffsetSpeed * _timeProvider.DeltaTime;
 

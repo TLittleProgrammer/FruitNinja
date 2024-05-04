@@ -13,9 +13,11 @@ namespace Runtime.Infrastructure.Timer
         public event Action TickEnded;
 
         private float _time = 0f;
+        private ITimeProvider _timeProvider;
 
-        public async UniTask AsyncInitialize(IGameStateMachine payload)
+        public async UniTask AsyncInitialize(IGameStateMachine payload, ITimeProvider timeProvider)
         {
+            _timeProvider = timeProvider;
             _gameStateMachine = payload;
             await UniTask.CompletedTask;
         }
@@ -25,7 +27,7 @@ namespace Runtime.Infrastructure.Timer
             if (_time <= 0f || _gameStateMachine.CurrentState is PauseState)
                 return;
 
-            _time -= Time.deltaTime;
+            _time -= _timeProvider.DeltaTime;
             Ticked?.Invoke((int)_time);
 
             if (_time <= 0f)

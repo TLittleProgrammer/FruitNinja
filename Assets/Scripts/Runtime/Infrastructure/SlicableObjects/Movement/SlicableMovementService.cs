@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -23,7 +25,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             if (_canMove is false)
                 return;
             
-            foreach (SlicableModel model in _slicableMapping.Values)
+            foreach (SlicableModel model in _slicableMapping.Values.ToArray())
             {
                 model.Tick();
             }
@@ -41,6 +43,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public void RemoveFromMapping(Transform view)
         {
+            GC.KeepAlive(_slicableMapping[view]);
             _slicableMapping.Remove(view);
         }
 

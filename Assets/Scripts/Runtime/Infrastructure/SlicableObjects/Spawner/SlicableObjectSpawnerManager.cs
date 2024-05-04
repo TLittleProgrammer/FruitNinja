@@ -122,8 +122,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner
                     foreach (SlicableObjectSpawnerData spawner in _spawnersData)
                     {
                         _slicableModelViewMapper.AddMapping(spawner, targetType);
-                        _slicableModelViewMapper.AddMapping(spawner, targetType);
-                        _slicableModelViewMapper.AddMapping(spawner, targetType);
                     }
 
                     break;
