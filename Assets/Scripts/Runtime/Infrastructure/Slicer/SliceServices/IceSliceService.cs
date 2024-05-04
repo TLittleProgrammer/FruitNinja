@@ -14,6 +14,7 @@ using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.Boosts;
 using Runtime.UI.Screens;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 using Object = UnityEngine.Object;
 
@@ -30,8 +31,10 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private readonly IShowEffectsService _showEffectsService;
         private readonly MouseManager _mouseManager;
 
-        private GameObject _iceScreen;
+        private Image _iceScreen;
         private bool _animated = false;
+        private Color _initialColor;
+        private Sequence _hide;
 
         private Sequence _sequence;
 
@@ -63,6 +66,31 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         {
             if (_animated)
             {
+                _sequence?.Kill();
+                _sequence = DOTween.Sequence();
+                
+                _hide?.Kill();
+                _iceScreen.DOColor(_initialColor, _iceSettings.DurationToReturnNormalTimeScale).From(_iceScreen.color);
+            
+                _sequence.Append(ChangeScale(_timeProvider.TimeScale, _iceSettings.TargetTimeScale, _iceSettings.DurationToReturnNormalTimeScale, SetTimeScale)).ToUniTask().Forget();
+                _sequence
+                    .AppendInterval(_iceSettings.Duration)
+                    .ToUniTask()
+                    .Forget();
+                _sequence.Append(ChangeScale(_iceSettings.TargetTimeScale, 1f, _iceSettings.DurationToReturnNormalTimeScale, SetTimeScale)).ToUniTask().Forget();
+                _sequence.OnComplete(() =>
+                {
+                    _animated = false;
+                    _hide.Kill();
+                    Object.Destroy(_iceScreen.gameObject);
+                
+                    _sequence.Kill();
+                });
+                
+                HideBack(_iceSettings.Duration + _iceSettings.DurationToReturnNormalTimeScale * 2f);
+                
+                _createDummiesService.AddDummies(slicableObjectView);
+                RemoveSlicableObjectFromMapping(slicableObjectView);
                 return true;
             }
             TryAnimate();
@@ -75,9 +103,21 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             return true;
         }
 
+        private void HideBack(float offset)
+        {
+            _hide?.Kill();
+            _hide = DOTween.Sequence()
+                .AppendInterval(offset)
+                .Append(_iceScreen.DOColor(Color.clear, _iceSettings.DurationToReturnNormalTimeScale));
+        }
+
         private void TryAnimate()
         {
-            _iceScreen = _uiFactory.LoadScreen<RectTransform>(ScreenType.Ice, _iceBackgroundParent, _diContainer).gameObject;
+            _iceScreen = _uiFactory.LoadScreen<Image>(ScreenType.Ice, _iceBackgroundParent, _diContainer);
+            _initialColor = _iceScreen.color;
+            
+            _iceScreen.DOColor(_initialColor, _iceSettings.DurationToReturnNormalTimeScale).From(Color.clear);
+            
             _animated = true;
             
             Animate();
@@ -100,18 +140,24 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _sequence = DOTween.Sequence();
             
             _sequence.Append(ChangeScale(1f, _iceSettings.TargetTimeScale, _iceSettings.DurationToReturnNormalTimeScale, SetTimeScale)).ToUniTask().Forget();
-            _sequence.AppendInterval(_iceSettings.Duration).ToUniTask().Forget();
+            _sequence
+                .AppendInterval(_iceSettings.Duration)
+                .ToUniTask()
+                .Forget();
             _sequence.Append(ChangeScale(_iceSettings.TargetTimeScale, 1f, _iceSettings.DurationToReturnNormalTimeScale, SetTimeScale)).ToUniTask().Forget();
             _sequence.OnComplete(() =>
             {
                 _animated = false;
-                Object.Destroy(_iceScreen);
+                _hide.Kill();
+                Object.Destroy(_iceScreen.gameObject);
                 
                 _sequence.Kill();
             });
+
+            HideBack(_iceSettings.DurationToReturnNormalTimeScale + _iceSettings.Duration);
         }
 
-        private Tweener ChangeScale(float from, float target, float duration, Action<float> updated)
+        private Tweener ChangeScale(float from, float target, float duration, Action<float> updated, bool flag = false)
         {
             return DOVirtual.Float(from, target, duration, updated.Invoke);
         }

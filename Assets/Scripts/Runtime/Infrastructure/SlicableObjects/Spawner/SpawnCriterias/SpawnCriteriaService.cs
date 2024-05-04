@@ -26,10 +26,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias
             {
                 newList = newList.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList();
             }
-            if (_slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Ice) >= 1)
-            {
-                newList = newList.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList();
-            }
 
             if (_gameParameters.CurrentHealthIsMax)
             {

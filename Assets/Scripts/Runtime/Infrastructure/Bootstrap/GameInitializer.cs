@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Containers;
+using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
@@ -39,6 +40,7 @@ namespace Runtime.Infrastructure.Bootstrap
         private readonly IStopwatchable _stopwatchable;
         private readonly ProjectInitializer _projectInitializer;
         private readonly ITimeProvider _timeProvider;
+        private readonly SplashEffect.Pool _splashEffectPool;
         private readonly MouseManager _mouseManager;
         private readonly IEntryPoint _entryPoint;
         private readonly IUIFactory _uiFactory;
@@ -67,7 +69,8 @@ namespace Runtime.Infrastructure.Bootstrap
             IStopwatchable stopwatchable,
             ProjectInitializer projectInitializer,
             ComboSequenceResolver comboSequenceResolver,
-            ITimeProvider timeProvider
+            ITimeProvider timeProvider,
+            SplashEffect.Pool splashEffectPool
         )
         {
             _gameCanvas = gameCanvas;
@@ -91,6 +94,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _stopwatchable = stopwatchable;
             _projectInitializer = projectInitializer;
             _timeProvider = timeProvider;
+            _splashEffectPool = splashEffectPool;
         }
 
         public async void Initialize()
@@ -99,7 +103,7 @@ namespace Runtime.Infrastructure.Bootstrap
             {
                 await UniTask.Delay(20);
             }
-            
+
             await _slicableVisualContainer.AsyncInitialize();
             await _spriteProviderContainer.AsyncInitialize();
             await _timer.AsyncInitialize(_gameStateMachine, _timeProvider);

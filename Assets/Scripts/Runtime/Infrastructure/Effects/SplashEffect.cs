@@ -1,4 +1,7 @@
-﻿using Runtime.Infrastructure.Timer;
+﻿using System;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
+using Runtime.Infrastructure.Timer;
 using UnityEngine;
 using Zenject;
 
@@ -9,11 +12,29 @@ namespace Runtime.Infrastructure.Effects
     {
         private ParticleSystem _particleSystem;
         private ParticleSystem.MainModule _particleSystemMainModule;
+        private ITimeProvider _timeProvider;
 
         [Inject]
         private void Construct(ITimeProvider timeProvider)
         {
-            timeProvider.TimeScaleChanged += OnTimeScaleChanged;
+            _timeProvider = timeProvider;
+        }
+
+        private void Update()
+        {
+            _particleSystemMainModule.simulationSpeed = _timeProvider.TimeScale;
+        }
+
+        private void OnUpdatedState(IExitableState state)
+        {
+            if (state is PauseState)
+            {
+                _particleSystemMainModule.simulationSpeed = 0f;
+            }
+            else
+            {
+                _particleSystemMainModule.simulationSpeed = 1f;
+            }
         }
 
         private void Awake()
@@ -41,8 +62,8 @@ namespace Runtime.Infrastructure.Effects
         {
             _particleSystemMainModule.startColor = color;
         }
-        
-        public class Pool : MonoMemoryPool<Vector3, SplashEffect>
+
+        public class Pool : MonoMemoryPool<SplashEffect>
         {
         }
     }

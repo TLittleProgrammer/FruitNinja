@@ -3,6 +3,8 @@ using Runtime.Extensions;
 using Runtime.Infrastructure.Combo;
 using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using UnityEngine;
 
 namespace Runtime.Infrastructure.Effects
@@ -42,7 +44,7 @@ namespace Runtime.Infrastructure.Effects
                 MouseManager mouseManager,
                 IComboService comboService,
                 IComboViewPositionCorrecter comboViewPositionCorrecter
-            )
+        )
         {
             _bombEffectPool = bombEffectPool;
             _heartSplashPool = heartSplashPool;
@@ -61,7 +63,6 @@ namespace Runtime.Infrastructure.Effects
         {
             _lastSlicedPosition = position;
             SplashEffect splashEffect = _splashEffectPool.InactiveItems.GetInactiveObject();
-
 
             Color color = _slicableVisualContainer.GetSplashColorBySpriteName(spriteName);
             splashEffect.PlayEffect(position, color);
