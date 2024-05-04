@@ -1,4 +1,5 @@
-﻿using Runtime.Infrastructure.Timer;
+﻿using DG.Tweening;
+using Runtime.Infrastructure.Timer;
 using UnityEngine;
 using Zenject;
 using Sequence = DG.Tweening.Sequence;
@@ -13,7 +14,8 @@ namespace Runtime.Infrastructure.Effects
     public class AddictableFromScale : MonoBehaviour, IAddictableFromScale
     {
         protected ITimeProvider TimeProvider;
-        protected Sequence Sequence;
+        protected Sequence Sequence = DOTween.Sequence();
+        protected bool CanPause = false;
 
         [Inject]
         public void Construct(ITimeProvider timeProvider)

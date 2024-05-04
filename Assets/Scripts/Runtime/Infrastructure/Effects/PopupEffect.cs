@@ -16,20 +16,19 @@ namespace Runtime.Infrastructure.Effects
 
         private void Update()
         {
-            if ((_gameStateMachine.CurrentState as IExitableState) is PauseState or LooseState)
+            if ((_gameStateMachine.CurrentState as IExitableState) is PauseState)
             {
-                Sequence.Pause();
+                    Sequence.Pause();
             }
             else
             {
+                Sequence.timeScale = TimeProvider.TimeScale;
                 Sequence.Play();
             }
         }
 
         private void OnEnable()
         {
-            TimeProvider.TimeScaleChanged += OnTimeScaleChanged;
-            
             if (_gameStateMachine is null)
             {
                 return;
@@ -40,8 +39,6 @@ namespace Runtime.Infrastructure.Effects
 
         private void OnDisable()
         {
-            TimeProvider.TimeScaleChanged -= OnTimeScaleChanged;
-            
             if (_gameStateMachine is null)
             {
                 return;

@@ -7,6 +7,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
     {
         int HealthCounter { get; }
         
-        void Fly(Vector2 slicedPosition);
+        void Fly(Vector2 slicedPosition, Vector3 transformLocalScale);
     }
 }

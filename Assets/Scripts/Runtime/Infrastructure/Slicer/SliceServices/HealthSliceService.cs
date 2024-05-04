@@ -36,7 +36,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
 
             Vector2 screenPosition = _manager.GetScreenPosition(slicableObjectView.transform.position);
             
-            _healthFlyingService.Fly(screenPosition);
+            _healthFlyingService.Fly(screenPosition, slicableObjectView.transform.localScale);
             _showEffectsService.PlayHeartSplash(screenPosition, SlicableObjectType.Health);
             return true;
         }

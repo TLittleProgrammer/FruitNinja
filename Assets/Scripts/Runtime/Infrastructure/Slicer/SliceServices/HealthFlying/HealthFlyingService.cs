@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.UI;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
         private readonly FlyingHealthView.Pool _healthViewPool;
         private readonly FlyingHealthViewStaticData _flyingHealthViewStaticData;
         private readonly GameParameters _gameParameters;
+        private readonly ITimeProvider _timeProvider;
 
         private GameScreen _gameScreen;
         private List<FlyingHealth> _healthList;
@@ -24,16 +26,19 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
         public HealthFlyingService(
             FlyingHealthView.Pool healthViewPool,
             FlyingHealthViewStaticData flyingHealthViewStaticData,
-            GameParameters gameParameters)
+            GameParameters gameParameters,
+            ITimeProvider timeProvider)
         {
             _healthViewPool = healthViewPool;
             _flyingHealthViewStaticData = flyingHealthViewStaticData;
             _gameParameters = gameParameters;
+            _timeProvider = timeProvider;
             _healthList = new();
             
             
             _previousHealth = gameParameters.MaxHealth;
             gameParameters.HealthChanged += OnHealthChanged;
+            timeProvider.TimeScaleChanged += OnTimeScaleChanged;
         }
 
         public async UniTask AsyncInitialize(GameScreen payload)
@@ -43,7 +48,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             await UniTask.CompletedTask;
         }
 
-        public void Fly(Vector2 slicedPosition)
+        public void Fly(Vector2 slicedPosition, Vector3 transformLocalScale)
         {
             if (_gameParameters.CurrentHealthIsMax || _healthList.Count + _gameParameters.Health >= _gameParameters.MaxHealth)
             {
@@ -52,12 +57,28 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             
             FlyingHealthView flyingHealthView = _healthViewPool.InactiveItems.GetInactiveObject();
             flyingHealthView.RectTransform.position = slicedPosition;
+            flyingHealthView.Image.SetNativeSize();
+            var imageRectRect = flyingHealthView.ImageRect.rect;
+            imageRectRect.size = transformLocalScale;
 
             var targetPosition = CalculateTargetPosition();
             //TODO этим должна заниматься фабрика
             var flyingHealth = CreateHealth(flyingHealthView, targetPosition);
-
+            flyingHealth.MoveSequence.timeScale = _timeProvider.TimeScale;
+            flyingHealth.ScaleSequence.timeScale = _timeProvider.TimeScale;
+            
+            
+            
             _healthList.Add(flyingHealth);
+        }
+
+        private void OnTimeScaleChanged(float timeScale)
+        {
+            foreach (FlyingHealth flyingHealth in _healthList)
+            {
+                flyingHealth.MoveSequence.timeScale = timeScale;
+                flyingHealth.ScaleSequence.timeScale = timeScale;
+            }
         }
 
         private Vector2 CalculateTargetPosition()
