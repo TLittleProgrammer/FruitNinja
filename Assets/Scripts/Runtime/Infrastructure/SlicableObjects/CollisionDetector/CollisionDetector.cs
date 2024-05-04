@@ -53,7 +53,8 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
             {
                 foreach (Vector2 mousePosition in mousePositions)
                 {
-                    if (turpleArray[i].Item1.OverlapPoint(mousePosition))
+                    float distance = Vector2.Distance(turpleArray[i].Item2.transform.position, mousePosition);
+                    if (distance <= 0.75f)
                     {
                         if (TrySlice(turpleArray, ref i) is false)
                         {

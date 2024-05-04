@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Runtime.Infrastructure.SlicableObjects.Movement
 {
-    public class SlicableMovementService : ILateTickable
+    public class SlicableMovementService : ITickable
     {
         private SliceableMapping _slicableMapping;
         private bool _canMove;
@@ -18,7 +18,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
         public int MovementObjectsCount => _slicableMapping.Count;
         public IEnumerable<SlicableModel> SlicableModels => _slicableMapping.Values;
 
-        public void LateTick()
+        public void Tick()
         {
             if (_canMove is false)
                 return;

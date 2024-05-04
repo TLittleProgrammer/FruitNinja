@@ -3,11 +3,10 @@ using Cysharp.Threading.Tasks;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
 using UnityEngine;
-using Zenject;
 
 namespace Runtime.Infrastructure.Timer
 {
-    public sealed class Stopwatch : IStopwatchable, ITickable
+    public sealed class Stopwatch : IStopwatchable
     {
         private IGameStateMachine _gameStateMachine;
         public event Action<int> Ticked;

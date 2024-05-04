@@ -5,7 +5,7 @@ namespace Runtime.Infrastructure.Mouse
 {
     public class IntermediateMousePositionsService : IIntermediateMousePositionsService
     {
-        private const float _divide = 20;
+        private const float _divide = 10;
 
         public Vector2[] GetIntermediateMousePositions(Vector2 firstPosition, Vector2 lastPosition, float time)
         {

@@ -1,4 +1,5 @@
-﻿using Runtime.Constants;
+﻿using DG.Tweening;
+using Runtime.Constants;
 using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.UserData;
 using Runtime.StaticData.Installers;
@@ -40,6 +41,7 @@ namespace Runtime.Infrastructure.Bootstrap
             _userDataSaveLoadService.Load();
 
             ProjectInitialized = true;
+            DOTween.SetTweensCapacity(500, 500);
 
             if (SceneManager.GetActiveScene().name.Equals(SceneNames.Bootstrap))
             {

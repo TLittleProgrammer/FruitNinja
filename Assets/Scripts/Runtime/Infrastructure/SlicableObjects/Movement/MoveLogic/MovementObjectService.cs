@@ -44,8 +44,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement.MoveLogic
         public void SimulateMovement()
         {
             _offsetY += World.Gravity * _timeProvider.DeltaTime;
-            
-            _position = new Vector2(_position.x + _offsetX * _timeProvider.DeltaTime, _position.y + _timeProvider.DeltaTime * _offsetY);
+
+            _position += new Vector2(_offsetX, _offsetY) * _timeProvider.DeltaTime;
             _movementTransform.position = Position;
         }
 

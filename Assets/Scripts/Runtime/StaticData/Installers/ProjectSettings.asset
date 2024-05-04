@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e134b2ca3dfd43b4acd5131d0b297052, type: 3}
   m_Name: ProjectSettings
   m_EditorClassIdentifier: 
-  ApplicationTargetFrameCount: 60
+  ApplicationTargetFrameCount: 120
   QualitySettingsVSyncCount: 0
