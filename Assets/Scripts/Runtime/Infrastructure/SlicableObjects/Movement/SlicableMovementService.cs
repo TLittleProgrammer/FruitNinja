@@ -43,7 +43,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
 
         public void RemoveFromMapping(Transform view)
         {
-            GC.KeepAlive(_slicableMapping[view]);
             _slicableMapping.Remove(view);
         }
 
