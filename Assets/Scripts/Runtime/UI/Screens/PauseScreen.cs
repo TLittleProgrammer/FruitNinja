@@ -1,4 +1,5 @@
-﻿using Runtime.Constants;
+﻿using DG.Tweening;
+using Runtime.Constants;
 using Runtime.Infrastructure.EntryPoint;
 using Runtime.Infrastructure.StateMachine;
 using Runtime.Infrastructure.StateMachine.States;
@@ -56,7 +57,8 @@ namespace Runtime.UI.Screens
                 return;
             }
             DisableButtons();
-
+            DOTween.KillAll();
+            
             _entryPoint.AsyncLoadScene(SceneNames.MainMenu);
         }
 
