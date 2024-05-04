@@ -6,6 +6,7 @@ using Runtime.Infrastructure.Mouse;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
 using Runtime.Infrastructure.Slicer.SliceServices;
+using Runtime.Infrastructure.Timer;
 using Runtime.Infrastructure.Trail;
 using Runtime.UI.Screens;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly TrailMoveService _trailMoveService;
         private readonly MouseManager _mouseManager;
         private readonly MagnetSliceService _magnetSliceService;
+        private readonly ITimeProvider _timeProvider;
 
         private bool _isEntered;
         private LooseScreen _looseScreen;
@@ -35,7 +37,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
-            MagnetSliceService magnetSliceService
+            MagnetSliceService magnetSliceService,
+            ITimeProvider timeProvider
             )
         {
             _looseScreenParent = looseScreenParent;
@@ -46,6 +49,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _magnetSliceService = magnetSliceService;
+            _timeProvider = timeProvider;
             _isEntered = false;
         }
 
@@ -62,6 +66,7 @@ namespace Runtime.Infrastructure.StateMachine.States
 
         public void Enter()
         {
+            _timeProvider.SetScale(1f);
             _spawnerManager.SetStop(true);
             _mouseManager.SetStopValue(true);
             _trailMoveService.SetCanTrail(false);
