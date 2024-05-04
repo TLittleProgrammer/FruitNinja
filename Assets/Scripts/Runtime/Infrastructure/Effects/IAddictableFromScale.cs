@@ -14,12 +14,12 @@ namespace Runtime.Infrastructure.Effects
     public class AddictableFromScale : MonoBehaviour, IAddictableFromScale
     {
         protected ITimeProvider TimeProvider;
-        protected Sequence Sequence = DOTween.Sequence();
-        protected bool CanPause = false;
+        protected Sequence Sequence;
 
         [Inject]
         public void Construct(ITimeProvider timeProvider)
         {
+            Sequence = DOTween.Sequence();
             TimeProvider = timeProvider;
         }
 

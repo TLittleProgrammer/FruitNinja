@@ -55,7 +55,6 @@ namespace Runtime.Infrastructure.Combo
             Sequence.Append(transform.DOScale(Vector3.zero, 0.2f).SetEase(Ease.InQuint)).ToUniTask().Forget();
             Sequence.OnComplete(() =>
             {
-                CanPause = true;
                 _fruitsCounter.text = _fruitsCounterInitialText;
                 _xCounterText.text  = _xCounterInitialText;
                 
