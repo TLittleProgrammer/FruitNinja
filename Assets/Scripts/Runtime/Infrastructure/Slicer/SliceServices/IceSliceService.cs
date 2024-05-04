@@ -24,7 +24,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private readonly IceSettings _iceSettings;
         private readonly IUIFactory _uiFactory;
         private readonly DiContainer _diContainer;
-        private readonly BlurEffect _blurEffect;
         private readonly ITimeProvider _timeProvider;
 
         private GameObject _iceScreen;
@@ -39,7 +38,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             IceSettings iceSettings,
             IUIFactory uiFactory,
             DiContainer diContainer,
-            BlurEffect blurEffect,
             ITimeProvider timeProvider,
             IGameStateMachine gameStateMachine) : base(slicableMovementService)
         {
@@ -48,7 +46,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _iceSettings = iceSettings;
             _uiFactory = uiFactory;
             _diContainer = diContainer;
-            _blurEffect = blurEffect;
             _timeProvider = timeProvider;
             
             gameStateMachine.UpdatedState += OnUpdatedState;
@@ -69,7 +66,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
 
         private void TryAnimate()
         {
-            _blurEffect.UpdateBlur(1f, 0.5f).Forget();
             _iceScreen = _uiFactory.LoadScreen<RectTransform>(ScreenType.Ice, _iceBackgroundParent, _diContainer).gameObject;
             _animated = true;
             
@@ -97,8 +93,6 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _sequence.Append(ChangeScale(_iceSettings.TargetTimeScale, 1f, _iceSettings.DurationToReturnNormalTimeScale, SetTimeScale)).ToUniTask().Forget();
             _sequence.OnComplete(() =>
             {
-                _blurEffect.UpdateBlur(0f, 0.5f).Forget();
-            
                 _animated = false;
                 Object.Destroy(_iceScreen);
                 

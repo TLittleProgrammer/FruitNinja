@@ -23,7 +23,6 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly TrailMoveService _trailMoveService;
         private readonly MouseManager _mouseManager;
         private readonly MagnetSliceService _magnetSliceService;
-        private readonly BlurEffect _blurEffect;
 
         private bool _isEntered;
         private LooseScreen _looseScreen;
@@ -36,8 +35,7 @@ namespace Runtime.Infrastructure.StateMachine.States
             SlicableMovementService movementService,
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
-            MagnetSliceService magnetSliceService,
-            BlurEffect blurEffect
+            MagnetSliceService magnetSliceService
             )
         {
             _looseScreenParent = looseScreenParent;
@@ -48,7 +46,6 @@ namespace Runtime.Infrastructure.StateMachine.States
             _trailMoveService = trailMoveService;
             _mouseManager = mouseManager;
             _magnetSliceService = magnetSliceService;
-            _blurEffect = blurEffect;
             _isEntered = false;
         }
 
@@ -115,8 +112,6 @@ namespace Runtime.Infrastructure.StateMachine.States
                 sequence.Kill();
             });
 
-            _blurEffect.UpdateBlur(2f, 0.75f);
-
             sequence.Play();
         }
         
@@ -132,8 +127,6 @@ namespace Runtime.Infrastructure.StateMachine.States
             {
                 sequence.Kill();
             });
-            
-            _blurEffect.UpdateBlur(0f, 0.75f);
 
             return sequence.Play().ToUniTask();
         }

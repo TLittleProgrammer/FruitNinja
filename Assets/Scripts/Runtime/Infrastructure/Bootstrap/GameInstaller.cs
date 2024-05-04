@@ -63,8 +63,6 @@ namespace Runtime.Infrastructure.Bootstrap
         [SerializeField] private BombEffect _bombEffectPrefab;
         [SerializeField] private Transform _bombEffectPoolParent;
         
-        [SerializeField] private BlurEffect _blurEffect;
-        [SerializeField] private Transform _blurParent;
         [SerializeField] private BlurSettings _blurSettings;
         
         [Inject] private PoolSettings _poolSettings;
@@ -100,8 +98,6 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<ComboService>().AsSingle();
             Container.BindInterfacesAndSelfTo<Timer.Timer>().AsSingle();
 
-            CreateBlurEffect();
-
             ISlicer slicer = Container.Instantiate<Slicer.Slicer>();
             ICollisionDetector<Collider2D, SlicableObjectView> collisionDetector = Container.Instantiate<CollisionDetector>(new[] { slicer });
 
@@ -133,20 +129,6 @@ namespace Runtime.Infrastructure.Bootstrap
 
             Container.Bind<ComboSequenceResolver>().AsSingle();
             Container.Bind<GameInitializer>().AsSingle().WithArguments(_gameCanvas, _overlayCanvas, _healthFlyingPoolParent.transform);
-        }
-
-        private void CreateBlurEffect()
-        {
-            BlurEffect blurEffect = Container.InstantiatePrefab(_blurEffect, Vector3.zero, Quaternion.identity, _blurParent).GetComponent<BlurEffect>();
-            Container.Bind<BlurEffect>().FromInstance(blurEffect).AsSingle();
-            
-            blurEffect.Initialize(_blurSettings.InitialSize);
-            
-            RectTransform screenRectTransform = blurEffect.GetComponent<RectTransform>();
-            screenRectTransform.offsetMin = Vector2.zero;
-            screenRectTransform.offsetMax = Vector2.zero;
-            screenRectTransform.localScale = Vector3.one;
-            screenRectTransform.anchoredPosition3D = Vector3.zero;
         }
 
         private Dictionary<SlicableObjectType, ISliceService> GetSliceServices(IGameStateMachine gameStateMachine)
