@@ -2,6 +2,6 @@
 {
     public static class Game
     {
-        public const float MinRequiredSliceSpeed = 6f;
+        public const float MinRequiredSliceSpeed = 20f;
     }
 }
