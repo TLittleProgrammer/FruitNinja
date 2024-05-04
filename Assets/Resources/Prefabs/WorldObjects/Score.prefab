@@ -195,3 +195,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 6652508897625812007}
+  _textTransform: {fileID: 2665941933141886073}
+  _scoreTransform: {fileID: 2665941933141886073}
