@@ -87,7 +87,6 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.Bind<ISlicableObjectCounterOnMap>().To<SlicableObjectCounterOnMap>().AsSingle();
             Container.Bind<ISpawnCriteriaService>().To<SpawnCriteriaService>().AsSingle();
             Container.Bind<ICreateDummiesService>().To<CreateDummiesService>().AsSingle();
-            Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle();
             Container.Bind<ISplashBombService>().To<SplashBombService>().AsSingle();
             Container.Bind<IMimikService>().To<MimikService>().AsSingle();
             Container.Bind<ITimeProvider>().To<TimeProvider>().AsSingle();
@@ -106,6 +105,7 @@ namespace Runtime.Infrastructure.Bootstrap
             Container.BindInterfacesAndSelfTo<CollisionDetector>().FromInstance(collisionDetector).AsSingle();
 
             IGameStateMachine gameStateMachine = Container.Instantiate<GameStateMachine>();
+            Container.Bind<IHealthFlyingService>().To<HealthFlyingService>().AsSingle().WithArguments(gameStateMachine);
             
             Container.BindPool<BombEffect, BombEffect.Pool>(_poolSettings.PoolInitialSize / 2, _bombEffectPrefab, _bombEffectPoolParent);
             Container.BindPool<SlicableObjectView, SlicableObjectView.Pool>(_poolSettings.PoolInitialSize, _slicableObjectViewPrefab, _poolParent);

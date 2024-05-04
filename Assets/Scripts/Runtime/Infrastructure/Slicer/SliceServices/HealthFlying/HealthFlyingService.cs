@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.StateMachine;
+using Runtime.Infrastructure.StateMachine.States;
 using Runtime.Infrastructure.Timer;
 using Runtime.StaticData.UI;
 using Runtime.UI.Screens;
@@ -27,18 +30,41 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
             FlyingHealthView.Pool healthViewPool,
             FlyingHealthViewStaticData flyingHealthViewStaticData,
             GameParameters gameParameters,
-            ITimeProvider timeProvider)
+            ITimeProvider timeProvider,
+            IGameStateMachine gameStateMachine)
         {
             _healthViewPool = healthViewPool;
             _flyingHealthViewStaticData = flyingHealthViewStaticData;
             _gameParameters = gameParameters;
             _timeProvider = timeProvider;
             _healthList = new();
+
+            gameStateMachine.UpdatedState += OnUpdatedState;
             
             
             _previousHealth = gameParameters.MaxHealth;
             gameParameters.HealthChanged += OnHealthChanged;
             timeProvider.TimeScaleChanged += OnTimeScaleChanged;
+        }
+
+        private void OnUpdatedState(IExitableState state)
+        {
+            if (state is PauseState)
+            {
+                foreach (FlyingHealth health in _healthList)
+                {
+                    health.MoveSequence.Pause();
+                    health.ScaleSequence.Pause();
+                }
+            }
+            else
+            {
+                foreach (FlyingHealth health in _healthList)
+                {
+                    health.MoveSequence.Play();
+                    health.ScaleSequence.Play();
+                }
+            }
         }
 
         public async UniTask AsyncInitialize(GameScreen payload)
