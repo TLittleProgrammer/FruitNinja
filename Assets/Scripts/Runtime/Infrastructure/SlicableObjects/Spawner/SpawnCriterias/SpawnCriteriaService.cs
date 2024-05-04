@@ -2,6 +2,7 @@
 using System.Linq;
 using Runtime.Extensions;
 using Runtime.Infrastructure.Game;
+using Runtime.Infrastructure.StateMachine;
 
 namespace Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias
 {
@@ -9,6 +10,7 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias
     {
         private readonly ISlicableObjectCounterOnMap _slicableObjectCounterOnMap;
         private readonly GameParameters _gameParameters;
+        private readonly IGameStateMachine _gameStateMachine;
 
         public SpawnCriteriaService(ISlicableObjectCounterOnMap slicableObjectCounterOnMap, GameParameters gameParameters)
         {
@@ -21,6 +23,10 @@ namespace Runtime.Infrastructure.SlicableObjects.Spawner.SpawnCriterias
             List<SliceableObjectSpawnerData> newList = list.CreateClone();
 
             if (_slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Brick) >= 1)
+            {
+                newList = newList.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList();
+            }
+            if (_slicableObjectCounterOnMap.GetCountByType(SlicableObjectType.Ice) >= 1)
             {
                 newList = newList.Where(x => x.SlicableObjectType is not SlicableObjectType.Brick).ToList();
             }

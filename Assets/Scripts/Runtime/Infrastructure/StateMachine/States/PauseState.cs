@@ -3,6 +3,7 @@ using DG.Tweening;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
 using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.SlicableObjects.Services;
 using Runtime.Infrastructure.SlicableObjects.Spawner;
@@ -24,6 +25,7 @@ namespace Runtime.Infrastructure.StateMachine.States
         private readonly MouseManager _mouseManager;
         private readonly IMimikService _mimikService;
         private readonly MagnetSliceService _magnetSliceService;
+        private readonly SlicableObjectView.Pool _slicablePool;
         private readonly TrailMoveService _trailMoveService;
         
         private PauseScreen _pauseScreen;
@@ -37,7 +39,8 @@ namespace Runtime.Infrastructure.StateMachine.States
             TrailMoveService trailMoveService,
             MouseManager mouseManager,
             IMimikService mimikService,
-            MagnetSliceService magnetSliceService
+            MagnetSliceService magnetSliceService,
+            SlicableObjectView.Pool slicablePool
         )
         {
             _pauseScreenParent = pauseScreenParent;
@@ -49,10 +52,19 @@ namespace Runtime.Infrastructure.StateMachine.States
             _mouseManager = mouseManager;
             _mimikService = mimikService;
             _magnetSliceService = magnetSliceService;
+            _slicablePool = slicablePool;
         }
         
         public void Enter()
         {
+            foreach (SlicableObjectView view in _slicablePool.InactiveItems)
+            {
+                if (view.IsMimik)
+                {
+                    var mimikParticlesMain = view.MimikParticles.main;
+                    mimikParticlesMain.simulationSpeed = 0f;
+                }
+            }
             _spawnerManager.SetStop(true);
             _mouseManager.SetStopValue(true);
             _trailMoveService.SetCanTrail(false);
@@ -66,7 +78,14 @@ namespace Runtime.Infrastructure.StateMachine.States
         public async void Exit()
         {
             await AnimatePauseScreen(Vector3.one, Vector3.zero, _pauseScreen.Background.color, Color.clear, false);
-            
+            foreach (SlicableObjectView view in _slicablePool.InactiveItems)
+            {
+                if (view.IsMimik)
+                {
+                    var mimikParticlesMain = view.MimikParticles.main;
+                    mimikParticlesMain.simulationSpeed = 1f;
+                }
+            }   
             _mimikService.SetSimulateSpeedToParticles(1f);
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
