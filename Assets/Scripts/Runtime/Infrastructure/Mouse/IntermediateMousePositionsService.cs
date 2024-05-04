@@ -5,16 +5,16 @@ namespace Runtime.Infrastructure.Mouse
 {
     public class IntermediateMousePositionsService : IIntermediateMousePositionsService
     {
-        private const float _divide = 10;
+        private const float _divide = 20;
 
         public Vector2[] GetIntermediateMousePositions(Vector2 firstPosition, Vector2 lastPosition, float time)
         {
             float deltaTime = time / _divide;
             float allTime = 0f;
 
-            List<Vector2> mousePositions = new(22);
+            List<Vector2> mousePositions = new(21);
             
-            while (allTime <= time)
+            for(int i = 0; i < _divide; i++)
             {
                 float lerpValue = allTime / time;
 

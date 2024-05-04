@@ -71,7 +71,7 @@ namespace Runtime.Infrastructure.Bootstrap
 
         public override void InstallBindings()
         {
-            DOTween.SetTweensCapacity(500, 500);
+            DOTween.SetTweensCapacity(250, 250);
             Container.BindInterfacesTo<GameInstaller>().FromInstance(this).AsSingle();
 
             Container.Bind<SpriteProviderContainer>().AsSingle();

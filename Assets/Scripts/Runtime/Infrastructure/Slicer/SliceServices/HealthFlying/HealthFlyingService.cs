@@ -134,7 +134,10 @@ namespace Runtime.Infrastructure.Slicer.SliceServices.HealthFlying
                 _gameParameters.ChangeHealth(1);
 
                 flyingHealth.FlyingHealthView.transform.localScale = Vector3.zero;
-                _healthList.RemoveAt(_healthList.Count - 1);
+                if (_healthList.Count > 0)
+                {
+                    _healthList.RemoveAt(_healthList.Count - 1);
+                }
             });
             return flyingHealth;
         }

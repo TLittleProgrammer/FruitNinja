@@ -43,7 +43,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             _timeProvider = timeProvider;
         }
         
-        //TODO выделить в один метод
         public void AddMapping(SlicableObjectSpawnerData spawnerData, SlicableObjectType slicableObjectType)
         {
             SlicableObjectView slicableObjectView = _objectPool.InactiveItems.GetInactiveObject();
@@ -62,7 +61,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             
             slicableObjectView.SlicableObjectType = slicableObjectType;
             
-            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
             _orderService.UpdateOrderInLayer(slicableObjectView.MainSprite);
             _orderService.UpdateOrderInLayer(slicableObjectView.ShadowSprite);
 
@@ -79,6 +77,8 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             SlicableModel slicableModel    = new(slicableObjectView.SlicableObjectType, slicableViewTransform, velocityX, velocityY, angleInRadians, modelAnimation, _timeProvider);
             
             _slicableMovementService.AddMapping(slicableModel, slicableViewTransform);
+            _collisionDetector.AddCollider(slicableObjectView.Collider2D, slicableObjectView);
+            slicableObjectView.gameObject.SetActive(true);
         }
 
         public SlicableObjectView AddMappingWithoutCollisonDetector(SlicableObjectType type, Vector2 position, MinMaxValue angle, MinMaxValue minMaxValocityX, MinMaxValue minMaxValocityY)
@@ -149,7 +149,6 @@ namespace Runtime.Infrastructure.SlicableObjects.Movement
             Vector3 spawnPosition = _gameScreenManager.GetRandomPositionBetweenTwoPercents(spawnerData);
 
             slicableObjectView.transform.position = spawnPosition;
-            slicableObjectView.gameObject.SetActive(true);
         }
         
         private void ChangePositionAndActivate(Vector2 spawnPosition, SlicableObjectView slicableObjectView)

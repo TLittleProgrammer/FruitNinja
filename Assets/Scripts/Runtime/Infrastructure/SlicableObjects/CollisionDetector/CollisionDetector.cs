@@ -39,9 +39,14 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
                 Vector2 previousMousePosition = _mouseManager.GetPreviousMousePosition();
                 Vector2 currentMousePosition = _mouseManager.GetMousePositionInWorldCoordinates();
 
-                Vector2[] mousePositions = _intermediateMousePositionsService.GetIntermediateMousePositions(previousMousePosition, currentMousePosition, Time.deltaTime);
-
-                GoThrowAllCollidersAndMousePositions(mousePositions);
+                if (Vector2.Distance(previousMousePosition, currentMousePosition) >= 5f)
+                {
+                    GoThrowAllCollidersAndMousePositions(_intermediateMousePositionsService.GetIntermediateMousePositions(previousMousePosition, currentMousePosition, Time.deltaTime));
+                }
+                else
+                {
+                    GoThrowAllCollidersAndMousePositions(new[] { currentMousePosition });
+                }
             }
         }
 
@@ -56,29 +61,19 @@ namespace Runtime.Infrastructure.SlicableObjects.CollisionDetector
                     float distance = Vector2.Distance(turpleArray[i].Item2.transform.position, mousePosition);
                     if (distance <= 0.75f)
                     {
-                        if (TrySlice(turpleArray, ref i) is false)
+                        if (_slicer.TrySliceObject(turpleArray[i].Item2) is false)
                         {
                             return;
                         }
+                        
+                        _slicableObjectCounterOnMap.RemoveType(turpleArray[i].Item2.SlicableObjectType);
+                        _colliders.RemoveItemWithCollider(turpleArray[i].Item1);
+                        _mimikService.RemoveMimik(turpleArray[i].Item2);
                         
                         break;
                     }
                 }
             }
-        }
-
-        private bool TrySlice((Collider2D, SlicableObjectView)[] turpleArray, ref int i)
-        {
-            if (_slicer.TrySliceObject(turpleArray[i].Item2))
-            {
-                _slicableObjectCounterOnMap.RemoveType(turpleArray[i].Item2.SlicableObjectType);
-                _colliders.RemoveItemWithCollider(turpleArray[i].Item1);
-                _mimikService.RemoveMimik(turpleArray[i].Item2);
-
-                return true;
-            }
-
-            return false;
         }
 
         public void AddCollider(Collider2D collider2D, SlicableObjectView slicableObjectView)
