@@ -1,5 +1,6 @@
 ﻿using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.Slicer.SliceServices.HealthFlying;
@@ -36,7 +37,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             Vector2 screenPosition = _manager.GetScreenPosition(slicableObjectView.transform.position);
             
             _healthFlyingService.Fly(screenPosition);
-            _showEffectsService.PlayHeartSplash(screenPosition);
+            _showEffectsService.PlayHeartSplash(screenPosition, SlicableObjectType.Health);
             return true;
         }
     }

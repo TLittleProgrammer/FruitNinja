@@ -12,7 +12,7 @@ namespace Runtime.Infrastructure.Effects
         void ShowSplash(Vector2 position, string spriteName);
         void ShowBlots(Vector2 position, string spriteName);
         void ShowScore(Vector2 position, int score);
-        void PlayHeartSplash(Vector2 position);
+        void PlayHeartSplash(Vector2 position, SlicableObjectType slicableObjectType);
         void PlayBombEffect(Vector2 position);
     }
 
@@ -92,11 +92,11 @@ namespace Runtime.Infrastructure.Effects
             scoreEffect.PlayEffect(screenPosition, score);
         }
 
-        public void PlayHeartSplash(Vector2 position)
+        public void PlayHeartSplash(Vector2 position, SlicableObjectType slicableObjectType)
         {
             HeartSplash heartSplash = _heartSplashPool.InactiveItems.GetInactiveObject();
             
-            heartSplash.Play(position);
+            heartSplash.Play(position, slicableObjectType);
         }
 
         public void PlayBombEffect(Vector2 position)

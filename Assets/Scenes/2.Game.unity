@@ -180,6 +180,8 @@ MonoBehaviour:
       Weight: 2
     - SlicableObjectType: 9
       Weight: 2
+    - SlicableObjectType: 9
+      Weight: 2
     FirstSpawnPoint:
       Min: -0.1
       Max: -0.1
@@ -365,80 +367,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &331318868
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 331318869}
-  - component: {fileID: 331318870}
-  m_Layer: 0
-  m_Name: Marker (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &331318869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331318868}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1873977663}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &331318870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331318868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnerData:
-    Weight: 6
-    SlicableObjectSpawnerDatas:
-    - SlicableObjectType: 8
-      Weight: 2
-    - SlicableObjectType: 1
-      Weight: 1
-    - SlicableObjectType: 7
-      Weight: 3
-    - SlicableObjectType: 5
-      Weight: 2
-    FirstSpawnPoint:
-      Min: 2.2
-      Max: 2.2
-    SecondSpawnPoint:
-      Min: -0.16
-      Max: 0.3
-    XVelocity:
-      Min: 8
-      Max: 12
-    YVelocity:
-      Min: 6
-      Max: 15
-    SpawnOffset:
-      Min: 0.15
-      Max: 0.25
-    MainDirectionOffset: 53.9
-    FirstOffset: 5.45
-    SecondOffset: -21.08
-    PackSize: 1
 --- !u!1 &415840210
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,88 +431,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &469323656
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 469323657}
-  - component: {fileID: 469323658}
-  m_Layer: 0
-  m_Name: Marker (5)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &469323657
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469323656}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1873977663}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &469323658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469323656}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnerData:
-    Weight: 6
-    SlicableObjectSpawnerDatas:
-    - SlicableObjectType: 4
-      Weight: 10
-    - SlicableObjectType: 1
-      Weight: 3
-    - SlicableObjectType: 3
-      Weight: 2
-    - SlicableObjectType: 7
-      Weight: 2
-    - SlicableObjectType: 8
-      Weight: 8
-    - SlicableObjectType: 9
-      Weight: 4
-    - SlicableObjectType: 2
-      Weight: 15
-    - SlicableObjectType: 2
-      Weight: 15
-    FirstSpawnPoint:
-      Min: 2.2
-      Max: 2.2
-    SecondSpawnPoint:
-      Min: 0.2
-      Max: 0.95
-    XVelocity:
-      Min: 10
-      Max: 17
-    YVelocity:
-      Min: 6
-      Max: 15
-    SpawnOffset:
-      Min: 0.15
-      Max: 0.25
-    MainDirectionOffset: 76.1
-    FirstOffset: 10.7
-    SecondOffset: -28
-    PackSize: 1
 --- !u!1 &525459006
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +560,14 @@ MonoBehaviour:
       Weight: 3
     - SlicableObjectType: 6
       Weight: 2
+    - SlicableObjectType: 3
+      Weight: 2
+    - SlicableObjectType: 4
+      Weight: 2
+    - SlicableObjectType: 5
+      Weight: 2
+    - SlicableObjectType: 7
+      Weight: 2
     FirstSpawnPoint:
       Min: 2.2
       Max: 2.2
@@ -841,82 +695,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &953186941
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 953186942}
-  - component: {fileID: 953186943}
-  m_Layer: 0
-  m_Name: Marker (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &953186942
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953186941}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1873977663}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &953186943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 953186941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5abff7a535324e5dad00a1e350f54e93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpawnerData:
-    Weight: 3
-    SlicableObjectSpawnerDatas:
-    - SlicableObjectType: 1
-      Weight: 3
-    - SlicableObjectType: 3
-      Weight: 4
-    - SlicableObjectType: 4
-      Weight: 5
-    - SlicableObjectType: 6
-      Weight: 3
-    - SlicableObjectType: 9
-      Weight: 6
-    FirstSpawnPoint:
-      Min: -0.1
-      Max: -0.1
-    SecondSpawnPoint:
-      Min: 0.08
-      Max: -0.33
-    XVelocity:
-      Min: 9
-      Max: 17
-    YVelocity:
-      Min: 6
-      Max: 35
-    SpawnOffset:
-      Min: 0.12
-      Max: 0.57
-    MainDirectionOffset: -36.5
-    FirstOffset: 12.64
-    SecondOffset: -12.9
-    PackSize: 1
 --- !u!1 &1123429177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,9 +1161,6 @@ Transform:
   - {fileID: 525459007}
   - {fileID: 572143240}
   - {fileID: 4849886}
-  - {fileID: 953186942}
-  - {fileID: 331318869}
-  - {fileID: 469323657}
   m_Father: {fileID: 234395097}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using Runtime.Infrastructure.Effects;
+using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.StateMachine;
@@ -21,14 +24,20 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private List<Transform> _magnets = new();
         private Dictionary<Transform, Sequence> _sequenceMapping = new();
         private ITimeProvider _timeProvider;
+        private readonly IShowEffectsService _showEffectsService;
+        private readonly MouseManager _mouseManager;
 
         public MagnetSliceService(
             SlicableMovementService slicableMovementService,
             MagnetSettings magnetSettings,
             IGameStateMachine gameStateMachine,
-            ITimeProvider timeProvider)
+            ITimeProvider timeProvider,
+            IShowEffectsService showEffectsService,
+            MouseManager mouseManager)
         {
             _timeProvider = timeProvider;
+            _showEffectsService = showEffectsService;
+            _mouseManager = mouseManager;
             _slicableMovementService = slicableMovementService;
             _magnetSettings = magnetSettings;
             _gameStateMachine = gameStateMachine;
@@ -40,7 +49,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         {
             if (_gameStateMachine.CurrentState is PauseState or LooseState)
                 return;
-            
+
             foreach (Transform magnet in _magnets)
             {
                 foreach (SlicableModel slicableModel in _slicableMovementService.SlicableModels)
@@ -95,6 +104,9 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _slicableMovementService.RemoveFromMapping(slicableObjectView.transform);
             
             AddMagnet(slicableObjectView);
+            
+            _showEffectsService.PlayHeartSplash(_mouseManager.GetScreenPosition(slicableObjectView.transform.position), SlicableObjectType.Magnet);
+
 
             return true;
         }

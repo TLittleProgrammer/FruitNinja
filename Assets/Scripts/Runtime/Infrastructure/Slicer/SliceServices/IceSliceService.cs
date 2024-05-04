@@ -3,6 +3,8 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Runtime.Infrastructure.Effects;
 using Runtime.Infrastructure.Factories;
+using Runtime.Infrastructure.Mouse;
+using Runtime.Infrastructure.SlicableObjects;
 using Runtime.Infrastructure.SlicableObjects.MonoBehaviours;
 using Runtime.Infrastructure.SlicableObjects.Movement;
 using Runtime.Infrastructure.Slicer.SliceServices.Helpers;
@@ -25,6 +27,8 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         private readonly IUIFactory _uiFactory;
         private readonly DiContainer _diContainer;
         private readonly ITimeProvider _timeProvider;
+        private readonly IShowEffectsService _showEffectsService;
+        private readonly MouseManager _mouseManager;
 
         private GameObject _iceScreen;
         private bool _animated = false;
@@ -39,7 +43,9 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             IUIFactory uiFactory,
             DiContainer diContainer,
             ITimeProvider timeProvider,
-            IGameStateMachine gameStateMachine) : base(slicableMovementService)
+            IGameStateMachine gameStateMachine,
+            IShowEffectsService showEffectsService,
+            MouseManager mouseManager) : base(slicableMovementService)
         {
             _iceBackgroundParent = iceBackgroundParent;
             _createDummiesService = createDummiesService;
@@ -47,7 +53,9 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             _uiFactory = uiFactory;
             _diContainer = diContainer;
             _timeProvider = timeProvider;
-            
+            _showEffectsService = showEffectsService;
+            _mouseManager = mouseManager;
+
             gameStateMachine.UpdatedState += OnUpdatedState;
         }
 
@@ -60,6 +68,9 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
             TryAnimate();
             _createDummiesService.AddDummies(slicableObjectView);
             RemoveSlicableObjectFromMapping(slicableObjectView);
+                        
+            _showEffectsService.PlayHeartSplash(_mouseManager.GetScreenPosition(slicableObjectView.transform.position), SlicableObjectType.Ice);
+
 
             return true;
         }
