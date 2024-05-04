@@ -15,5 +15,5 @@ MonoBehaviour:
   Duration: 4
   MinDelay: 1
   MaxDelay: 3
-  MinScale: 1
-  MaxScale: 2.5
+  MinScale: 1.5
+  MaxScale: 2
