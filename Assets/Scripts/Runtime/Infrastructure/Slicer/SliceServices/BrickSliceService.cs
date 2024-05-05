@@ -21,7 +21,7 @@ namespace Runtime.Infrastructure.Slicer.SliceServices
         public bool TrySlice(SlicableObjectView slicableObjectView)
         {
             _trailMoveService.SetCannotMove();
-            _mouseManager.SetCannotMouseCheckPosition();
+            _mouseManager.SetCannotMouseCheckPosition(false);
             _showEffectsService.ShowSplash(slicableObjectView.transform.position, slicableObjectView.MainSprite.sprite.name);
             
             return false;

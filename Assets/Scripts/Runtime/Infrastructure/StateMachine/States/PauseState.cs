@@ -85,10 +85,11 @@ namespace Runtime.Infrastructure.StateMachine.States
                     var mimikParticlesMain = view.MimikParticles.main;
                     mimikParticlesMain.simulationSpeed = 1f;
                 }
-            }   
+            }
             _mimikService.SetSimulateSpeedToParticles(1f);
             _spawnerManager.SetStop(false);
             _mouseManager.SetStopValue(false);
+            _mouseManager.SetCannotMouseCheckPosition(true);
             _trailMoveService.SetCanTrail(true);
             _movementService.SetCanMove(true);
             _magnetSliceService.PlaySequences();

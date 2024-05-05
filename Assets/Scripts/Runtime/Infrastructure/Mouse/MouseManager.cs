@@ -56,9 +56,9 @@ namespace Runtime.Infrastructure.Mouse
             _stop = value;
         }
         
-        public void SetCannotMouseCheckPosition()
+        public void SetCannotMouseCheckPosition(bool value)
         {
-            _canCheckMousePositionDelta = false;
+            _canCheckMousePositionDelta = value;
         }
 
         public Vector2 GetMousePositionInWorldCoordinates()
